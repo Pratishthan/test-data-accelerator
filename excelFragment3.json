@@ -1,0 +1,19 @@
+{
+  "tables": [
+    {
+      "type": "Table",
+      "name": "Table1",
+      "headers": [
+        "Name", "Age", "Department", "x", "y", "z"
+      ]
+    },
+    {
+      "type": "Table",
+      "name": "Table2",
+      "headers": [
+        "New", "Table", "Here"
+      ]
+    }
+  ],
+  "action": "Create demand Code"
+}

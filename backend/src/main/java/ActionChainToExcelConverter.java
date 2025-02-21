@@ -3,7 +3,6 @@ import lombok.extern.slf4j.Slf4j;
 import model.Action;
 import model.ActionChain;
 import model.ApiAction;
-import model.TableAction;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;

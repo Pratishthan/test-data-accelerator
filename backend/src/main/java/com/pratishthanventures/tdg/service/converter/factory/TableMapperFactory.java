@@ -33,6 +33,6 @@ public class TableMapperFactory extends AbstractFactory {
         if (tableMapperPatternMap.containsKey(actionCode)) {
             return tableMapperPatternMap.get(actionCode);
         }
-        return null;
+        throw new IllegalArgumentException("No such pattern");
     }
 }

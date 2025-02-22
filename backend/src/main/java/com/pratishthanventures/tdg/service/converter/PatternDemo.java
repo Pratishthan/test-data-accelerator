@@ -11,12 +11,14 @@ public class PatternDemo {
 
         TDGWorkbook workbook = new TDGWorkbook("Data");
 
+        AbstractFactory simpleCommandFactory = FactoryProducer.getFactory("SimpleCommand");
         AbstractFactory tableMapperFactory = FactoryProducer.getFactory("TableMapper");
-        Pattern collectableEvent = tableMapperFactory.getPattern("Collectable Event");
-        collectableEvent.process(workbook, "Data");
 
-        Pattern demandCode = tableMapperFactory.getPattern("Demand Code");
-        demandCode.process(workbook, "Data");
+        simpleCommandFactory.getPattern("We have a clean DB").process(workbook, "Data");
+
+        tableMapperFactory.getPattern("Collectable Event").process(workbook, "Data");
+
+        tableMapperFactory.getPattern("Demand Code").process(workbook, "Data");
 
         workbook.writeWorkbookToFile(excelFilePath);
 

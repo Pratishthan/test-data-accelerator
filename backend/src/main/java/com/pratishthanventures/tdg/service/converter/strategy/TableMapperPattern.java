@@ -16,7 +16,7 @@ public class TableMapperPattern implements Pattern {
 
     @Override
     public void process(TDGWorkbook workbook, String sheetName) {
-        log.info("About to process {}", tableMapperHelper.getTableName());
+        log.info("TableMapperPattern: About to process {}", tableMapperHelper.getTableName());
         addTableWithNote(workbook, sheetName, tableMapperHelper);
     }
 }

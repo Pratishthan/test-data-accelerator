@@ -2,12 +2,15 @@ package com.pratishthanventures.tdg.output;
 
 import lombok.Getter;
 import lombok.SneakyThrows;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.pratishthanventures.tdg.Constants.START_ROW;
 
 
 @Getter
@@ -29,7 +32,7 @@ public class TDGWorkbook {
         Sheet sheet = workbook.createSheet(sheetName);
         workbook.setSheetName(0, sheetName);
         sheetMap.put(sheetName, sheet);
-        sheetLastRow.put(sheetName, 0);
+        sheetLastRow.put(sheetName, START_ROW);
     }
 
     @SneakyThrows
@@ -41,5 +44,8 @@ public class TDGWorkbook {
         workbook.close();
     }
 
+    public Row getNewRow(String sheetName) {
+        return sheetMap.get(sheetName).createRow(sheetLastRow.get(sheetName));
+    }
 
 }

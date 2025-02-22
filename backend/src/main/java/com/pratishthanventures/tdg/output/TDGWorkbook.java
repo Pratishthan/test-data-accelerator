@@ -3,7 +3,7 @@ package com.pratishthanventures.tdg.output;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileOutputStream;
@@ -18,7 +18,7 @@ public class TDGWorkbook {
 
     private XSSFWorkbook workbook;
 
-    private final Map<String, Sheet> sheetMap = new HashMap<>();
+    private final Map<String, XSSFSheet> sheetMap = new HashMap<>();
     private final Map<String, Integer> sheetLastRow = new HashMap<>();
 
 
@@ -29,7 +29,7 @@ public class TDGWorkbook {
     public void createSheet(String sheetName) {
         // Create a new workbook and sheet
         workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet(sheetName);
+        XSSFSheet sheet = workbook.createSheet(sheetName);
         workbook.setSheetName(0, sheetName);
         sheetMap.put(sheetName, sheet);
         sheetLastRow.put(sheetName, START_ROW);

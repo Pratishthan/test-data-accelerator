@@ -1,12 +1,12 @@
 package com.pratishthanventures.tdg.service.converter.processor;
 
 import com.pratishthanventures.tdg.model.TableMapper;
-import com.pratishthanventures.tdg.output.TDGWorkbook;
+import com.pratishthanventures.tdg.util.TDGWorkbook;
 import com.pratishthanventures.tdg.service.converter.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import static com.pratishthanventures.tdg.output.TableWithNote.addTableWithNote;
+import static com.pratishthanventures.tdg.util.TableWithNote.addTableWithNote;
 
 @Slf4j
 @AllArgsConstructor

@@ -1,4 +1,4 @@
-package com.pratishthanventures.tdg.output;
+package com.pratishthanventures.tdg.util;
 
 import com.pratishthanventures.tdg.model.TableMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.pratishthanventures.tdg.Constants.*;
-import static com.pratishthanventures.tdg.output.Note.addNoteToCell;
+import static com.pratishthanventures.tdg.util.Note.addNoteToCell;
 
 @Slf4j
 public class TableWithNote {

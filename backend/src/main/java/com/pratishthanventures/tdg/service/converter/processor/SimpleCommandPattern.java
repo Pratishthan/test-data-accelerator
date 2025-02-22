@@ -1,8 +1,8 @@
 package com.pratishthanventures.tdg.service.converter.processor;
 
 import com.pratishthanventures.tdg.model.SimpleCommand;
-import com.pratishthanventures.tdg.output.Note;
-import com.pratishthanventures.tdg.output.TDGWorkbook;
+import com.pratishthanventures.tdg.util.Note;
+import com.pratishthanventures.tdg.util.TDGWorkbook;
 import com.pratishthanventures.tdg.service.converter.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

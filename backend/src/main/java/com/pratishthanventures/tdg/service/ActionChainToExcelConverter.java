@@ -1,12 +1,12 @@
 package com.pratishthanventures.tdg.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pratishthanventures.tdg.model.TableHeader;
-import com.pratishthanventures.tdg.output.TDGWorkbook;
+import com.pratishthanventures.tdg.dto.TableHeader;
+import com.pratishthanventures.tdg.util.TDGWorkbook;
 import lombok.extern.slf4j.Slf4j;
-import com.pratishthanventures.tdg.model.Action;
-import com.pratishthanventures.tdg.model.ActionChain;
-import com.pratishthanventures.tdg.model.ApiAction;
+import com.pratishthanventures.tdg.dto.Action;
+import com.pratishthanventures.tdg.dto.ActionChain;
+import com.pratishthanventures.tdg.dto.ApiAction;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
@@ -19,11 +19,9 @@ import org.apache.poi.ss.util.AreaReference;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFTable;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTTableStyleInfo;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;

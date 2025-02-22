@@ -1,4 +1,4 @@
-package com.pratishthanventures.tdg.output;
+package com.pratishthanventures.tdg.util;
 
 import lombok.Getter;
 import lombok.SneakyThrows;

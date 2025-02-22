@@ -15,6 +15,9 @@ public class PatternDemo {
         Pattern collectableEvent = tableMapperFactory.getPattern("Collectable Event");
         collectableEvent.process(workbook, "Data");
 
+        Pattern demandCode = tableMapperFactory.getPattern("Demand Code");
+        demandCode.process(workbook, "Data");
+
         workbook.writeWorkbookToFile(excelFilePath);
 
     }

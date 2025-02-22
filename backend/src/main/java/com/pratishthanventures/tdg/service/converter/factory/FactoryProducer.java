@@ -5,6 +5,6 @@ public class FactoryProducer {
         if ("TableMapper".equalsIgnoreCase(pattern)) {
             return new TableMapperFactory();
         }
-        return null;
+        throw new IllegalArgumentException("No such factory");
     }
 }

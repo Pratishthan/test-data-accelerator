@@ -15,9 +15,7 @@ public class TableMapperFactory extends AbstractFactory {
 
     public TableMapperFactory() {
         List<TableMapperHelper> mappers = super.getContent("/TableMappers.json");
-        mappers.forEach(mapper -> {
-            tableMapperPatternMap.put(mapper.getTableName(), new TableMapperPattern(mapper));
-        });
+        mappers.forEach(mapper -> tableMapperPatternMap.put(mapper.getTableName(), new TableMapperPattern(mapper)));
     }
 
     @Override

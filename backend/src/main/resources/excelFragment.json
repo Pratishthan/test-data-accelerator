@@ -1,0 +1,50 @@
+{
+  "data": [
+    {
+      "name": "bill-jan-2024",
+      "type": "Table",
+      "action": "Create Collectable Event",
+      "tableInfo": {
+        "headers": [
+          "Name",
+          "Age",
+          "Department"
+        ],
+        "data": [
+          {
+            "Name": "Alice",
+            "Age": "28",
+            "Department": "HR"
+          },
+          {
+            "Name": "Bob",
+            "Age": "34",
+            "Department": "IT"
+          }
+        ]
+      }
+    },
+    {
+      "name": "demandFinalization",
+      "type": "APICall",
+      "apiInfo": {
+        "params": [
+          {
+            "bodDate": "2025-01-01"
+          }
+        ]
+      }
+    },
+    {
+      "name": "checkResult",
+      "type": "Validate",
+      "validateInfo": {
+        "params": [
+          {
+            "bodDate": "2025-01-01"
+          }
+        ]
+      }
+    }
+  ]
+}

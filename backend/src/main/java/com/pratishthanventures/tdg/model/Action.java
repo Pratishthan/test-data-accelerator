@@ -12,6 +12,9 @@ public class Action {
     @JsonProperty("name")
     private String name;
 
+    @JsonProperty("action")
+    private String action;
+
     @JsonProperty("tableInfo")
     private TableAction tableAction;
 

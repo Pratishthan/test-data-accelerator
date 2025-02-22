@@ -18,8 +18,8 @@ import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTTableStyleInfo;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import static org.apache.poi.ss.usermodel.CellType.STRING;
@@ -30,11 +30,9 @@ public class ActionChainToExcelConverter {
     private static Integer lastRow = 0;
 
 
+
     public static void convertJsonToExcel(String jsonFilePath, String excelFilePath) throws IOException {
-        // Read JSON data from file
-        ObjectMapper mapper = new ObjectMapper();
-        String content = new String(Files.readAllBytes(Paths.get(jsonFilePath)));
-        ActionChain actionChain = mapper.readValue(content, ActionChain.class);
+        ActionChain actionChain = getActionChainFromFile(jsonFilePath);
 
         // Create a new workbook and sheet
         XSSFWorkbook workbook = new XSSFWorkbook();
@@ -48,7 +46,7 @@ public class ActionChainToExcelConverter {
                             createSingleTable(sheet, action, workbook);
                             break;
                         case "APICall":
-//                            createActionEntry(sheet, action.getApiAction(), workbook);
+                            createActionEntry(sheet, action.getApiAction(), workbook);
                             break;
                         case "Validate":
                             log.debug("Future");
@@ -59,12 +57,27 @@ public class ActionChainToExcelConverter {
                 }
         );
 
-
         // Write workbook to file
         FileOutputStream fileOut = new FileOutputStream("target/" + excelFilePath);
         workbook.write(fileOut);
         fileOut.close();
         workbook.close();
+    }
+
+    private static ActionChain getActionChainFromFile(String jsonFilePath) throws IOException {
+        // Read JSON data from file
+        String content;
+        ObjectMapper mapper = new ObjectMapper();
+        try (InputStream inputStream = ActionChainToExcelConverter.class.getClassLoader().getResourceAsStream(jsonFilePath)) {
+            if (inputStream == null) {
+                throw new IOException("Resource file not found: " + jsonFilePath);
+            }
+            content = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            log.error("Error reading resource file: {}", jsonFilePath, e);
+            throw e;
+        }
+        return mapper.readValue(content, ActionChain.class);
     }
 
     private static void createActionEntry(Sheet sheet, ApiAction action, XSSFWorkbook workbook) {
@@ -80,9 +93,10 @@ public class ActionChainToExcelConverter {
 
     private static void createSingleTable(Sheet sheet, Action tableAction, XSSFWorkbook workbook) {
 
+        // Empty row above
         lastRow++;
 
-        Integer startRow = lastRow; //Integer.valueOf(lastRow.intValue());
+        Integer startRow = lastRow;
 
 
         // Create header row
@@ -110,13 +124,12 @@ public class ActionChainToExcelConverter {
         }
 
         // Create table
-        System.out.println("Start {}, End {} & {}" + startRow + (lastRow) +  tableAction.getTableAction().getHeaders().size());
+        log.debug("Start {}, End {} & {}", startRow, lastRow, tableAction.getTableAction().getHeaders().size());
         AreaReference tableArea = new AreaReference(new CellReference(startRow, 0),
                 new CellReference(lastRow - 1, tableAction.getTableAction().getHeaders().size() - 1), null);
         XSSFSheet xssfSheet = workbook.getSheetAt(0);
         XSSFTable table = xssfSheet.createTable(tableArea);
         table.setName(tableAction.getName());
-        table.setDisplayName(tableAction.getName());
 
         CTTableStyleInfo styleInfo = table.getCTTable().addNewTableStyleInfo();
         styleInfo.setName("TableStyleMedium2");
@@ -133,7 +146,7 @@ public class ActionChainToExcelConverter {
 
         try {
             ActionChainToExcelConverter.convertJsonToExcel(jsonFilePath, excelFilePath);
-            System.out.println("JSON data converted to Excel successfully!");
+            log.info("JSON data converted to Excel successfully!");
         } catch (IOException e) {
             log.error("Error: {}", e.getMessage());
         }

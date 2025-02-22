@@ -16,8 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.pratishthanventures.tdg.Constants.GAP_BETWEEN_COMMANDS;
-import static com.pratishthanventures.tdg.Constants.START_COLUMN;
+import static com.pratishthanventures.tdg.Constants.*;
 import static com.pratishthanventures.tdg.output.Note.addNoteToCell;
 
 @Slf4j
@@ -38,10 +37,11 @@ public class TableWithNote {
         List<String> tableColumnList = tableMapperHelper.getColumnNameList();
         List<Map<String, String>> data = tableMapperHelper.getData();
 
-        if (data.isEmpty()){
+        if (data.isEmpty()) {
             data = new ArrayList<>();
-            data.add(Map.of("", ""));
-            data.add(Map.of("", ""));
+            for (int i = 0; i < EMPTY_ROWS_IN_TABLE; i++) {
+                data.add(Map.of("", ""));
+            }
         }
 
 

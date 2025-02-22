@@ -22,11 +22,11 @@ public class FetchAndVerify implements ConcordionHelper {
     private String getVerifyCommand() {
         return """
                 (table)concordion:verify-rows="#result : resultList"
-                concordion:assertEquals=#result.""" + resultColumnList.get(0) + "\"";
+                concordion:assertEquals="#result.""" + resultColumnList.get(0) + "\"";
     }
 
     private String getAssertCommand(String resultColumn) {
-        return "concordion:assertEquals=#result.\"" + resultColumn + "\"";
+        return "concordion:assertEquals=\"#result." + resultColumn + "\"";
     }
 
     public List<String> getVerifyCommands() {

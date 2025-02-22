@@ -6,9 +6,16 @@
       "action": "Create Collectable Event",
       "tableInfo": {
         "headers": [
-          "Name",
-          "Age",
-          "Department"
+          {
+            "name": "Name",
+            "sanityAction": "(table)concordion:execute=\"#result = callMapper('TARGET_SYSTEM',#ROW)\"\n"
+          },
+          {
+            "name": "Age"
+          },
+          {
+            "name": "Department"
+          }
         ],
         "data": [
           {

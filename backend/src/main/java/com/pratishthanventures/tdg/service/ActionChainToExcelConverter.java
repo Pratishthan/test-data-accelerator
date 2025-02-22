@@ -1,19 +1,26 @@
 package com.pratishthanventures.tdg.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pratishthanventures.tdg.model.TableHeader;
+import com.pratishthanventures.tdg.output.TDGWorkbook;
 import lombok.extern.slf4j.Slf4j;
 import com.pratishthanventures.tdg.model.Action;
 import com.pratishthanventures.tdg.model.ActionChain;
 import com.pratishthanventures.tdg.model.ApiAction;
 import org.apache.commons.lang3.NotImplementedException;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Comment;
+import org.apache.poi.ss.usermodel.Drawing;
+import org.apache.poi.ss.usermodel.ClientAnchor;
 import org.apache.poi.ss.util.AreaReference;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFTable;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTTableStyleInfo;
 
 import java.io.FileOutputStream;
@@ -30,14 +37,16 @@ public class ActionChainToExcelConverter {
     private static Integer lastRow = 0;
 
 
-
     public static void convertJsonToExcel(String jsonFilePath, String excelFilePath) throws IOException {
         ActionChain actionChain = getActionChainFromFile(jsonFilePath);
 
         // Create a new workbook and sheet
-        XSSFWorkbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet("Data");
-        workbook.setSheetName(0, "Data");
+//        XSSFWorkbook workbook = new XSSFWorkbook();
+//        Sheet sheet = workbook.createSheet("Data");
+//        workbook.setSheetName(0, "Data");
+
+        TDGWorkbook workbook = new TDGWorkbook("Data");
+        Sheet sheet = workbook.getWorkbook().getSheet("Data");
 
         actionChain.getData().forEach(
                 action -> {
@@ -57,11 +66,7 @@ public class ActionChainToExcelConverter {
                 }
         );
 
-        // Write workbook to file
-        FileOutputStream fileOut = new FileOutputStream("target/" + excelFilePath);
-        workbook.write(fileOut);
-        fileOut.close();
-        workbook.close();
+        workbook.writeWorkbookToFile("target/" + excelFilePath);
     }
 
     private static ActionChain getActionChainFromFile(String jsonFilePath) throws IOException {
@@ -80,7 +85,7 @@ public class ActionChainToExcelConverter {
         return mapper.readValue(content, ActionChain.class);
     }
 
-    private static void createActionEntry(Sheet sheet, ApiAction action, XSSFWorkbook workbook) {
+    private static void createActionEntry(Sheet sheet, ApiAction action, TDGWorkbook workbook) {
 
         lastRow++;
 
@@ -91,7 +96,7 @@ public class ActionChainToExcelConverter {
         lastRow += 2;
     }
 
-    private static void createSingleTable(Sheet sheet, Action tableAction, XSSFWorkbook workbook) {
+    private static void createSingleTable(Sheet sheet, Action tableAction, TDGWorkbook workbook) {
 
         // Empty row above
         lastRow++;
@@ -102,8 +107,13 @@ public class ActionChainToExcelConverter {
         // Create header row
         Row headerRow = sheet.createRow(lastRow++);
         for (int i = 0; i < tableAction.getTableAction().getHeaders().size(); i++) {
+            TableHeader tableHeader = tableAction.getTableAction().getHeaders().get(i);
             Cell cell = headerRow.createCell(i);
-            cell.setCellValue(tableAction.getTableAction().getHeaders().get(i));
+            cell.setCellValue(tableHeader.getName());
+            // Add note to cell if needed
+            if (StringUtils.isNotBlank(tableHeader.getSanityAction())) {
+                addNoteToCell(sheet, cell, tableHeader.getSanityAction());
+            }
         }
 
 
@@ -112,7 +122,7 @@ public class ActionChainToExcelConverter {
             Row dataRow = sheet.createRow(lastRow++);
             Map<String, String> rowData = tableAction.getTableAction().getData().get(i);
             for (int j = 0; j < tableAction.getTableAction().getHeaders().size(); j++) {
-                String header = tableAction.getTableAction().getHeaders().get(j);
+                String header = tableAction.getTableAction().getHeaders().get(j).getName();
                 Cell cell = dataRow.createCell(j);
                 cell.setCellValue(rowData.get(header));
             }
@@ -127,7 +137,7 @@ public class ActionChainToExcelConverter {
         log.debug("Start {}, End {} & {}", startRow, lastRow, tableAction.getTableAction().getHeaders().size());
         AreaReference tableArea = new AreaReference(new CellReference(startRow, 0),
                 new CellReference(lastRow - 1, tableAction.getTableAction().getHeaders().size() - 1), null);
-        XSSFSheet xssfSheet = workbook.getSheetAt(0);
+        XSSFSheet xssfSheet = workbook.getWorkbook().getSheetAt(0);
         XSSFTable table = xssfSheet.createTable(tableArea);
         table.setName(tableAction.getName());
 
@@ -137,6 +147,17 @@ public class ActionChainToExcelConverter {
         styleInfo.setShowRowStripes(true);
 
         lastRow += 2;
+
+    }
+
+    private static void addNoteToCell(Sheet sheet, Cell cell, String noteText) {
+        Drawing<?> drawing = sheet.createDrawingPatriarch();
+        ClientAnchor anchor = drawing.createAnchor(0, 0, 0, 0,
+                cell.getColumnIndex(), cell.getRowIndex(), cell.getColumnIndex() + 2, cell.getRowIndex() + 3);
+
+        Comment comment = drawing.createCellComment(anchor);
+        comment.setString(new XSSFRichTextString(noteText));
+        cell.setCellComment(comment);
 
     }
 

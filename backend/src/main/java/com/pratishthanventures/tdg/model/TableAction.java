@@ -10,7 +10,7 @@ import java.util.Map;
 @Data
 public class TableAction{
     @JsonProperty("headers")
-    private List<String> headers = new ArrayList<>();
+    private List<TableHeader> headers = new ArrayList<>();
 
     @JsonProperty("data")
     private List<Map<String, String>> data = new ArrayList<>();

@@ -1,6 +1,6 @@
-package com.pratishthanventures.tdg.service.converter.strategy;
+package com.pratishthanventures.tdg.service.converter.processor;
 
-import com.pratishthanventures.tdg.model.TableMapperHelper;
+import com.pratishthanventures.tdg.model.TableMapper;
 import com.pratishthanventures.tdg.output.TDGWorkbook;
 import com.pratishthanventures.tdg.service.converter.Pattern;
 import lombok.AllArgsConstructor;
@@ -12,11 +12,11 @@ import static com.pratishthanventures.tdg.output.TableWithNote.addTableWithNote;
 @AllArgsConstructor
 public class TableMapperPattern implements Pattern {
 
-    protected TableMapperHelper tableMapperHelper;
+    protected TableMapper tableMapper;
 
     @Override
     public void process(TDGWorkbook workbook, String sheetName) {
-        log.info("TableMapperPattern: About to process {}", tableMapperHelper.getTableName());
-        addTableWithNote(workbook, sheetName, tableMapperHelper);
+        log.info("TableMapperPattern: About to process {}", tableMapper.getTableName());
+        addTableWithNote(workbook, sheetName, tableMapper);
     }
 }

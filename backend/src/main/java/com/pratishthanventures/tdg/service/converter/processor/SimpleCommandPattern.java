@@ -1,6 +1,6 @@
-package com.pratishthanventures.tdg.service.converter.strategy;
+package com.pratishthanventures.tdg.service.converter.processor;
 
-import com.pratishthanventures.tdg.model.SimpleCommandHelper;
+import com.pratishthanventures.tdg.model.SimpleCommand;
 import com.pratishthanventures.tdg.output.Note;
 import com.pratishthanventures.tdg.output.TDGWorkbook;
 import com.pratishthanventures.tdg.service.converter.Pattern;
@@ -13,15 +13,15 @@ import org.apache.poi.ss.usermodel.Row;
 @AllArgsConstructor
 public class SimpleCommandPattern implements Pattern {
 
-    protected SimpleCommandHelper simpleCommandHelper;
+    protected SimpleCommand simpleCommand;
 
     @Override
     public void process(TDGWorkbook workbook, String sheetName) {
-        log.info("SimpleCommandPattern: About to process {}", simpleCommandHelper.getText());
+        log.info("SimpleCommandPattern: About to process {}", simpleCommand.getText());
         Row row = workbook.getNewRow(sheetName);
         Cell cell = row.createCell(1);
-        cell.setCellValue(simpleCommandHelper.getText());
+        cell.setCellValue(simpleCommand.getText());
 
-        Note.addNoteToCell(workbook, sheetName, cell, simpleCommandHelper.getConcordionCommand());
+        Note.addNoteToCell(workbook, sheetName, cell, simpleCommand.getConcordionCommand());
     }
 }

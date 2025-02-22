@@ -1,8 +1,8 @@
 package com.pratishthanventures.tdg.service.converter.factory;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.pratishthanventures.tdg.model.SimpleCommandHelper;
-import com.pratishthanventures.tdg.service.converter.strategy.SimpleCommandPattern;
+import com.pratishthanventures.tdg.model.SimpleCommand;
+import com.pratishthanventures.tdg.service.converter.processor.SimpleCommandPattern;
 import lombok.SneakyThrows;
 
 import java.util.List;
@@ -11,7 +11,7 @@ public class SimpleCommandFactory extends AbstractFactory {
 
     @SneakyThrows
     public SimpleCommandFactory() {
-        List<SimpleCommandHelper> mappers = objectMapper.readValue(
+        List<SimpleCommand> mappers = objectMapper.readValue(
                 super.getContent("/SimpleCommands.json"),
                 new TypeReference<>() {
                 }

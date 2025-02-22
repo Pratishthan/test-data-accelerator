@@ -1,13 +1,16 @@
-package com.pratishthanventures.tdg.model;
+package com.pratishthanventures.tdg.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ValidateAction {
+@Data
+public class ApiAction{
 
     @JsonProperty("params")
-    List<Map<String, String>> params = new ArrayList<>();
+    private List<Map<String, String>> params = new ArrayList<>();
+
 }

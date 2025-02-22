@@ -1,6 +1,6 @@
 package com.pratishthanventures.tdg.output;
 
-import com.pratishthanventures.tdg.model.TableMapperHelper;
+import com.pratishthanventures.tdg.model.TableMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
@@ -22,7 +22,7 @@ import static com.pratishthanventures.tdg.output.Note.addNoteToCell;
 @Slf4j
 public class TableWithNote {
 
-    public static void addTableWithNote(TDGWorkbook workbook, String sheetName, TableMapperHelper tableMapperHelper) {
+    public static void addTableWithNote(TDGWorkbook workbook, String sheetName, TableMapper tableMapper) {
         // Empty row above
 
 
@@ -34,8 +34,8 @@ public class TableWithNote {
 
         Sheet sheet = workbook.getWorkbook().getSheet(sheetName);
 
-        List<String> tableColumnList = tableMapperHelper.getColumnNameList();
-        List<Map<String, String>> data = tableMapperHelper.getData();
+        List<String> tableColumnList = tableMapper.getColumnNameList();
+        List<Map<String, String>> data = tableMapper.getData();
 
         if (data.isEmpty()) {
             data = new ArrayList<>();
@@ -51,8 +51,8 @@ public class TableWithNote {
             Cell cell = headerRow.createCell(i + START_COLUMN);
             cell.setCellValue(tableColumnList.get(i));
             // Add note to cell if needed
-            if (i == 0 && StringUtils.isNotBlank(tableMapperHelper.getConcordionCommand())) {
-                addNoteToCell(workbook, sheetName, cell, tableMapperHelper.getConcordionCommand());
+            if (i == 0 && StringUtils.isNotBlank(tableMapper.getConcordionCommand())) {
+                addNoteToCell(workbook, sheetName, cell, tableMapper.getConcordionCommand());
             }
         }
 
@@ -78,7 +78,7 @@ public class TableWithNote {
                 new CellReference(lastRow - 1, tableColumnList.size() + START_COLUMN - 1), null);
         XSSFSheet xssfSheet = workbook.getSheetMap().get(sheetName);
         XSSFTable table = xssfSheet.createTable(tableArea);
-        table.setName(tableMapperHelper.getTableName());
+        table.setName(tableMapper.getTableName());
 
         CTTableStyleInfo styleInfo = table.getCTTable().addNewTableStyleInfo();
         styleInfo.setName("TableStyleMedium2");

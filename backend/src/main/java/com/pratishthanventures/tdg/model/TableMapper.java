@@ -10,7 +10,7 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TableMapperHelper implements ConcordionHelper {
+public class TableMapper implements ConcordionHelper {
     private String tableName;
     private List<String> columnNameList;
     private List<Map<String, String>> data;

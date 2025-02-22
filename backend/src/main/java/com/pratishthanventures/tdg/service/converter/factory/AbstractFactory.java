@@ -6,11 +6,24 @@ import lombok.SneakyThrows;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class AbstractFactory {
+
+    protected final Map<String, Pattern> patternMap = new HashMap<>();
+
     protected final ObjectMapper objectMapper = new ObjectMapper();
 
-    public abstract Pattern getPattern(String patternType);
+    public Pattern getPattern(String actionCode) {
+        if (actionCode == null) {
+            return null;
+        }
+        if (patternMap.containsKey(actionCode)) {
+            return patternMap.get(actionCode);
+        }
+        throw new IllegalArgumentException("No such action code");
+    }
 
     @SneakyThrows
     public String getContent(String fileName) {

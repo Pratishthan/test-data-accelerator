@@ -1,0 +1,16 @@
+[
+  {
+    "tableName": "Collectable Event",
+    "columnNameList": ["column1", "column2"],
+    "data": [
+      {
+        "column1": "value1",
+        "column2": "value2"
+      },
+      {
+        "column1": "value3",
+        "column2": "value4"
+      }
+    ]
+  }
+]

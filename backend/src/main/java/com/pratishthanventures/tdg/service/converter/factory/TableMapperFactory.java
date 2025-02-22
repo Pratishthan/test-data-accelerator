@@ -10,15 +10,13 @@ import java.util.Map;
 
 public class TableMapperFactory extends AbstractFactory {
 
+
     private final Map<String, TableMapperPattern> tableMapperPatternMap = new HashMap<>();
 
     public TableMapperFactory() {
-        tableMapperPatternMap.put("CollectableEvent", new TableMapperPattern() {
-            {
-                tableMapperHelper = new TableMapperHelper();
-                tableMapperHelper.setTableName("CollectableEvent");
-                tableMapperHelper.setColumnNameList(List.of("column1", "column2", "column3"));
-            }
+        List<TableMapperHelper> mappers = super.getContent("/TableMappers.json");
+        mappers.forEach(mapper -> {
+            tableMapperPatternMap.put(mapper.getTableName(), new TableMapperPattern(mapper));
         });
     }
 

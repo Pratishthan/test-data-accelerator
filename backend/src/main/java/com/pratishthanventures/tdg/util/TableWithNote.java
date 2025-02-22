@@ -1,7 +1,9 @@
 package com.pratishthanventures.tdg.util;
 
+import com.pratishthanventures.tdg.model.FetchAndVerify;
 import com.pratishthanventures.tdg.model.TableMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -21,8 +23,20 @@ import static com.pratishthanventures.tdg.util.Note.addNoteToCell;
 
 @Slf4j
 public class TableWithNote {
-
     public static void addTableWithNote(TDGWorkbook workbook, String sheetName, TableMapper tableMapper) {
+        addTableWithNote(workbook, sheetName, tableMapper.getTableName(), tableMapper.getColumnNameList(), tableMapper.getData(), List.of(tableMapper.getConcordionCommand()));
+    }
+
+    public static void addTableWithNote(TDGWorkbook workbook, String sheetName, FetchAndVerify fetchAndVerify) {
+        addTableWithNote(workbook, sheetName, "Fetch-" + fetchAndVerify.getApiName(), fetchAndVerify.getParameterList(), new ArrayList<>(), List.of(fetchAndVerify.getConcordionCommand()));
+        addTableWithNote(workbook, sheetName, "Verify-" + fetchAndVerify.getApiName(), fetchAndVerify.getResultColumnList(), new ArrayList<>(), fetchAndVerify.getVerifyCommands());
+    }
+
+    public static void addTableWithNote(TDGWorkbook workbook, String sheetName,
+                                        String tableName,
+                                        List<String> tableColumnList,
+                                        List<Map<String, String>> data,
+                                        List<String> concordionCommandList) {
         // Empty row above
 
 
@@ -34,10 +48,7 @@ public class TableWithNote {
 
         Sheet sheet = workbook.getWorkbook().getSheet(sheetName);
 
-        List<String> tableColumnList = tableMapper.getColumnNameList();
-        List<Map<String, String>> data = tableMapper.getData();
-
-        if (data.isEmpty()) {
+        if (ObjectUtils.isEmpty(data)) {
             data = new ArrayList<>();
             for (int i = 0; i < EMPTY_ROWS_IN_TABLE; i++) {
                 data.add(Map.of("", ""));
@@ -51,8 +62,8 @@ public class TableWithNote {
             Cell cell = headerRow.createCell(i + START_COLUMN);
             cell.setCellValue(tableColumnList.get(i));
             // Add note to cell if needed
-            if (i == 0 && StringUtils.isNotBlank(tableMapper.getConcordionCommand())) {
-                addNoteToCell(workbook, sheetName, cell, tableMapper.getConcordionCommand());
+            if (concordionCommandList.size() > i && StringUtils.isNotBlank(concordionCommandList.get(i))) {
+                addNoteToCell(workbook, sheetName, cell, concordionCommandList.get(i));
             }
         }
 
@@ -78,7 +89,7 @@ public class TableWithNote {
                 new CellReference(lastRow - 1, tableColumnList.size() + START_COLUMN - 1), null);
         XSSFSheet xssfSheet = workbook.getSheetMap().get(sheetName);
         XSSFTable table = xssfSheet.createTable(tableArea);
-        table.setName(tableMapper.getTableName());
+        table.setName(tableName);
 
         CTTableStyleInfo styleInfo = table.getCTTable().addNewTableStyleInfo();
         styleInfo.setName("TableStyleMedium2");

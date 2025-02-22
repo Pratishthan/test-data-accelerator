@@ -1,6 +1,6 @@
 package com.pratishthanventures.tdg.service.converter.processor;
 
-import com.pratishthanventures.tdg.model.TableMapper;
+import com.pratishthanventures.tdg.model.FetchAndVerify;
 import com.pratishthanventures.tdg.service.converter.Pattern;
 import com.pratishthanventures.tdg.util.TDGWorkbook;
 import lombok.AllArgsConstructor;
@@ -10,13 +10,13 @@ import static com.pratishthanventures.tdg.util.TableWithNote.addTableWithNote;
 
 @Slf4j
 @AllArgsConstructor
-public class TableMapperPattern implements Pattern {
+public class FetchAndVerifyPattern implements Pattern {
 
-    protected TableMapper tableMapper;
+    protected FetchAndVerify fetchAndVerify;
 
     @Override
     public void process(TDGWorkbook workbook, String sheetName) {
-        log.info("TableMapperPattern: About to process {}", tableMapper.getTableName());
-        addTableWithNote(workbook, sheetName, tableMapper);
+        log.info("FetchAndVerifyPattern: About to process {}", fetchAndVerify.getApiName());
+        addTableWithNote(workbook, sheetName, fetchAndVerify);
     }
 }

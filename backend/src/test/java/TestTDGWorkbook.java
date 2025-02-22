@@ -16,12 +16,18 @@ public class TestTDGWorkbook {
 
         AbstractFactory simpleCommandFactory = FactoryProducer.getFactory("SimpleCommand");
         AbstractFactory tableMapperFactory = FactoryProducer.getFactory("TableMapper");
+        AbstractFactory fetchAndVerifyFactory = FactoryProducer.getFactory("FetchAndVerify");
 
         simpleCommandFactory.getPattern("We have a clean DB").process(workbook, "Data");
 
         tableMapperFactory.getPattern("Collectable Event").process(workbook, "Data");
 
+        fetchAndVerifyFactory.getPattern("Collectable Event").process(workbook, "Data");
+
         tableMapperFactory.getPattern("Demand Code").process(workbook, "Data");
+
+        fetchAndVerifyFactory.getPattern("Demand Code").process(workbook, "Data");
+
 
         workbook.writeWorkbookToFile(excelFilePath);
 

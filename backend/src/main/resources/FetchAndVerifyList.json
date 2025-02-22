@@ -1,0 +1,24 @@
+[
+  {
+    "apiName": "Collectable Event",
+    "parameterList": [
+      "column1"
+    ],
+    "resultColumnList": [
+      "column1",
+      "column2",
+      "column3"
+    ]
+  },
+  {
+    "apiName": "Demand Code",
+    "parameterList": [
+      "columnY"
+    ],
+    "resultColumnList": [
+      "columnX",
+      "columnY",
+      "columnZ"
+    ]
+  }
+]

@@ -20,7 +20,21 @@
     },
     {
       "actionCode": "Collectable Event",
-      "type": "TableMapper"
+      "type": "TableMapper",
+      "selectedColumns": [
+        "column1",
+        "column3"
+      ],
+      "data": [
+        {
+          "column1": "ABCD",
+          "column3": "EFGH"
+        },
+        {
+          "column1": "LMNO",
+          "column3": "PORS"
+        }
+      ]
     },
     {
       "actionCode": "Collectable Event",

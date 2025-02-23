@@ -9,6 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
+import java.util.List;
+import java.util.Map;
+
 import static com.pratishthanventures.tdg.util.Note.addNoteToCell;
 
 @Slf4j
@@ -18,7 +21,7 @@ public class SetAndExecutePattern implements Pattern {
     protected SetAndExecute setAndExecute;
 
     @Override
-    public void process(TDGWorkbook workbook, String sheetName) {
+    public void process(TDGWorkbook workbook, String sheetName, List<String> columnNames, List<Map<String, String>> data) {
         log.info("SimpleCommandPattern: About to process {}", setAndExecute.getFunctionName());
         if ("true".equalsIgnoreCase(setAndExecute.getIsCombined())) {
             Row row = workbook.getNewRow(sheetName);

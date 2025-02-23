@@ -43,7 +43,7 @@ public class ActionChainConverter {
                 default -> throw new IllegalArgumentException("No such action code");
             };
 
-            pattern.process(workbook, commandChain.getSheetName());
+            pattern.process(workbook, commandChain.getSheetName(), command.getSelectedColumns(), command.getData());
         });
 
         workbook.writeWorkbookToFile(commandChain.getExcelFileName());

@@ -1,15 +1,17 @@
 [
   {
     "tableName": "Collectable Event",
-    "columnNameList": ["column1", "column2"],
+    "columnNameList": ["column1", "column2", "column3"],
     "data": [
       {
         "column1": "value1",
-        "column2": "value2"
+        "column2": "value2",
+        "column3": "value3"
       },
       {
-        "column1": "value3",
-        "column2": "value4"
+        "column1": "value4",
+        "column2": "value5",
+        "column3": "value6"
       }
     ]
   },

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -13,5 +14,5 @@ public class CommandChain {
 
     private String excelFileName;
     private String sheetName;
-    private List<Command> commands;
+    private List<Command> commands = new ArrayList<>();
 }

@@ -9,6 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
+import java.util.List;
+import java.util.Map;
+
 @Slf4j
 @AllArgsConstructor
 public class SimpleCommandPattern implements Pattern {
@@ -16,7 +19,7 @@ public class SimpleCommandPattern implements Pattern {
     protected SimpleCommand simpleCommand;
 
     @Override
-    public void process(TDGWorkbook workbook, String sheetName) {
+    public void process(TDGWorkbook workbook, String sheetName, List<String> columnNames, List<Map<String, String>> data) {
         log.info("SimpleCommandPattern: About to process {}", simpleCommand.getText());
         Row row = workbook.getNewRow(sheetName);
         Cell cell = row.createCell(1);

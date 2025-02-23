@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +15,6 @@ import java.util.Map;
 public class Command {
     private String actionCode;
     private String type;
-    private List<String> selectedColumns;
-    private List<Map<String, String>> data;
+    private List<String> selectedColumns = new ArrayList<>();
+    private List<Map<String, String>> data = new ArrayList<>();
 }

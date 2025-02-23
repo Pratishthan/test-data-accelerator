@@ -3,11 +3,9 @@ package com.pratishthanventures.tdg.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.commons.collections4.map.SingletonMap;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,7 +14,7 @@ public class SetAndExecute implements ConcordionHelper {
 
     private String functionName;
     private String displayText;
-    private List<Map<String, String>> parameterList; // Parameter Name and Default Value
+    private List<Parameter> parameterList; // Parameter Name and Default Value
     private String isCombined; // true or false --> true would imply only 1 Parameter is passed and it is combined with the command
 
     public String getConcordionCommand() {
@@ -37,8 +35,8 @@ public class SetAndExecute implements ConcordionHelper {
         sb.append("concordion:execute=\"").append(functionName).append("(");
 
         for (int i = 0; i < parameterList.size(); i++) {
-            SingletonMap<String, String> parameter = new SingletonMap<>(parameterList.get(i));
-            sb.append("#").append(parameter.getKey());
+            Parameter parameter = parameterList.get(i);
+            sb.append("#").append(parameter.getName());
             if (i != parameterList.size() - 1) {
                 sb.append(",");
             }
@@ -48,12 +46,9 @@ public class SetAndExecute implements ConcordionHelper {
     }
 
     public List<String> getParameterConcordionCommand() {
-        List<String> commandList = new ArrayList<>();
-        for (Map<String, String> parameter : parameterList) {
-            SingletonMap<String, String> parameterMap = new SingletonMap<>(parameter);
-            commandList.add("concordion:set=\"#" + parameterMap.getKey() + "\"");
-        }
-        return commandList;
+        return parameterList.stream()
+                .map(Parameter::getConcordionCommand)
+                .collect(Collectors.toList());
     }
 
 

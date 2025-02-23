@@ -1,11 +1,11 @@
 package com.pratishthanventures.tdg.service.converter.processor;
 
+import com.pratishthanventures.tdg.model.Parameter;
 import com.pratishthanventures.tdg.model.SetAndExecute;
 import com.pratishthanventures.tdg.service.converter.Pattern;
 import com.pratishthanventures.tdg.util.TDGWorkbook;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.map.SingletonMap;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
@@ -29,13 +29,13 @@ public class SetAndExecutePattern implements Pattern {
             addNoteToCell(workbook, sheetName, valueCell, setAndExecute.getConcordionCommand());
         } else {
             for (int i = 0; i < setAndExecute.getParameterList().size(); i++) {
-                SingletonMap<String, String> parameter = new SingletonMap<>(setAndExecute.getParameterList().get(i));
+                Parameter parameter = setAndExecute.getParameterList().get(i);
                 Row row = workbook.getNewRow(sheetName);
                 Cell textCell = row.createCell(1);
-                textCell.setCellValue(parameter.getKey());
+                textCell.setCellValue(parameter.getDisplayText());
                 Cell valueCell = row.createCell(2);
-                valueCell.setCellValue(parameter.getValue());
-                addNoteToCell(workbook, sheetName, valueCell, setAndExecute.getParameterConcordionCommand().get(i));
+                valueCell.setCellValue(parameter.getDefaultValue());
+                addNoteToCell(workbook, sheetName, valueCell, parameter.getConcordionCommand());
             }
 
             Row callerRow = workbook.getNewRow(sheetName);

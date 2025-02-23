@@ -4,7 +4,9 @@
     "displayText": "Set BOD Date 1",
     "parameterList": [
       {
-        "bodDate1": "2024-03-31"
+        "name": "bodDate1",
+        "displayText": "BOD Date 1",
+        "defaultValue": "2024-03-31"
       }
     ],
     "isCombined": false
@@ -14,10 +16,14 @@
     "displayText": "Set Config Params",
     "parameterList": [
       {
-        "policy": "FIP"
+        "name": "policy",
+        "displayText": "Allocation Policy",
+        "defaultValue": "FIP"
       },
       {
-        "customerSource": "PBC"
+        "name": "customerSource",
+        "displayText": "Customer Source",
+        "defaultValue": "PBC"
       }
     ],
     "isCombined": false
@@ -27,7 +33,9 @@
     "displayText": "Set BOD Date 2",
     "parameterList": [
       {
-        "bodDate2": "2024-03-31"
+        "name": "bodDate2",
+        "displayText": "BOD Date 2",
+        "defaultValue": "2025-03-31"
       }
     ],
     "isCombined": true

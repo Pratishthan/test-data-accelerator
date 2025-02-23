@@ -1,0 +1,35 @@
+[
+  {
+    "functionName": "setBODDate1",
+    "displayText": "Set BOD Date 1",
+    "parameterList": [
+      {
+        "bodDate1": "2024-03-31"
+      }
+    ],
+    "isCombined": false
+  },
+  {
+    "functionName": "setConfigParams",
+    "displayText": "Set Config Params",
+    "parameterList": [
+      {
+        "policy": "FIP"
+      },
+      {
+        "customerSource": "PBC"
+      }
+    ],
+    "isCombined": false
+  },
+  {
+    "functionName": "setBODDate2",
+    "displayText": "Set BOD Date 2",
+    "parameterList": [
+      {
+        "bodDate2": "2024-03-31"
+      }
+    ],
+    "isCombined": true
+  }
+]

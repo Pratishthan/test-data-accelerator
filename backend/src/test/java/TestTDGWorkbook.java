@@ -17,6 +17,13 @@ public class TestTDGWorkbook {
         AbstractFactory simpleCommandFactory = FactoryProducer.getFactory("SimpleCommand");
         AbstractFactory tableMapperFactory = FactoryProducer.getFactory("TableMapper");
         AbstractFactory fetchAndVerifyFactory = FactoryProducer.getFactory("FetchAndVerify");
+        AbstractFactory setAndExecute = FactoryProducer.getFactory("SetAndExecute");
+
+        setAndExecute.getPattern("setBODDate1").process(workbook, "Data");
+
+        setAndExecute.getPattern("setConfigParams").process(workbook, "Data");
+
+        setAndExecute.getPattern("setBODDate2").process(workbook, "Data");
 
         simpleCommandFactory.getPattern("We have a clean DB").process(workbook, "Data");
 

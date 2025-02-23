@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,7 +27,7 @@ public class SetAndExecute implements ConcordionHelper {
 
         StringBuilder sb = new StringBuilder();
         if (isCombined.equals("true")) {
-            sb.append(getParameterConcordionCommand().get(0));
+            sb.append(parameterList.get(0).getConcordionCommand());
             sb.append("\n");
             sb.append("../");
         }
@@ -44,12 +43,5 @@ public class SetAndExecute implements ConcordionHelper {
         sb.append(")\"");
         return sb.toString();
     }
-
-    public List<String> getParameterConcordionCommand() {
-        return parameterList.stream()
-                .map(Parameter::getConcordionCommand)
-                .collect(Collectors.toList());
-    }
-
 
 }

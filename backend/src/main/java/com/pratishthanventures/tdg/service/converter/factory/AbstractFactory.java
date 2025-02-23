@@ -7,6 +7,7 @@ import lombok.SneakyThrows;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public abstract class AbstractFactory {
@@ -30,5 +31,9 @@ public abstract class AbstractFactory {
         InputStream inputStream = getClass().getResourceAsStream(fileName);
         assert inputStream != null;
         return new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+    }
+
+    public List<String> getActionCodes(){
+        return List.copyOf(patternMap.keySet());
     }
 }

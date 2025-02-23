@@ -45,7 +45,7 @@
       ]
     },
     {
-      "actionCode": "Collectable Event",
+      "actionCode": "Fetch Collectable Event",
       "type": "FetchAndVerify",
       "selectedColumns": [],
       "data": []

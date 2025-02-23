@@ -36,4 +36,8 @@ public abstract class AbstractFactory {
     public List<String> getActionCodes(){
         return List.copyOf(patternMap.keySet());
     }
+
+    public Map<String, Pattern> getPatternMap(){
+        return Map.copyOf(patternMap);
+    }
 }

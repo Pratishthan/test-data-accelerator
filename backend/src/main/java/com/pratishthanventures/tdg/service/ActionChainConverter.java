@@ -7,10 +7,14 @@ import com.pratishthanventures.tdg.service.converter.factory.AbstractFactory;
 import com.pratishthanventures.tdg.service.converter.factory.FactoryProducer;
 import com.pratishthanventures.tdg.util.TDGWorkbook;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
+import static com.pratishthanventures.tdg.PatternType.*;
+
+@Slf4j
 public class ActionChainConverter {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -25,28 +29,30 @@ public class ActionChainConverter {
     @SneakyThrows
     public void process() {
 
-        AbstractFactory simpleCommandFactory = FactoryProducer.getFactory("SimpleCommand");
-        AbstractFactory tableMapperFactory = FactoryProducer.getFactory("TableMapper");
-        AbstractFactory fetchAndVerifyFactory = FactoryProducer.getFactory("FetchAndVerify");
-        AbstractFactory setAndExecuteFactory = FactoryProducer.getFactory("SetAndExecute");
+        AbstractFactory simpleCommandFactory = FactoryProducer.getFactory(SimpleCommand);
+        AbstractFactory tableMapperFactory = FactoryProducer.getFactory(TableMapper);
+        AbstractFactory fetchAndVerifyFactory = FactoryProducer.getFactory(FetchAndVerify);
+        AbstractFactory setAndExecuteFactory = FactoryProducer.getFactory(SetAndExecute);
+        try {
+            CommandChain commandChain = objectMapper.readValue(getContent("/CommandChain.json"), CommandChain.class);
+            TDGWorkbook workbook = new TDGWorkbook(commandChain.getSheetName());
 
-        CommandChain commandChain = objectMapper.readValue(getContent("/CommandChain.json"), CommandChain.class);
+            commandChain.getCommands().forEach(command -> {
+                Pattern pattern = switch (command.getType()) {
+                    case SimpleCommand -> simpleCommandFactory.getPattern(command.getActionCode());
+                    case TableMapper -> tableMapperFactory.getPattern(command.getActionCode());
+                    case FetchAndVerify -> fetchAndVerifyFactory.getPattern(command.getActionCode());
+                    case SetAndExecute -> setAndExecuteFactory.getPattern(command.getActionCode());
+                };
 
-        TDGWorkbook workbook = new TDGWorkbook(commandChain.getSheetName());
+                pattern.process(workbook, commandChain.getSheetName(), command.getSelectedColumns(), command.getData());
+            });
 
-        commandChain.getCommands().forEach(command -> {
-            Pattern pattern = switch (command.getType()) {
-                case "SimpleCommand" -> simpleCommandFactory.getPattern(command.getActionCode());
-                case "TableMapper" -> tableMapperFactory.getPattern(command.getActionCode());
-                case "FetchAndVerify" -> fetchAndVerifyFactory.getPattern(command.getActionCode());
-                case "SetAndExecute" -> setAndExecuteFactory.getPattern(command.getActionCode());
-                default -> throw new IllegalArgumentException("No such action code");
-            };
+            workbook.writeWorkbookToFile(commandChain.getExcelFileName());
+        } catch (Exception e) {
+            log.error("Error reading CommandChain.json {}", e.getMessage());
+        }
 
-            pattern.process(workbook, commandChain.getSheetName(), command.getSelectedColumns(), command.getData());
-        });
-
-        workbook.writeWorkbookToFile(commandChain.getExcelFileName());
     }
 
 

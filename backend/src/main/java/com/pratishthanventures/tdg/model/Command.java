@@ -1,6 +1,7 @@
 package com.pratishthanventures.tdg.model;
 
 
+import com.pratishthanventures.tdg.PatternType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class Command {
     private String actionCode;
-    private String type;
+    private PatternType type;
     private List<String> selectedColumns = new ArrayList<>();
     private List<Map<String, String>> data = new ArrayList<>();
 }

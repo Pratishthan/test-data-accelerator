@@ -1,0 +1,30 @@
+{
+  "excelFileName": "Generated.xlsx",
+  "sheetName": "Data",
+  "commands": [
+    {
+      "actionCode": "setBODDate1",
+      "type": "SetAndExecute"
+    },
+    {
+      "actionCode": "setConfigParams",
+      "type": "SetAndExecute"
+    },
+    {
+      "actionCode": "setBODDate2",
+      "type": "SetAndExecute"
+    },
+    {
+      "actionCode": "We have a clean DB",
+      "type": "SimpleCommand"
+    },
+    {
+      "actionCode": "Collectable Event",
+      "type": "TableMapper"
+    },
+    {
+      "actionCode": "Collectable Event",
+      "type": "FetchAndVerify"
+    }
+  ]
+}

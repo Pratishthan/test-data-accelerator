@@ -4,27 +4,19 @@
   "commands": [
     {
       "actionCode": "setBODDate1",
-      "type": "SetAndExecute",
-      "selectedColumns": [],
-      "data": []
+      "type": "SetAndExecute"
     },
     {
       "actionCode": "setConfigParams",
-      "type": "SetAndExecute",
-      "selectedColumns": [],
-      "data": []
+      "type": "SetAndExecute"
     },
     {
       "actionCode": "setBODDate2",
-      "type": "SetAndExecute",
-      "selectedColumns": [],
-      "data": []
+      "type": "SetAndExecute"
     },
     {
       "actionCode": "We have a clean DB",
-      "type": "SimpleCommand",
-      "selectedColumns": [],
-      "data": []
+      "type": "SimpleCommand"
     },
     {
       "actionCode": "Collectable Event",
@@ -46,9 +38,7 @@
     },
     {
       "actionCode": "Collectable Event",
-      "type": "FetchAndVerify",
-      "selectedColumns": [],
-      "data": []
+      "type": "FetchAndVerify"
     }
   ]
 }

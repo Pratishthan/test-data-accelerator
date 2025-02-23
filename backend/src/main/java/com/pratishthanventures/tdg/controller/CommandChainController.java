@@ -5,10 +5,7 @@ import com.pratishthanventures.tdg.PatternType;
 import com.pratishthanventures.tdg.model.CommandChain;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +22,7 @@ public class CommandChainController {
     }
 
     @PostMapping
-    public String saveCommandChain(@ModelAttribute CommandChain commandChain) {
+    public String saveCommandChain(@RequestBody CommandChain commandChain) {
         ObjectMapper mapper = new ObjectMapper();
         try {
             mapper.writeValue(new File("src/main/resources/CommandChain.json"), commandChain);

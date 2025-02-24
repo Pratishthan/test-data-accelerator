@@ -38,13 +38,13 @@ public class TableWithNote {
             }
         });
         getSeparatorRow(workbook, sheetName, commandName);
-        addTableWithNote(workbook, sheetName, tableMapper.getTableName(), columnNameList, tableMapper.getData(), verifyCommandList);
+        addTableWithNote(workbook, sheetName, commandName, columnNameList, tableMapper.getData(), verifyCommandList);
     }
 
     public static void addTableWithNote(TDGWorkbook workbook, String sheetName, String commandName, FetchAndVerify fetchAndVerify) {
         getSeparatorRow(workbook, sheetName, commandName);
-        addTableWithNote(workbook, sheetName, "Fetch-" + fetchAndVerify.getApiName(), fetchAndVerify.getParameterList(), new ArrayList<>(), List.of(fetchAndVerify.getConcordionCommand()));
-        addTableWithNote(workbook, sheetName, "Verify-" + fetchAndVerify.getApiName(), fetchAndVerify.getResultColumnList(), new ArrayList<>(), fetchAndVerify.getVerifyCommands());
+        addTableWithNote(workbook, sheetName, "Fetch-" + commandName, fetchAndVerify.getParameterList(), new ArrayList<>(), List.of(fetchAndVerify.getConcordionCommand()));
+        addTableWithNote(workbook, sheetName, "Verify-" + commandName, fetchAndVerify.getResultColumnList(), new ArrayList<>(), fetchAndVerify.getVerifyCommands());
     }
 
     public static void addTableWithNote(TDGWorkbook workbook, String sheetName,

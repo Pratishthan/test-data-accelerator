@@ -1,8 +1,9 @@
 package com.pratishthanventures.tdg.util;
 
+import com.pratishthanventures.tdg.Constants;
 import lombok.Getter;
 import lombok.SneakyThrows;
-import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -46,6 +47,30 @@ public class TDGWorkbook {
 
     public Row getNewRow(String sheetName) {
         return sheetMap.get(sheetName).createRow(sheetLastRow.get(sheetName));
+    }
+
+    public static CellStyle createGreenStyle(Workbook workbook) {
+        CellStyle style = workbook.createCellStyle();
+        style.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex());
+        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        return style;
+    }
+
+    public static void applyStyleToRow(Row row, CellStyle style) {
+        // Apply style to all cells in the row, creating cells if they don't exist
+        for (int i = 0; i < Constants.BACKGROUND_COLUMNS; i++) { // Adjust the number based on your needs
+            Cell cell = row.getCell(i);
+            if (cell == null) {
+                cell = row.createCell(i);
+            }
+            cell.setCellStyle(style);
+        }
+    }
+
+    public static void getSeparatorRow(TDGWorkbook workbook, String sheetName) {
+        Row row = workbook.getNewRow(sheetName);
+        applyStyleToRow(row, createGreenStyle(workbook.getWorkbook()));
+        workbook.getSheetLastRow().replace(sheetName, workbook.getSheetLastRow().get(sheetName) + 1);
     }
 
 }

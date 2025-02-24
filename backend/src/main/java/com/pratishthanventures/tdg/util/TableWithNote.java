@@ -20,6 +20,7 @@ import java.util.Map;
 
 import static com.pratishthanventures.tdg.Constants.*;
 import static com.pratishthanventures.tdg.util.Note.addNoteToCell;
+import static com.pratishthanventures.tdg.util.TDGWorkbook.getSeparatorRow;
 
 @Slf4j
 public class TableWithNote {
@@ -36,10 +37,12 @@ public class TableWithNote {
                 verifyCommandList.add("");
             }
         });
+        getSeparatorRow(workbook, sheetName);
         addTableWithNote(workbook, sheetName, tableMapper.getTableName(), columnNameList, tableMapper.getData(), verifyCommandList);
     }
 
     public static void addTableWithNote(TDGWorkbook workbook, String sheetName, FetchAndVerify fetchAndVerify) {
+        getSeparatorRow(workbook, sheetName);
         addTableWithNote(workbook, sheetName, "Fetch-" + fetchAndVerify.getApiName(), fetchAndVerify.getParameterList(), new ArrayList<>(), List.of(fetchAndVerify.getConcordionCommand()));
         addTableWithNote(workbook, sheetName, "Verify-" + fetchAndVerify.getApiName(), fetchAndVerify.getResultColumnList(), new ArrayList<>(), fetchAndVerify.getVerifyCommands());
     }
@@ -50,7 +53,6 @@ public class TableWithNote {
                                         List<Map<String, String>> data,
                                         List<String> concordionCommandList) {
         // Empty row above
-
 
         Integer lastRow = workbook.getSheetLastRow().get(sheetName);
 
@@ -96,7 +98,7 @@ public class TableWithNote {
         }
 
         // Create table
-        log.info("Start {}, End {} & {}", startRow, lastRow, tableColumnList.size());
+        log.debug("Start {}, End {} & {}", startRow, lastRow, tableColumnList.size());
         AreaReference tableArea = new AreaReference(new CellReference(startRow, START_COLUMN),
                 new CellReference(lastRow - 1, tableColumnList.size() + START_COLUMN - 1), null);
         XSSFSheet xssfSheet = workbook.getSheetMap().get(sheetName);

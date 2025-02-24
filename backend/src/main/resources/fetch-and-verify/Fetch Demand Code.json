@@ -1,0 +1,11 @@
+{
+  "apiName": "Fetch Demand Code",
+  "parameterList": [
+    "columnY"
+  ],
+  "resultColumnList": [
+    "columnX",
+    "columnY",
+    "columnZ"
+  ]
+}

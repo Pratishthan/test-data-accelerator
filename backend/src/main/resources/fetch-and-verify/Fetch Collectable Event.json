@@ -1,0 +1,11 @@
+{
+  "apiName": "Fetch Collectable Event",
+  "parameterList": [
+    "column1"
+  ],
+  "resultColumnList": [
+    "column1",
+    "column2",
+    "column3"
+  ]
+}

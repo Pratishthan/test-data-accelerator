@@ -1,0 +1,17 @@
+{
+  "functionName": "setConfigParams",
+  "displayText": "Set Config Params",
+  "parameterList": [
+    {
+      "name": "policy",
+      "displayText": "Allocation Policy",
+      "defaultValue": "FIP"
+    },
+    {
+      "name": "customerSource",
+      "displayText": "Customer Source",
+      "defaultValue": "PBC"
+    }
+  ],
+  "isCombined": false
+}

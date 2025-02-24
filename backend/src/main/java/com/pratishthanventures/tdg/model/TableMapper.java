@@ -11,7 +11,7 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TableMapper implements ConcordionHelper {
+public class TableMapper extends AbstractConcordionHelper {
     private String tableName;
     private Map<String, String> columnNameMap; // Map<Display Column Name & Technical Column Name for verify>
     private List<Map<String, String>> data;

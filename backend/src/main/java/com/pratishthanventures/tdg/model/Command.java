@@ -14,6 +14,7 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Command {
+    private String commandName;
     private String actionCode;
     private PatternType type;
     private List<String> selectedColumns = new ArrayList<>();

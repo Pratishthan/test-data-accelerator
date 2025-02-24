@@ -9,7 +9,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class SetAndExecute implements ConcordionHelper {
+public class SetAndExecute extends AbstractConcordionHelper {
 
     private String functionName;
     private String displayText;

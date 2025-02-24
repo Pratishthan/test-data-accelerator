@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SimpleCommand implements ConcordionHelper {
+public class SimpleCommand extends AbstractConcordionHelper {
     private String functionName;
     private String text;
 

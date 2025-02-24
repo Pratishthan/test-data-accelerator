@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FetchAndVerify implements ConcordionHelper {
+public class FetchAndVerify extends AbstractConcordionHelper {
     private String apiName;
     private List<String> parameterList;
     private List<String> resultColumnList;

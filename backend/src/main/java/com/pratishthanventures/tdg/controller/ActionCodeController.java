@@ -50,7 +50,7 @@ public class ActionCodeController {
                 actionCode.setType(PatternType.SimpleCommand);
             } else if (pattern instanceof TableMapperPattern) {
                 actionCode.setType(PatternType.TableMapper);
-                actionCode.setColumns(((TableMapperPattern) pattern).getTableMapper().getColumnNameList());
+                actionCode.setColumns(((TableMapperPattern) pattern).getTableMapper().getColumnNameMap().keySet().stream().toList());
                 actionCode.setDefaultData(((TableMapperPattern) pattern).getTableMapper().getData());
             } else if (pattern instanceof FetchAndVerifyPattern) {
                 actionCode.setType(PatternType.FetchAndVerify);

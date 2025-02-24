@@ -31,7 +31,8 @@
       "type": "TableMapper",
       "selectedColumns": [
         "column1",
-        "column3"
+        "column3",
+        "column4"
       ],
       "data": [
         {

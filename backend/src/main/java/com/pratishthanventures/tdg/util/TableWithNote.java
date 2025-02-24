@@ -24,7 +24,19 @@ import static com.pratishthanventures.tdg.util.Note.addNoteToCell;
 @Slf4j
 public class TableWithNote {
     public static void addTableWithNote(TDGWorkbook workbook, String sheetName, TableMapper tableMapper) {
-        addTableWithNote(workbook, sheetName, tableMapper.getTableName(), tableMapper.getColumnNameList(), tableMapper.getData(), List.of(tableMapper.getConcordionCommand()));
+        List<String> columnNameList = new ArrayList<>(tableMapper.getColumnNameMap().keySet());
+        List<String> verifyCommandList = new ArrayList<>();
+
+        columnNameList.forEach(columnName -> {
+            if (verifyCommandList.isEmpty()) {
+                verifyCommandList.add(tableMapper.getConcordionCommand()); // #ROW is applicable for 1st column only
+            } else if (StringUtils.isNotBlank(tableMapper.getConcordionVerifyCommand(columnName))) {
+                verifyCommandList.add(tableMapper.getConcordionVerifyCommand(columnName));
+            } else {
+                verifyCommandList.add("");
+            }
+        });
+        addTableWithNote(workbook, sheetName, tableMapper.getTableName(), columnNameList, tableMapper.getData(), verifyCommandList);
     }
 
     public static void addTableWithNote(TDGWorkbook workbook, String sheetName, FetchAndVerify fetchAndVerify) {

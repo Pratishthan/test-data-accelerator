@@ -1,12 +1,18 @@
 [
   {
     "tableName": "Collectable Event",
-    "columnNameList": ["column1", "column2", "column3"],
+    "columnNameMap": {
+      "column1": "",
+      "column2": "",
+      "column3": "test.column3",
+      "column4": ""
+    },
     "data": [
       {
         "column1": "value1",
         "column2": "value2",
-        "column3": "value3"
+        "column3": "value3",
+        "column4": "value4"
       },
       {
         "column1": "value4",
@@ -17,7 +23,10 @@
   },
   {
     "tableName": "Demand Code",
-    "columnNameList": ["columnY", "columnZ"],
+    "columnNameMap": {
+      "columnY": "",
+      "columnZ": ""
+    },
     "data": [
     ]
   }

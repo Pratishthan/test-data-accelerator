@@ -47,7 +47,7 @@ public class ActionChainConverter {
 
                 pattern.process(workbook, commandChain.getSheetName(), command.getSelectedColumns(), command.getData());
             });
-
+            log.info("About to write workbook to file {}", commandChain.getExcelFileName());
             workbook.writeWorkbookToFile(commandChain.getExcelFileName());
         } catch (Exception e) {
             log.error("Error reading CommandChain.json {}", e.getMessage());

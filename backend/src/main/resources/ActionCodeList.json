@@ -1,0 +1,68 @@
+[
+  {
+    "code": "Demand Code",
+    "type": "TableMapper",
+    "columns": [
+      "columnY",
+      "columnZ"
+    ],
+    "defaultData": []
+  },
+  {
+    "code": "We have a clean DB",
+    "type": "SimpleCommand"
+  },
+  {
+    "code": "Fetch Collectable Event",
+    "type": "FetchAndVerify",
+    "columns": [
+      "column1",
+      "column2",
+      "column3"
+    ]
+  },
+  {
+    "code": "setBODDate2",
+    "type": "SetAndExecute"
+  },
+  {
+    "code": "setBODDate1",
+    "type": "SetAndExecute"
+  },
+  {
+    "code": "Collectable Event",
+    "type": "TableMapper",
+    "columns": [
+      "column1",
+      "column2",
+      "column3",
+      "column4"
+    ],
+    "defaultData": [
+      {
+        "column1": "value1",
+        "column2": "value2",
+        "column3": "value3",
+        "column4": "value4"
+      },
+      {
+        "column1": "value4",
+        "column2": "value5",
+        "column3": "value6"
+      }
+    ]
+  },
+  {
+    "code": "setConfigParams",
+    "type": "SetAndExecute"
+  },
+  {
+    "code": "Fetch Demand Code",
+    "type": "FetchAndVerify",
+    "columns": [
+      "columnX",
+      "columnY",
+      "columnZ"
+    ]
+  }
+]

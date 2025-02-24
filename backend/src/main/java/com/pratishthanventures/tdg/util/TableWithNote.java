@@ -24,7 +24,7 @@ import static com.pratishthanventures.tdg.util.TDGWorkbook.getSeparatorRow;
 
 @Slf4j
 public class TableWithNote {
-    public static void addTableWithNote(TDGWorkbook workbook, String sheetName, TableMapper tableMapper) {
+    public static void addTableWithNote(TDGWorkbook workbook, String sheetName, String commandName, TableMapper tableMapper) {
         List<String> columnNameList = new ArrayList<>(tableMapper.getColumnNameMap().keySet());
         List<String> verifyCommandList = new ArrayList<>();
 
@@ -37,12 +37,12 @@ public class TableWithNote {
                 verifyCommandList.add("");
             }
         });
-        getSeparatorRow(workbook, sheetName);
+        getSeparatorRow(workbook, sheetName, commandName);
         addTableWithNote(workbook, sheetName, tableMapper.getTableName(), columnNameList, tableMapper.getData(), verifyCommandList);
     }
 
-    public static void addTableWithNote(TDGWorkbook workbook, String sheetName, FetchAndVerify fetchAndVerify) {
-        getSeparatorRow(workbook, sheetName);
+    public static void addTableWithNote(TDGWorkbook workbook, String sheetName, String commandName, FetchAndVerify fetchAndVerify) {
+        getSeparatorRow(workbook, sheetName, commandName);
         addTableWithNote(workbook, sheetName, "Fetch-" + fetchAndVerify.getApiName(), fetchAndVerify.getParameterList(), new ArrayList<>(), List.of(fetchAndVerify.getConcordionCommand()));
         addTableWithNote(workbook, sheetName, "Verify-" + fetchAndVerify.getApiName(), fetchAndVerify.getResultColumnList(), new ArrayList<>(), fetchAndVerify.getVerifyCommands());
     }

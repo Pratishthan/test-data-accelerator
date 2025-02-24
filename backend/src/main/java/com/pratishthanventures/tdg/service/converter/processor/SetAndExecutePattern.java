@@ -1,5 +1,6 @@
 package com.pratishthanventures.tdg.service.converter.processor;
 
+import com.pratishthanventures.tdg.model.CommandChain;
 import com.pratishthanventures.tdg.model.Parameter;
 import com.pratishthanventures.tdg.model.SetAndExecute;
 import com.pratishthanventures.tdg.service.converter.Pattern;
@@ -8,9 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-
-import java.util.List;
-import java.util.Map;
 
 import static com.pratishthanventures.tdg.util.Note.addNoteToCell;
 import static com.pratishthanventures.tdg.util.TDGWorkbook.getSeparatorRow;
@@ -22,9 +20,10 @@ public class SetAndExecutePattern implements Pattern {
     protected SetAndExecute setAndExecute;
 
     @Override
-    public void process(TDGWorkbook workbook, String sheetName, List<String> columnNames, List<Map<String, String>> data) {
+    public void process(TDGWorkbook workbook, CommandChain commandChain, String commandName) {
+        String sheetName = commandChain.getSheetName();
         log.info("SimpleCommandPattern: About to process {}", setAndExecute.getFunctionName());
-        getSeparatorRow(workbook, sheetName);
+        getSeparatorRow(workbook, sheetName, commandName);
         if ("true".equalsIgnoreCase(setAndExecute.getIsCombined())) {
             Row row = workbook.getNewRow(sheetName);
             Cell textCell = row.createCell(1);

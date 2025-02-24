@@ -1,37 +1,32 @@
 {
   "excelFileName": "Generated.xlsx",
   "sheetName": "Data",
-  "commands": [
-    {
-      "commandName": "Set BOD Date 1",
+  "commands": {
+    "Set BOD Date 1": {
       "actionCode": "setBODDate1",
       "type": "SetAndExecute",
       "selectedColumns": [],
       "data": []
     },
-    {
-      "commandName": "Set Config Params",
+    "Set Config Params": {
       "actionCode": "setConfigParams",
       "type": "SetAndExecute",
       "selectedColumns": [],
       "data": []
     },
-    {
-      "commandName": "Set BOD Date 2",
+    "Set BOD Date 2": {
       "actionCode": "setBODDate2",
       "type": "SetAndExecute",
       "selectedColumns": [],
       "data": []
     },
-    {
-      "commandName": "Clean up the DB",
+    "Clean up the DB": {
       "actionCode": "We have a clean DB",
       "type": "SimpleCommand",
       "selectedColumns": [],
       "data": []
     },
-    {
-      "commandName": "Bill 1",
+    "Bill 1": {
       "actionCode": "Collectable Event",
       "type": "TableMapper",
       "selectedColumns": [
@@ -50,8 +45,7 @@
         }
       ]
     },
-    {
-      "commandName": "Bill 2",
+    "Bill 2": {
       "actionCode": "Collectable Event",
       "type": "TableMapper",
       "selectedColumns": [
@@ -70,12 +64,11 @@
         }
       ]
     },
-    {
-      "commandName": "Fetch Collectable Event",
+    "Fetch Collectable Event": {
       "actionCode": "Fetch Collectable Event",
       "type": "FetchAndVerify",
       "selectedColumns": [],
       "data": []
     }
-  ]
+  }
 }

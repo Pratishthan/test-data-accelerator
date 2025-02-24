@@ -67,8 +67,10 @@ public class TDGWorkbook {
         }
     }
 
-    public static void getSeparatorRow(TDGWorkbook workbook, String sheetName) {
+    public static void getSeparatorRow(TDGWorkbook workbook, String sheetName, String commandName) {
         Row row = workbook.getNewRow(sheetName);
+        Cell cell = row.createCell(0);
+        cell.setCellValue(commandName);
         applyStyleToRow(row, createGreenStyle(workbook.getWorkbook()));
         workbook.getSheetLastRow().replace(sheetName, workbook.getSheetLastRow().get(sheetName) + 1);
     }

@@ -37,7 +37,7 @@ public class ActionChainConverter {
             CommandChain commandChain = objectMapper.readValue(getContent("/CommandChain.json"), CommandChain.class);
             TDGWorkbook workbook = new TDGWorkbook(commandChain.getSheetName());
 
-            commandChain.getCommands().forEach(command -> {
+            commandChain.getCommands().forEach((commandName, command) -> {
                 Pattern pattern = switch (command.getType()) {
                     case SimpleCommand -> simpleCommandFactory.getPattern(command.getActionCode());
                     case TableMapper -> tableMapperFactory.getPattern(command.getActionCode());
@@ -45,7 +45,7 @@ public class ActionChainConverter {
                     case SetAndExecute -> setAndExecuteFactory.getPattern(command.getActionCode());
                 };
 
-                pattern.process(workbook, commandChain.getSheetName(), command.getSelectedColumns(), command.getData());
+                pattern.process(workbook, commandChain, commandName);
             });
             log.info("About to write workbook to file {}", commandChain.getExcelFileName());
             workbook.writeWorkbookToFile(commandChain.getExcelFileName());

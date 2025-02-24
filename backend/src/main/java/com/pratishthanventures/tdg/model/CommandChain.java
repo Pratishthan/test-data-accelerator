@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @Data
 @NoArgsConstructor
@@ -14,5 +14,5 @@ public class CommandChain {
 
     private String excelFileName;
     private String sheetName;
-    private List<Command> commands = new ArrayList<>();
+    private Map<String, Command> commands = new HashMap<>();
 }

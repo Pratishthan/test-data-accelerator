@@ -1,4 +1,6 @@
 {
+  "componentName": "FBP",
+  "actionCodeGroupName": "Setup",
   "functionName": "clearAllTables",
   "text": "We have a clean DB"
 }

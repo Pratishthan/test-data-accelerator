@@ -1,5 +1,5 @@
 // App.jsx
-import React, { use, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from './components/Header';
@@ -39,7 +39,7 @@ function App() {
 
   const handleStepDataChange = (id, key, value) => {
       const step = flowSteps.find(step => step.id === id);
-      setFlowSteps([...flowSteps.filter(step=> step.id != id), {...step, [key] : value} ])
+      setFlowSteps([...flowSteps.filter(step=> step.id !==id), {...step, [key] : value} ])
   }
 
   const handleFlowDrop = (e, targetIndex) => {
@@ -47,7 +47,7 @@ function App() {
     const stepId = e.dataTransfer.getData('stepId');
     const draggedStep = flowSteps.find(s => s.id === stepId);
     if (draggedStep) {
-      const filteredSteps = flowSteps.filter(step => step.id != draggedStep.id);
+      const filteredSteps = flowSteps.filter(step => step.id !== draggedStep.id);
       const stepsBeforeTargetStep = filteredSteps.slice(0, targetIndex);
       const stepsAfterTargetStep = filteredSteps.slice(targetIndex);
       const updatedIndexBeforeTargetIndex = stepsBeforeTargetStep.map((step,index) => {return {...step, order : index}})
@@ -84,8 +84,15 @@ function App() {
   };
 
   const removeStep = (stepId) => {
-    const step = flowSteps.find(s => s.id === stepId);
-    setFlowSteps(flowSteps.filter(s => s.id !== stepId));
+    const removedStep = flowSteps.find(s => s.id === stepId);
+    if (removedStep) {
+      const filteredSteps = flowSteps.filter(step => step.id !== removedStep.id);
+      const stepsBeforeTargetStep = filteredSteps.slice(0, removedStep.order);
+      const stepsAfterTargetStep = filteredSteps.slice(removedStep.order);
+      const updatedIndexBeforeTargetIndex = stepsBeforeTargetStep.map((step,index) => {return {...step, order : index}})
+      const updatedIndexAfterTargetIndex = stepsAfterTargetStep.map((step,index) => {return {...step, order : removedStep.order + index}})
+      setFlowSteps([...updatedIndexBeforeTargetIndex, ...updatedIndexAfterTargetIndex])
+    }
   };
 
   const handleDeleteGroup = (e,groupId) => {
@@ -131,17 +138,16 @@ function App() {
 
   const handleExport = () => {
     const exportData = {} 
-    flowSteps.forEach( step => {
+    flowSteps
+    .sort(step => step.a - step.b)
+    .forEach( step => {
       exportData[step.label] = step
     })
-
     console.log(exportData);
   }
 
   useEffect(()=> {
     setSelectedEntity(entity[0]);
-    const div = document.getElementById(selectedGroup);
-    div.scrollTo({ top: div.scrollHeight, behavior: "smooth" });
   },[])
 
   useEffect(()=> {

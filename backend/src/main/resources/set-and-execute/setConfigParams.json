@@ -1,12 +1,19 @@
 {
-  "functionName": "setBODDate2",
-  "displayText": "Set BOD Date 2",
+  "componentName": "Demo",
+  "actionCodeGroupName": "Setup",
+  "functionName": "setConfigParams",
+  "displayText": "Set Config Params",
   "parameterList": [
     {
-      "name": "bodDate2",
-      "displayText": "BOD Date 2",
-      "defaultValue": "2025-03-31"
+      "name": "policy",
+      "displayText": "Allocation Policy",
+      "defaultValue": "FIP"
+    },
+    {
+      "name": "customerSource",
+      "displayText": "Customer Source",
+      "defaultValue": "PBC"
     }
   ],
-  "isCombined": true
+  "isCombined": false
 }

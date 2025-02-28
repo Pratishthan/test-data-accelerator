@@ -141,7 +141,7 @@ function App() {
 
   useEffect(() => {
     setAvailableSteps(
-      predefinedSteps.filter(step => step.entityId && selectedEntity && selectedEntity.id && selectedEntity.id === step.entityId ) 
+      predefinedSteps.filter(step => step.entityId && selectedEntity && selectedEntity.id && selectedEntity.id === step.entityId )
     )
   }, [selectedEntity])
 
@@ -151,7 +151,7 @@ function App() {
 
   return (
     <div className="app">
-      <Header flowSteps={flowSteps}/> 
+      <Header flowSteps={flowSteps}/>
       <div className="container">
         <div className="steps-panel">
           <GroupCreator entity={entity} handleEntitySelect={handleEntitySelect} selectedEntity={selectedEntity} handleAddGroup={handleAddGroup}/>
@@ -162,12 +162,12 @@ function App() {
           <h2>Your Flow</h2>
           {
               groups
-                .sort((g1,g2) => g1.srNo - g2.srNo) 
-                .map(group => 
+                .sort((g1,g2) => g1.srNo - g2.srNo)
+                .map(group =>
                   <Group
-                      group={group} 
+                      group={group}
                       flowSteps= {flowSteps.filter(step =>  { return step.groupId === group.id} )}
-                      handleDrop={handleDrop} 
+                      handleDrop={handleDrop}
                       handleDragOver={handleDragOver}
                       handleDragStart={handleDragStart}
                       handleFlowDrop={handleFlowDrop}

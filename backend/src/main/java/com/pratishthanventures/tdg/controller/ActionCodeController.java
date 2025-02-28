@@ -9,6 +9,7 @@ import com.pratishthanventures.tdg.service.converter.processor.FetchAndVerifyPat
 import com.pratishthanventures.tdg.service.converter.processor.SetAndExecutePattern;
 import com.pratishthanventures.tdg.service.converter.processor.SimpleCommandPattern;
 import com.pratishthanventures.tdg.service.converter.processor.TableMapperPattern;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +22,7 @@ import java.util.Map;
 import static com.pratishthanventures.tdg.PatternType.*;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/action-code")
 public class ActionCodeController {
 

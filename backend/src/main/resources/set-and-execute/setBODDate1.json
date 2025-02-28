@@ -1,4 +1,6 @@
 {
+  "componentName": "FBP",
+  "actionCodeGroupName": "Setup",
   "functionName": "setBODDate1",
   "displayText": "Set BOD Date 1",
   "parameterList": [

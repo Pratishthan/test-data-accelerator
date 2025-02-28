@@ -1,11 +1,25 @@
 {
+  "componentName": "Collection",
+  "actionCodeGroupName": "Setup",
   "apiName": "Fetch Demand Code",
   "parameterList": [
     "columnY"
   ],
-  "resultColumnList": [
-    "columnX",
-    "columnY",
-    "columnZ"
-  ]
+  "resultColumnMap": {
+    "columnX": {
+      "technicalColumnName": "columnX",
+      "isMandatory": true,
+      "derivedDataType": "String(20)"
+    },
+    "columnY": {
+      "technicalColumnName": "columnY",
+      "isMandatory": true,
+      "derivedDataType": "String(20)"
+    },
+    "columnZ": {
+      "technicalColumnName": "columnZ",
+      "isMandatory": true,
+      "derivedDataType": "String(20)"
+    }
+  }
 }

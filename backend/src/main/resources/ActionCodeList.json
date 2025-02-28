@@ -1,43 +1,75 @@
 [
   {
+    "componentName": "Collection",
+    "actionCodeGroupName": "Setup",
     "code": "Demand Code",
     "type": "TableMapper",
-    "columns": [
-      "columnY",
-      "columnZ"
-    ],
+    "columns": {
+      "columnY": {
+        "technicalColumnName": "columnY",
+        "isMandatory": true,
+        "derivedDataType": "String(20)"
+      },
+      "columnZ": {}
+    },
     "defaultData": []
   },
   {
+    "componentName": "FBP",
+    "actionCodeGroupName": "Setup",
     "code": "We have a clean DB",
     "type": "SimpleCommand"
   },
   {
+    "componentName": "Collection",
+    "actionCodeGroupName": "Collectable Event",
     "code": "Fetch Collectable Event",
     "type": "FetchAndVerify",
-    "columns": [
-      "column1",
-      "column2",
-      "column3"
-    ]
+    "columns": {
+      "column1": {
+        "technicalColumnName": "column1",
+        "isMandatory": true,
+        "derivedDataType": "String(20)"
+      },
+      "column2": {
+        "technicalColumnName": "column2",
+        "isMandatory": true,
+        "derivedDataType": "String(20)"
+      },
+      "column3": {
+        "technicalColumnName": "column3",
+        "isMandatory": true,
+        "derivedDataType": "String(20)"
+      }
+    }
   },
   {
+    "componentName": "FBP",
+    "actionCodeGroupName": "Setup",
     "code": "setBODDate2",
     "type": "SetAndExecute"
   },
   {
+    "componentName": "FBP",
+    "actionCodeGroupName": "Setup",
     "code": "setBODDate1",
     "type": "SetAndExecute"
   },
   {
+    "componentName": "Collection",
+    "actionCodeGroupName": "Collectable Event",
     "code": "Collectable Event",
     "type": "TableMapper",
-    "columns": [
-      "column1",
-      "column2",
-      "column3",
-      "column4"
-    ],
+    "columns": {
+      "column1": {},
+      "column2": {},
+      "column3": {
+        "technicalColumnName": "test.column3",
+        "isMandatory": true,
+        "derivedDataType": "String(20)"
+      },
+      "column4": {}
+    },
     "defaultData": [
       {
         "column1": "value1",
@@ -53,16 +85,32 @@
     ]
   },
   {
+    "componentName": "Demo",
+    "actionCodeGroupName": "Setup",
     "code": "setConfigParams",
     "type": "SetAndExecute"
   },
   {
+    "componentName": "Collection",
+    "actionCodeGroupName": "Setup",
     "code": "Fetch Demand Code",
     "type": "FetchAndVerify",
-    "columns": [
-      "columnX",
-      "columnY",
-      "columnZ"
-    ]
+    "columns": {
+      "columnX": {
+        "technicalColumnName": "columnX",
+        "isMandatory": true,
+        "derivedDataType": "String(20)"
+      },
+      "columnY": {
+        "technicalColumnName": "columnY",
+        "isMandatory": true,
+        "derivedDataType": "String(20)"
+      },
+      "columnZ": {
+        "technicalColumnName": "columnZ",
+        "isMandatory": true,
+        "derivedDataType": "String(20)"
+      }
+    }
   }
 ]

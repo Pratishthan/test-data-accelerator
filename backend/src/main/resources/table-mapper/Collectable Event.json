@@ -3,10 +3,14 @@
   "actionCodeGroupName": "Collectable Event",
   "tableName": "Collectable Event",
   "columnNameMap": {
-    "column1": {},
-    "column2": {},
+    "column1": {
+
+    },
+    "column2": {
+
+    },
     "column3": {
-      "technicalColumnName": "test.column3",
+      "technicalColumnName":"test.column3",
       "isMandatory": true,
       "derivedDataType": "String(20)"
     },

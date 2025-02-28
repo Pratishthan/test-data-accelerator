@@ -1,9 +1,14 @@
 {
+  "componentName": "Collection",
+  "actionCodeGroupName": "Setup",
   "tableName": "Demand Code",
   "columnNameMap": {
-    "columnY": "",
-    "columnZ": ""
+    "columnY": {
+      "technicalColumnName": "columnY",
+      "isMandatory": true,
+      "derivedDataType": "String(20)"
+    },
+    "columnZ": {}
   },
-  "data": [
-  ]
-}
+  "data": []
+},

@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 
 @Controller
+@CrossOrigin
 @RequestMapping("/command-chain")
 public class CommandChainController {
 

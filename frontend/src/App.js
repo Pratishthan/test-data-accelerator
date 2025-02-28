@@ -1,157 +1,195 @@
 // App.jsx
-import React, { useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Header from './components/Header';
+import useFetchActionCodes from './hooks/useFetchActionCodes';
+import Group from "./components/Group"
+import SideBar from './components/SideBar';
+
+
+const entity = [
+  { id: 'ts', name: 'Target System Code'},
+  { id: 'cm', name: 'Collection Method Code'},
+  { id: 'tscm', name: 'TSCM Mapping' },
+  { id: 'rec', name: 'Response Error Code' },
+  { id: 'ce', name: 'Collection Entity' },
+]
 
 const predefinedSteps = [
-  { id: 'step1', name: 'Input Data' },
-  { id: 'step2', name: 'Validate Data' },
-  { id: 'step3', name: 'Process Payment' },
-  { id: 'step4', name: 'Send Confirmation' },
-  { id: 'step5', name: 'Generate Report' },
+  { id: 'tsSetEntityData', srNo : 1, name: 'Input Data', entityId : "ts" },
+  { id: 'tsEndCreateRequest', srNo : 2, name: 'Send Create Request', entityId : "ts" },
+  { id: 'cmProcessPayment', srNo : 3,name: 'Process Payment', entityId : "cm"  },
+  { id: 'cmSendConfirmation',srNo : 4,name: 'Send Confirmation', entityId : "cm"  },
+  { id: 'cmGenerateReport', srNo : 5,name: 'Generate Report', entityId : "cm"  },
 ];
+const initGroupId = Math.random();
+
 
 function App() {
-  const [availableSteps, setAvailableSteps] = useState(predefinedSteps);
+  const [availableSteps, setAvailableSteps] = useState([]);
   const [flowSteps, setFlowSteps] = useState([]);
+  const [groupSerialNumber, setGroupSerialNumber] = useState(1);
+  const [groups,setGroups] = useState([{id: initGroupId, groupName: "", minimised: true, srNo: 1}])
+  const [selectedGroup,setSelectedGroup] = useState(initGroupId)
+  const [selectedEntity, setSelectedEntity] = useState({});
+  const [totalNodesUsed, setTotalNodesUsed] = useState(1)
 
-  // Handle drag start
-  const handleDragStart = (e, step) => {
-    e.dataTransfer.setData('stepId', step.id);
-  };
+  const actionCodes = useFetchActionCodes();
 
-  // Handle drop on flow area
-  const handleDrop = (e) => {
-    e.preventDefault();
-    const stepId = e.dataTransfer.getData('stepId');
-    const step = availableSteps.find(s => s.id === stepId);
-    
-    if (step && !flowSteps.some(s => s.id === stepId)) {
-      setFlowSteps([...flowSteps, step]);
-      setAvailableSteps(availableSteps.filter(s => s.id !== stepId));
-    }
-  };
-
-  // Allow drop
-  const handleDragOver = (e) => {
-    e.preventDefault();
-  };
-
-  // Handle reordering within flow
-  const handleFlowDragOver = (e) => {
-    e.preventDefault();
-  };
+  const handleStepDataChange = (id, key, value) => {
+      const step = flowSteps.find(step => step.id === id);
+      setFlowSteps([...flowSteps.filter(step=> step.id != id), {...step, [key] : value} ])
+  }
 
   const handleFlowDrop = (e, targetIndex) => {
     e.preventDefault();
     const stepId = e.dataTransfer.getData('stepId');
     const draggedStep = flowSteps.find(s => s.id === stepId);
-    
     if (draggedStep) {
-      const newFlow = flowSteps.filter(s => s.id !== stepId);
-      newFlow.splice(targetIndex, 0, draggedStep);
-      setFlowSteps(newFlow);
+      const filteredSteps = flowSteps.filter(step => step.id != draggedStep.id);
+      const stepsBeforeTargetStep = filteredSteps.slice(0, targetIndex);
+      const stepsAfterTargetStep = filteredSteps.slice(targetIndex);
+      const updatedIndexBeforeTargetIndex = stepsBeforeTargetStep.map((step,index) => {return {...step, order : index}})
+      const updatedIndexAfterTargetIndex = stepsAfterTargetStep.map((step,index) => {return {...step, order : targetIndex + 1 + index}})
+      setFlowSteps([...updatedIndexBeforeTargetIndex, {...draggedStep, order : targetIndex}, ...updatedIndexAfterTargetIndex])
     }
   };
 
-  // Remove step from flow
+  const handleDragStart = (e, step) => {
+    e.dataTransfer.setData('stepId', step.id);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const stepId = e.dataTransfer.getData('stepId');
+    const groupId =  parseFloat(e.target.id);
+    const step = availableSteps.find(s => s.id === stepId);
+    const group = groups.find(s => s.id === groupId);
+    setSelectedGroup(group.id)
+    step && setFlowSteps([...flowSteps, {...step, id : step.id + Math.random(), groupId}]);
+    group && setGroups([...groups.filter(gp => gp.id !== group.id), { ...group, minimised: false}]);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const handleEntitySelect = (entity) => {
+    setSelectedEntity(entity);
+  };
+
+  const handleFlowDragOver = (e) => {
+    e.preventDefault();
+  };
+
   const removeStep = (stepId) => {
     const step = flowSteps.find(s => s.id === stepId);
     setFlowSteps(flowSteps.filter(s => s.id !== stepId));
-    setAvailableSteps([...availableSteps, step]);
   };
 
-  // Download template
-  const downloadTemplate = async () => {
-    try {
-      const stepsOrder = flowSteps.map(step => ({
-        id: step.id,
-        name: step.name
-      }));
+  const handleDeleteGroup = (e,groupId) => {
+    e.stopPropagation()
+    setFlowSteps(flowSteps.filter(step => step.groupId !== groupId));
+    setGroups(groups.filter(group => group.id !== groupId))
+    setSelectedGroup(null)
+  };
 
-      const response = await fetch('http://localhost:8080/', {
-        method: 'POST',
-        mode: 'cors', // Explicitly set CORS mode
-        credentials: 'same-origin', // or 'include' if sending cookies
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ steps: stepsOrder }),
-      });
+  const handleGroupNameChange = (groupId, groupName) => {
+    setGroups( [...groups.filter(group => group.id !== groupId), { ...groups.filter(group => group.id === groupId)[0], groupName}])
+  };
 
-      if (!response.ok) {
-        throw new Error('API request failed');
-      }
+  const handleAddGroup = () => {
+    const groupId = Math.random();
+    setSelectedGroup(groupId);
+    setGroupSerialNumber(groupSerialNumber +1)
+    setGroups([...groups, {id: groupId, groupName: "", minimised: true, srNo: groupSerialNumber +1}])
+  };
 
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = 'template.xlsx'; // or whatever file type your API returns
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error('Error downloading template:', error);
-      alert('Failed to download template');
+  const handleSelectGroup = (groupId) => {
+    setSelectedGroup(groupId)
+    const group = groups.find(g => g.id === selectedGroup);
+    group && setGroups([...groups.filter(gp => gp.id !== group.id), { ...group, minimised: false}]);
+  };
+
+  const handleAddStep = (step) => {
+    if (!selectedGroup) {
+      window.alert("select group first")
+      return
     }
+    setFlowSteps([...flowSteps, {...step, label: step.label + " " + totalNodesUsed , id : step.id + Math.random(), groupId : selectedGroup, order: Object.keys(flowSteps).length + 1}]);
+    const group = groups.find(s => s.id === selectedGroup);
+    group && setGroups([...groups.filter(gp => gp.id !== group.id), { ...group, minimised: false}]);
+    setTotalNodesUsed(totalNodesUsed+1)
   };
+
+  const handleMinimised = (e,groupId) => {
+    e.stopPropagation();
+    const group = groups.find(s => s.id === groupId);
+    group && setGroups([...groups.filter(gp => gp.id !== groupId), { ...group, minimised: true}]);
+  }
+
+  const handleExport = () => {
+    const exportData = {} 
+    flowSteps.forEach( step => {
+      exportData[step.label] = step
+    })
+
+    console.log(exportData);
+  }
+
+  useEffect(()=> {
+    setSelectedEntity(entity[0]);
+    const div = document.getElementById(selectedGroup);
+    div.scrollTo({ top: div.scrollHeight, behavior: "smooth" });
+  },[])
+
+  useEffect(()=> {
+    const div = document.getElementById(selectedGroup);
+    div.scrollTo({ top: div.scrollHeight, behavior: "smooth" });
+  },[groups])
+
+  useEffect(() => {
+    setAvailableSteps(
+      predefinedSteps.filter(step => step.entityId && selectedEntity && selectedEntity.id && selectedEntity.id === step.entityId ) 
+    )
+  }, [selectedEntity])
+
 
   return (
     <div className="app">
-      <h1>Build Your Flow</h1>
-      
-      <div className="container">
-        <div className="steps-panel">
-          <h2>Available Steps</h2>
-          <div className="steps-list">
-            {availableSteps.map(step => (
-              <div
-                key={step.id}
-                className="step-item"
-                draggable
-                onDragStart={(e) => handleDragStart(e, step)}
-              >
-                {step.name}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div
-          className="flow-panel"
-          onDrop={handleDrop}
-          onDragOver={handleDragOver}
-        >
-          <h2>Your Flow</h2>
-          <div className="flow-list">
-            {flowSteps.map((step, index) => (
-              <div
-                key={step.id}
-                className="flow-step"
-                draggable
-                onDragStart={(e) => handleDragStart(e, step)}
-                onDrop={(e) => handleFlowDrop(e, index)}
-                onDragOver={handleFlowDragOver}
-              >
-                <span>{index + 1}. {step.name}</span>
-                <button onClick={() => removeStep(step.id)}>×</button>
-              </div>
-            ))}
-            {flowSteps.length === 0 && (
-              <p className="empty-message">Drag steps here to build your flow</p>
-            )}
+      <Header flowSteps={flowSteps} handleExport={handleExport}/> 
+      <div className='d-flex flex-row h-webkit-height-available'>
+        <SideBar actionCodes={actionCodes} addStep={handleAddStep}/>
+        <div className="container">
+          <div className="flow-panel">
+            <h2>Your Flow</h2>
+            {
+                groups
+                  .sort((g1,g2) => g1.srNo - g2.srNo)
+                  .map((group, index) =>
+                    <Group
+                        key={index}
+                        group={group}
+                        flowSteps= {flowSteps.filter(step =>  { return step.groupId === group.id} )}
+                        handleDrop={handleDrop}
+                        handleDragOver={handleDragOver}
+                        handleDragStart={handleDragStart}
+                        handleFlowDrop={handleFlowDrop}
+                        handleFlowDragOver={handleFlowDragOver}
+                        removeStep={removeStep}
+                        handleDeleteGroup={handleDeleteGroup}
+                        handleGroupNameChange={handleGroupNameChange}
+                        handleSelectGroup={handleSelectGroup}
+                        handleMinimised={handleMinimised}
+                        handleStepDataChange={handleStepDataChange}
+                    />
+                )
+            }
           </div>
         </div>
       </div>
 
-      <button
-        className="download-btn"
-        onClick={downloadTemplate}
-        disabled={flowSteps.length === 0}
-      >
-        Download Template
-      </button>
     </div>
   );
 }

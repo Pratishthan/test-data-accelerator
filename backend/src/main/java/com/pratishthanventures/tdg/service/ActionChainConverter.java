@@ -27,15 +27,23 @@ public class ActionChainConverter {
     }
 
     @SneakyThrows
-    public void process() {
+    public TDGWorkbook process(String resourcePath){
+        CommandChain commandChain = objectMapper.readValue(getContent(resourcePath), CommandChain.class);
+        TDGWorkbook workbook = process(commandChain);
+        log.info("About to write workbook to file {}", commandChain.getExcelFileName());
+        workbook.writeWorkbookToFile();
+        return workbook;
+    }
+
+    @SneakyThrows
+    public TDGWorkbook process(CommandChain commandChain) {
 
         AbstractFactory simpleCommandFactory = FactoryProducer.getFactory(SimpleCommand);
         AbstractFactory tableMapperFactory = FactoryProducer.getFactory(TableMapper);
         AbstractFactory fetchAndVerifyFactory = FactoryProducer.getFactory(FetchAndVerify);
         AbstractFactory setAndExecuteFactory = FactoryProducer.getFactory(SetAndExecute);
         try {
-            CommandChain commandChain = objectMapper.readValue(getContent("/CommandChain.json"), CommandChain.class);
-            TDGWorkbook workbook = new TDGWorkbook(commandChain.getSheetName());
+            TDGWorkbook workbook = new TDGWorkbook(commandChain.getSheetName(), commandChain.getExcelFileName());
 
             commandChain.getCommands().forEach((commandName, command) -> {
                 Pattern pattern = switch (command.getType()) {
@@ -47,11 +55,12 @@ public class ActionChainConverter {
 
                 pattern.process(workbook, commandChain, commandName);
             });
-            log.info("About to write workbook to file {}", commandChain.getExcelFileName());
-            workbook.writeWorkbookToFile(commandChain.getExcelFileName());
+            return workbook;
         } catch (Exception e) {
             log.error("Error reading CommandChain.json {}", e.getMessage());
         }
+
+        return null;
 
     }
 

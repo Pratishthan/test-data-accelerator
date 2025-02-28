@@ -22,8 +22,10 @@ public class TDGWorkbook {
     private final Map<String, XSSFSheet> sheetMap = new HashMap<>();
     private final Map<String, Integer> sheetLastRow = new HashMap<>();
 
+    private final String fileName;
 
-    public TDGWorkbook(String sheetName) {
+    public TDGWorkbook(String sheetName, String fileName) {
+        this.fileName = fileName;
         createSheet(sheetName);
     }
 
@@ -37,9 +39,9 @@ public class TDGWorkbook {
     }
 
     @SneakyThrows
-    public void writeWorkbookToFile(String excelFilePath) {
+    public void writeWorkbookToFile() {
         // Write workbook to file
-        FileOutputStream fileOut = new FileOutputStream("target/" + excelFilePath);
+        FileOutputStream fileOut = new FileOutputStream("target/" + fileName);
         workbook.write(fileOut);
         fileOut.close();
         workbook.close();

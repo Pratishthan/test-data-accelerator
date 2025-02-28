@@ -1,35 +1,43 @@
 package com.pratishthanventures.tdg.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pratishthanventures.tdg.PatternType;
 import com.pratishthanventures.tdg.model.CommandChain;
+import com.pratishthanventures.tdg.service.ActionChainConverter;
+import com.pratishthanventures.tdg.util.TDGWorkbook;
+import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.ByteArrayOutputStream;
 
 @Controller
 @CrossOrigin
 @RequestMapping("/command-chain")
 public class CommandChainController {
 
-    @GetMapping
-    public String showCommandChainForm(Model model) {
-        model.addAttribute("commandChain", new CommandChain());
-        model.addAttribute("patternTypes", PatternType.values());
-        return "command-chain-form";
-    }
+    @PostMapping(produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ResponseEntity<byte[]> generateWorkbook(@RequestBody CommandChain commandChain){
+        try{
+            ActionChainConverter actionChainConverter = new ActionChainConverter();
+            TDGWorkbook workbook = actionChainConverter.process(commandChain);
+            if(workbook == null){
+                return ResponseEntity.badRequest().body("Invalid Command Chain".getBytes());
+            }
 
-    @PostMapping
-    public String saveCommandChain(@RequestBody CommandChain commandChain) {
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            mapper.writeValue(new File("src/main/resources/CommandChain.json"), commandChain);
-        } catch (IOException e) {
-            // Handle exception
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            workbook.getWorkbook().write(baos);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            headers.setContentDisposition(ContentDisposition.attachment().filename(commandChain.getExcelFileName()).build());
+
+            return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
+        } catch (Exception e){
+            return ResponseEntity.internalServerError().build();
         }
-        return "redirect:/command-chain";
+
+
     }
 }

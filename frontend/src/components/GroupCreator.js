@@ -9,7 +9,7 @@ import { Button } from '@mui/material';
 function GroupCreator({handleEntitySelect, selectedEntity, entity, handleAddGroup,...props}) {
 
   return (
-    <div className='d-flex justify-content-between w-100'>
+    <div key="GroupCreatoe" className='d-flex justify-content-between w-100'>
             <Dropdown>
               <Dropdown.Toggle variant="success" id="dropdown-basic">
                 {selectedEntity && selectedEntity.name}
@@ -17,8 +17,8 @@ function GroupCreator({handleEntitySelect, selectedEntity, entity, handleAddGrou
               <Dropdown.Menu>
                 {
                   entity
-                  .map( item => 
-                    <Dropdown.Item href="#/action-1" onClick={() => handleEntitySelect(item)}>{item.name}</Dropdown.Item>
+                  .map( (item, index) => 
+                    <Dropdown.Item key={index} href="#/action-1" onClick={() => handleEntitySelect(item)}>{item.name}</Dropdown.Item>
                   )
                 }
               </Dropdown.Menu>

@@ -1,9 +1,10 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CloseIcon from '@mui/icons-material/Close';
-import {  IconButton } from '@mui/material';
+import {  IconButton, TextField } from '@mui/material';
+import DragHandleIcon from '@mui/icons-material/DragHandle';
 
-function FlowStep({handleDragStart, handleFlowDrop, handleFlowDragOver, removeStep, index, step,...props}) {
+function FlowStep({handleDragStart, handleFlowDrop, handleFlowDragOver, removeStep, index, step, handleStepDataChange,...props}) {
   return (
     <div
         key={step.id}
@@ -14,8 +15,12 @@ function FlowStep({handleDragStart, handleFlowDrop, handleFlowDragOver, removeSt
         onDragOver={handleFlowDragOver}
         {...props}
         >
-        <span>{index + 1}. {step.name}</span>
-
+        <div className='d-flex align-items-center'>
+          <IconButton>
+            <DragHandleIcon fontSize='large' className='p-1 m-1'/>
+          </IconButton>
+          <TextField key={step.id} defaultValue={step.label} onBlur={(e) => handleStepDataChange(step.id,"label",e.target.value)} size='small'/>
+        </div>
         <IconButton onClick={(e) => removeStep(step.id)}>
             <CloseIcon fontSize='large' className='p-1 m-1'/>
         </IconButton>

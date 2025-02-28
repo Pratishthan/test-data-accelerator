@@ -1,0 +1,12 @@
+{
+  "functionName": "setBODDate1",
+  "displayText": "Set BOD Date 1",
+  "parameterList": [
+    {
+      "name": "bodDate1",
+      "displayText": "BOD Date 1",
+      "defaultValue": "2024-03-31"
+    }
+  ],
+  "isCombined": false
+}

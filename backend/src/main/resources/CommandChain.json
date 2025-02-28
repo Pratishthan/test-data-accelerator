@@ -1,0 +1,74 @@
+{
+  "excelFileName": "Generated.xlsx",
+  "sheetName": "Data",
+  "commands": {
+    "Set BOD Date 1": {
+      "actionCode": "setBODDate1",
+      "type": "SetAndExecute",
+      "selectedColumns": [],
+      "data": []
+    },
+    "Set Config Params": {
+      "actionCode": "setConfigParams",
+      "type": "SetAndExecute",
+      "selectedColumns": [],
+      "data": []
+    },
+    "Set BOD Date 2": {
+      "actionCode": "setBODDate2",
+      "type": "SetAndExecute",
+      "selectedColumns": [],
+      "data": []
+    },
+    "Clean up the DB": {
+      "actionCode": "We have a clean DB",
+      "type": "SimpleCommand",
+      "selectedColumns": [],
+      "data": []
+    },
+    "Bill 1": {
+      "actionCode": "Collectable Event",
+      "type": "TableMapper",
+      "selectedColumns": [
+        "column1",
+        "column3",
+        "column4"
+      ],
+      "data": [
+        {
+          "column1": "ABCD",
+          "column3": "EFGH"
+        },
+        {
+          "column1": "LMNO",
+          "column3": "PORS"
+        }
+      ]
+    },
+    "Bill 2": {
+      "actionCode": "Collectable Event",
+      "type": "TableMapper",
+      "selectedColumns": [
+        "column1",
+        "column3",
+        "column4"
+      ],
+      "data": [
+        {
+          "column1": "ABCD",
+          "column3": "EFGH"
+        },
+        {
+          "column1": "LMNO",
+          "column3": "PORS"
+        }
+      ]
+    },
+    "Fetch Collectable Event": {
+      "actionCode": "Fetch Collectable Event",
+      "type": "FetchAndVerify",
+      "selectedColumns": [],
+      "data": []
+    }
+  }
+}

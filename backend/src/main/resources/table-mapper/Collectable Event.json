@@ -1,0 +1,28 @@
+{
+  "componentName": "Collection",
+  "actionCodeGroupName": "Collectable Event",
+  "tableName": "Collectable Event",
+  "columnNameMap": {
+    "column1": {},
+    "column2": {},
+    "column3": {
+      "technicalColumnName": "test.column3",
+      "isMandatory": true,
+      "derivedDataType": "String(20)"
+    },
+    "column4": {}
+  },
+  "data": [
+    {
+      "column1": "value1",
+      "column2": "value2",
+      "column3": "value3",
+      "column4": "value4"
+    },
+    {
+      "column1": "value4",
+      "column2": "value5",
+      "column3": "value6"
+    }
+  ]
+}

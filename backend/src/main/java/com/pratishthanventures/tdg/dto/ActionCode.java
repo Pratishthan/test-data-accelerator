@@ -15,6 +15,6 @@ public class ActionCode {
     private String actionCodeGroupName;
     private String code;
     private PatternType type;
-    private Map<String, Property> columnMap;
+    private Map<String, Property> columns;
     private List<Map<String, String>> defaultData;
 }

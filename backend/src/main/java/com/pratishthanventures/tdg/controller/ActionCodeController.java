@@ -54,11 +54,11 @@ public class ActionCodeController {
                 actionCode.setType(PatternType.SimpleCommand);
             } else if (pattern instanceof TableMapperPattern) {
                 actionCode.setType(PatternType.TableMapper);
-                actionCode.setColumnMap(((TableMapperPattern) pattern).getTableMapper().getColumnNameMap());
+                actionCode.setColumns(((TableMapperPattern) pattern).getTableMapper().getColumnNameMap());
                 actionCode.setDefaultData(((TableMapperPattern) pattern).getTableMapper().getData());
             } else if (pattern instanceof FetchAndVerifyPattern) {
                 actionCode.setType(PatternType.FetchAndVerify);
-                actionCode.setColumnMap(((FetchAndVerifyPattern) pattern).getFetchAndVerify().getResultColumnMap());
+                actionCode.setColumns(((FetchAndVerifyPattern) pattern).getFetchAndVerify().getResultColumnMap());
             }
             actionCodes.add(actionCode);
         });

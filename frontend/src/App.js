@@ -147,6 +147,10 @@ function App() {
     .forEach( step => {
       exportData.commands[step.label] = step
     })
+    if (Object.keys(exportData.commands).length  == 0) {
+      window.alert("Add nodes!");
+      return;
+    }
     apiCalls.postData('command-chain', exportData); 
   }
 

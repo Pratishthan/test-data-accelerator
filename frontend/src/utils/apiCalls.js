@@ -14,7 +14,7 @@ const postData = async (type, data) => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-    await response.json(); // Parses JSON response
+      //   await response.json(); // Parses JSON response
       window.alert('Success:', data);
     } catch (error) {
         console.log(error)

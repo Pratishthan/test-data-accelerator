@@ -13,7 +13,7 @@ import java.util.Map;
 public class ActionCode {
     private String componentName;
     private String actionCodeGroupName;
-    private String code;
+    private String actionCode;
     private PatternType type;
     private Map<String, Property> columns;
     private List<Map<String, String>> defaultData;

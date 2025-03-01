@@ -70,7 +70,7 @@ function useFetchActionCodes() {
 
   const [actionCodes, setActionCodes] = useState([])
     useEffect(() => {  
-     const data = fetchData(setActionCodes);
+    fetchData(setActionCodes);
     },[])
     return actionCodes;
 }
@@ -86,7 +86,7 @@ const mapActionCodes = (actionCodes, componentIndex) => {
       label : groupName,
       key : componentIndex + '' + groupIndex,
       children: actionCodes.map((actionCode, actionCodeIndex) => {
-        return {...actionCode,  id: componentIndex + '' + groupIndex + '' + actionCodeIndex, label: actionCode.code, key:componentIndex + '' + groupIndex + '' + actionCodeIndex};
+        return {...actionCode,  id: componentIndex + '' + groupIndex + '' + actionCodeIndex, label: actionCode.actionCode, key:componentIndex + '' + groupIndex + '' + actionCodeIndex};
       })
     }
   });

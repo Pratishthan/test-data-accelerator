@@ -47,7 +47,7 @@ public class ActionCodeController {
             ActionCode actionCode = new ActionCode();
             actionCode.setComponentName(pattern.getPattern().getComponentName());
             actionCode.setActionCodeGroupName(pattern.getPattern().getActionCodeGroupName());
-            actionCode.setCode(actionCodeName);
+            actionCode.setActionCode(actionCodeName);
             if (pattern instanceof SetAndExecutePattern) {
                 actionCode.setType(PatternType.SetAndExecute);
             } else if (pattern instanceof SimpleCommandPattern) {

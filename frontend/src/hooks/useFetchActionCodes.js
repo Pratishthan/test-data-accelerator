@@ -70,7 +70,7 @@ function useFetchActionCodes() {
 
   const [actionCodes, setActionCodes] = useState([])
     useEffect(() => {  
-      setActionCodes(processActionCodes(backendActionCodes))
+     const data = fetchData(setActionCodes);
     },[])
     return actionCodes;
 }
@@ -93,12 +93,11 @@ const mapActionCodes = (actionCodes, componentIndex) => {
 }
 
 const processActionCodes = (actionCodes) => {
-  let actionCodesGroupedByComponent = Object.groupBy(actionCodes, ({ component }) => component);
+  let actionCodesGroupedByComponent = Object.groupBy(actionCodes, ({ componentName }) => componentName);
   return Object.keys(actionCodesGroupedByComponent)
   .map((componentName,componentIndex) => {
     let actionCodes = actionCodesGroupedByComponent[componentName];    
     return {
-
       id : componentIndex,
       label : componentName,
       key : componentIndex,

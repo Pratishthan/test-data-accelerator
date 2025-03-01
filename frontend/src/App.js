@@ -6,7 +6,7 @@ import Header from './components/Header';
 import useFetchActionCodes from './hooks/useFetchActionCodes';
 import Group from "./components/Group"
 import SideBar from './components/SideBar';
-
+import apiCalls from './utils/apiCalls'
 
 const entity = [
   { id: 'ts', name: 'Target System Code'},
@@ -137,13 +137,17 @@ function App() {
   }
 
   const handleExport = () => {
-    const exportData = {} 
+    const exportData = { 
+      "excelFileName" : "Generated.xlsx",
+      "sheetName": "Data",
+      "commands" : {}
+    } 
     flowSteps
     .sort(step => step.a - step.b)
     .forEach( step => {
-      exportData[step.label] = step
+      exportData.commands[step.label] = step
     })
-    console.log(exportData);
+    apiCalls.postData('command-chain', exportData); 
   }
 
   useEffect(()=> {

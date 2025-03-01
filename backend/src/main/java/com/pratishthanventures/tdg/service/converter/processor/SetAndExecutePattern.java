@@ -1,5 +1,6 @@
 package com.pratishthanventures.tdg.service.converter.processor;
 
+import com.pratishthanventures.tdg.model.AbstractConcordionHelper;
 import com.pratishthanventures.tdg.model.CommandChain;
 import com.pratishthanventures.tdg.model.Parameter;
 import com.pratishthanventures.tdg.model.SetAndExecute;
@@ -47,5 +48,10 @@ public class SetAndExecutePattern implements Pattern {
             valueCell.setCellValue(setAndExecute.getDisplayText());
             addNoteToCell(workbook, sheetName, valueCell, setAndExecute.getConcordionCommand());
         }
+    }
+
+    @Override
+    public AbstractConcordionHelper getPattern(){
+        return this.setAndExecute;
     }
 }

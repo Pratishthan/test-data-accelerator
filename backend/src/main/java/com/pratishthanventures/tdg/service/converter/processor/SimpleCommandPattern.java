@@ -1,5 +1,6 @@
 package com.pratishthanventures.tdg.service.converter.processor;
 
+import com.pratishthanventures.tdg.model.AbstractConcordionHelper;
 import com.pratishthanventures.tdg.model.CommandChain;
 import com.pratishthanventures.tdg.model.SimpleCommand;
 import com.pratishthanventures.tdg.service.converter.Pattern;
@@ -28,5 +29,10 @@ public class SimpleCommandPattern implements Pattern {
         cell.setCellValue(simpleCommand.getText());
 
         Note.addNoteToCell(workbook, sheetName, cell, simpleCommand.getConcordionCommand());
+    }
+
+    @Override
+    public AbstractConcordionHelper getPattern(){
+        return this.simpleCommand;
     }
 }

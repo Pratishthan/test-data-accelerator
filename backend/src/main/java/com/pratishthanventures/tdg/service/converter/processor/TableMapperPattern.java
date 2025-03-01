@@ -1,5 +1,6 @@
 package com.pratishthanventures.tdg.service.converter.processor;
 
+import com.pratishthanventures.tdg.model.AbstractConcordionHelper;
 import com.pratishthanventures.tdg.model.Command;
 import com.pratishthanventures.tdg.model.CommandChain;
 import com.pratishthanventures.tdg.model.TableMapper;
@@ -38,5 +39,10 @@ public class TableMapperPattern implements Pattern {
             tableMapper.setData(command.getData());
         }
         addTableWithNote(workbook, sheetName, commandName, tableMapper);
+    }
+
+    @Override
+    public AbstractConcordionHelper getPattern(){
+        return this.tableMapper;
     }
 }

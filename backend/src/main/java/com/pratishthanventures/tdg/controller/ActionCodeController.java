@@ -45,6 +45,8 @@ public class ActionCodeController {
         List<ActionCode> actionCodes = new ArrayList<>();
         patternMap.forEach((actionCodeName, pattern) -> {
             ActionCode actionCode = new ActionCode();
+            actionCode.setComponentName(pattern.getPattern().getComponentName());
+            actionCode.setActionCodeGroupName(pattern.getPattern().getActionCodeGroupName());
             actionCode.setCode(actionCodeName);
             if (pattern instanceof SetAndExecutePattern) {
                 actionCode.setType(PatternType.SetAndExecute);

@@ -11,6 +11,8 @@ import java.util.Map;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ActionCode {
+    private String componentName;
+    private String actionCodeGroupName;
     private String code;
     private PatternType type;
     private Map<String, Property> columnMap;

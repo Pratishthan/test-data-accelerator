@@ -3,6 +3,7 @@ package com.pratishthanventures.tdg.controller;
 import com.pratishthanventures.tdg.model.CommandChain;
 import com.pratishthanventures.tdg.service.ActionChainConverter;
 import com.pratishthanventures.tdg.util.TDGWorkbook;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,12 +15,14 @@ import java.io.ByteArrayOutputStream;
 
 @Controller
 @CrossOrigin
+@Slf4j
 @RequestMapping("/command-chain")
 public class CommandChainController {
 
     @PostMapping(produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<byte[]> generateWorkbook(@RequestBody CommandChain commandChain){
         try{
+            log.info("About to process {}", commandChain);
             ActionChainConverter actionChainConverter = new ActionChainConverter();
             TDGWorkbook workbook = actionChainConverter.process(commandChain);
             if(workbook == null){

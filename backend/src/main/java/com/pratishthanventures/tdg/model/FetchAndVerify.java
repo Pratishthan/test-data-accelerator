@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @AllArgsConstructor
@@ -13,7 +14,7 @@ import java.util.List;
 public class FetchAndVerify extends AbstractConcordionHelper {
     private String apiName;
     private List<String> parameterList;
-    private List<String> resultColumnList;
+    private Map<String, Property> resultColumnMap;
 
     public String getConcordionCommand() {
         return "(table)concordion:execute=\"#result=fetchResultList('" + apiName + "',#ROW)\"";
@@ -22,17 +23,17 @@ public class FetchAndVerify extends AbstractConcordionHelper {
     private String getVerifyCommand() {
         return """
                 (table)concordion:verify-rows="#result : resultList"
-                concordion:assertEquals="#result.""" + resultColumnList.get(0) + "\"";
+                concordion:assertEquals="#result.""" + resultColumnMap.keySet().stream().toList().get(0) + "\"";
     }
 
-    private String getAssertCommand(String resultColumn) {
-        return "concordion:assertEquals=\"#result." + resultColumn + "\"";
+    private String getAssertCommand(Property resultColumn) {
+        return "concordion:assertEquals=\"#result." + resultColumn.getTechnicalColumnName() + "\"";
     }
 
     public List<String> getVerifyCommands() {
         List<String> commands = new ArrayList<>();
         commands.add(getVerifyCommand());
-        commands.addAll(resultColumnList.stream().skip(1).map(this::getAssertCommand).toList());
+        commands.addAll(resultColumnMap.entrySet().stream().skip(1).map(x -> getAssertCommand(x.getValue())).toList());
         return commands;
     }
 

@@ -13,7 +13,7 @@ import java.util.Map;
 @NoArgsConstructor
 public class TableMapper extends AbstractConcordionHelper {
     private String tableName;
-    private Map<String, String> columnNameMap; // Map<Display Column Name & Technical Column Name for verify>
+    private Map<String, Property> columnNameMap; // Map<Display Column Name & Technical Column Name for verify>
     private List<Map<String, String>> data;
 
     public String getConcordionCommand() {
@@ -21,7 +21,7 @@ public class TableMapper extends AbstractConcordionHelper {
     }
 
     public String getConcordionVerifyCommand(String columnName) {
-        if (StringUtils.isNotBlank(columnNameMap.get(columnName))){
+        if (StringUtils.isNotBlank(columnNameMap.get(columnName).getTechnicalColumnName())){
             return "concordion:assertEquals=\"#result." + columnNameMap.get(columnName) + "\"";
         } else {
             return "";

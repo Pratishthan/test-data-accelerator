@@ -44,7 +44,7 @@ public class TableWithNote {
     public static void addTableWithNote(TDGWorkbook workbook, String sheetName, String commandName, FetchAndVerify fetchAndVerify) {
         getSeparatorRow(workbook, sheetName, commandName);
         addTableWithNote(workbook, sheetName, "Fetch-" + commandName, fetchAndVerify.getParameterList(), new ArrayList<>(), List.of(fetchAndVerify.getConcordionCommand()));
-        addTableWithNote(workbook, sheetName, "Verify-" + commandName, fetchAndVerify.getResultColumnList(), new ArrayList<>(), fetchAndVerify.getVerifyCommands());
+        addTableWithNote(workbook, sheetName, "Verify-" + commandName, fetchAndVerify.getResultColumnMap().keySet().stream().toList(), new ArrayList<>(), fetchAndVerify.getVerifyCommands());
     }
 
     public static void addTableWithNote(TDGWorkbook workbook, String sheetName,

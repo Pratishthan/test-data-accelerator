@@ -2,6 +2,7 @@ package com.pratishthanventures.tdg.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.pratishthanventures.tdg.PatternType;
+import com.pratishthanventures.tdg.model.Property;
 import lombok.Data;
 
 import java.util.List;
@@ -12,6 +13,6 @@ import java.util.Map;
 public class ActionCode {
     private String code;
     private PatternType type;
-    private List<String> columns;
+    private Map<String, Property> columnMap;
     private List<Map<String, String>> defaultData;
 }

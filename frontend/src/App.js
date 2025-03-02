@@ -9,19 +9,19 @@ import SideBar from './components/SideBar';
 import apiCalls from './utils/apiCalls'
 
 const entity = [
-  { id: 'ts', name: 'Target System Code'},
-  { id: 'cm', name: 'Collection Method Code'},
+  { id: 'ts', name: 'Target System Code' },
+  { id: 'cm', name: 'Collection Method Code' },
   { id: 'tscm', name: 'TSCM Mapping' },
   { id: 'rec', name: 'Response Error Code' },
   { id: 'ce', name: 'Collection Entity' },
 ]
 
 const predefinedSteps = [
-  { id: 'tsSetEntityData', srNo : 1, name: 'Input Data', entityId : "ts" },
-  { id: 'tsEndCreateRequest', srNo : 2, name: 'Send Create Request', entityId : "ts" },
-  { id: 'cmProcessPayment', srNo : 3,name: 'Process Payment', entityId : "cm"  },
-  { id: 'cmSendConfirmation',srNo : 4,name: 'Send Confirmation', entityId : "cm"  },
-  { id: 'cmGenerateReport', srNo : 5,name: 'Generate Report', entityId : "cm"  },
+  { id: 'tsSetEntityData', srNo: 1, name: 'Input Data', entityId: "ts" },
+  { id: 'tsEndCreateRequest', srNo: 2, name: 'Send Create Request', entityId: "ts" },
+  { id: 'cmProcessPayment', srNo: 3, name: 'Process Payment', entityId: "cm" },
+  { id: 'cmSendConfirmation', srNo: 4, name: 'Send Confirmation', entityId: "cm" },
+  { id: 'cmGenerateReport', srNo: 5, name: 'Generate Report', entityId: "cm" },
 ];
 const initGroupId = Math.random();
 
@@ -30,16 +30,16 @@ function App() {
   const [availableSteps, setAvailableSteps] = useState([]);
   const [flowSteps, setFlowSteps] = useState([]);
   const [groupSerialNumber, setGroupSerialNumber] = useState(1);
-  const [groups,setGroups] = useState([{id: initGroupId, groupName: "", minimised: true, srNo: 1}])
-  const [selectedGroup,setSelectedGroup] = useState(initGroupId)
+  const [groups, setGroups] = useState([{ id: initGroupId, groupName: "", minimised: true, srNo: 1 }])
+  const [selectedGroup, setSelectedGroup] = useState(initGroupId)
   const [selectedEntity, setSelectedEntity] = useState({});
   const [totalNodesUsed, setTotalNodesUsed] = useState(1)
 
   const actionCodes = useFetchActionCodes();
 
   const handleStepDataChange = (id, key, value) => {
-      const step = flowSteps.find(step => step.id === id);
-      setFlowSteps([...flowSteps.filter(step=> step.id !==id), {...step, [key] : value} ])
+    const step = flowSteps.find(step => step.id === id);
+    setFlowSteps([...flowSteps.filter(step => step.id !== id), { ...step, [key]: value }])
   }
 
   const handleFlowDrop = (e, targetIndex) => {
@@ -50,9 +50,9 @@ function App() {
       const filteredSteps = flowSteps.filter(step => step.id !== draggedStep.id);
       const stepsBeforeTargetStep = filteredSteps.slice(0, targetIndex);
       const stepsAfterTargetStep = filteredSteps.slice(targetIndex);
-      const updatedIndexBeforeTargetIndex = stepsBeforeTargetStep.map((step,index) => {return {...step, order : index}})
-      const updatedIndexAfterTargetIndex = stepsAfterTargetStep.map((step,index) => {return {...step, order : targetIndex + 1 + index}})
-      setFlowSteps([...updatedIndexBeforeTargetIndex, {...draggedStep, order : targetIndex}, ...updatedIndexAfterTargetIndex])
+      const updatedIndexBeforeTargetIndex = stepsBeforeTargetStep.map((step, index) => { return { ...step, order: index } })
+      const updatedIndexAfterTargetIndex = stepsAfterTargetStep.map((step, index) => { return { ...step, order: targetIndex + 1 + index } })
+      setFlowSteps([...updatedIndexBeforeTargetIndex, { ...draggedStep, order: targetIndex }, ...updatedIndexAfterTargetIndex])
     }
   };
 
@@ -63,12 +63,12 @@ function App() {
   const handleDrop = (e) => {
     e.preventDefault();
     const stepId = e.dataTransfer.getData('stepId');
-    const groupId =  parseFloat(e.target.id);
+    const groupId = parseFloat(e.target.id);
     const step = availableSteps.find(s => s.id === stepId);
     const group = groups.find(s => s.id === groupId);
     setSelectedGroup(group.id)
-    step && setFlowSteps([...flowSteps, {...step, id : step.id + Math.random(), groupId}]);
-    group && setGroups([...groups.filter(gp => gp.id !== group.id), { ...group, minimised: false}]);
+    step && setFlowSteps([...flowSteps, { ...step, id: step.id + Math.random(), groupId }]);
+    group && setGroups([...groups.filter(gp => gp.id !== group.id), { ...group, minimised: false }]);
   };
 
   const handleDragOver = (e) => {
@@ -89,13 +89,13 @@ function App() {
       const filteredSteps = flowSteps.filter(step => step.id !== removedStep.id);
       const stepsBeforeTargetStep = filteredSteps.slice(0, removedStep.order);
       const stepsAfterTargetStep = filteredSteps.slice(removedStep.order);
-      const updatedIndexBeforeTargetIndex = stepsBeforeTargetStep.map((step,index) => {return {...step, order : index}})
-      const updatedIndexAfterTargetIndex = stepsAfterTargetStep.map((step,index) => {return {...step, order : removedStep.order + index}})
+      const updatedIndexBeforeTargetIndex = stepsBeforeTargetStep.map((step, index) => { return { ...step, order: index } })
+      const updatedIndexAfterTargetIndex = stepsAfterTargetStep.map((step, index) => { return { ...step, order: removedStep.order + index } })
       setFlowSteps([...updatedIndexBeforeTargetIndex, ...updatedIndexAfterTargetIndex])
     }
   };
 
-  const handleDeleteGroup = (e,groupId) => {
+  const handleDeleteGroup = (e, groupId) => {
     e.stopPropagation()
     setFlowSteps(flowSteps.filter(step => step.groupId !== groupId));
     setGroups(groups.filter(group => group.id !== groupId))
@@ -103,20 +103,20 @@ function App() {
   };
 
   const handleGroupNameChange = (groupId, groupName) => {
-    setGroups( [...groups.filter(group => group.id !== groupId), { ...groups.filter(group => group.id === groupId)[0], groupName}])
+    setGroups([...groups.filter(group => group.id !== groupId), { ...groups.filter(group => group.id === groupId)[0], groupName }])
   };
 
   const handleAddGroup = () => {
     const groupId = Math.random();
     setSelectedGroup(groupId);
-    setGroupSerialNumber(groupSerialNumber +1)
-    setGroups([...groups, {id: groupId, groupName: "", minimised: true, srNo: groupSerialNumber +1}])
+    setGroupSerialNumber(groupSerialNumber + 1)
+    setGroups([...groups, { id: groupId, groupName: "", minimised: true, srNo: groupSerialNumber + 1 }])
   };
 
   const handleSelectGroup = (groupId) => {
     setSelectedGroup(groupId)
     const group = groups.find(g => g.id === selectedGroup);
-    group && setGroups([...groups.filter(gp => gp.id !== group.id), { ...group, minimised: false}]);
+    group && setGroups([...groups.filter(gp => gp.id !== group.id), { ...group, minimised: false }]);
   };
 
   const handleAddStep = (step) => {
@@ -124,80 +124,100 @@ function App() {
       window.alert("select group first")
       return
     }
-    setFlowSteps([...flowSteps, {...step, label: step.label + " " + totalNodesUsed , id : step.id + Math.random(), groupId : selectedGroup, order: Object.keys(flowSteps).length + 1}]);
+    setFlowSteps([...flowSteps, { ...step, label: step.label + " " + totalNodesUsed, id: step.id + Math.random(), groupId: selectedGroup, order: Object.keys(flowSteps).length + 1 }]);
     const group = groups.find(s => s.id === selectedGroup);
-    group && setGroups([...groups.filter(gp => gp.id !== group.id), { ...group, minimised: false}]);
-    setTotalNodesUsed(totalNodesUsed+1)
+    group && setGroups([...groups.filter(gp => gp.id !== group.id), { ...group, minimised: false }]);
+    setTotalNodesUsed(totalNodesUsed + 1)
   };
 
-  const handleMinimised = (e,groupId) => {
+  const handleMinimised = (e, groupId) => {
     e.stopPropagation();
     const group = groups.find(s => s.id === groupId);
-    group && setGroups([...groups.filter(gp => gp.id !== groupId), { ...group, minimised: true}]);
+    group && setGroups([...groups.filter(gp => gp.id !== groupId), { ...group, minimised: true }]);
   }
 
   const handleExport = () => {
-    const exportData = { 
-      "excelFileName" : "Generated.xlsx",
+    const exportData = {
+      "excelFileName": "Generated.xlsx",
       "sheetName": "Data",
-      "commands" : {}
-    } 
+      "commands": {}
+    }
     flowSteps
-    .sort(step => step.a - step.b)
-    .forEach( step => {
-      exportData.commands[step.label] = step
-    })
-    if (Object.keys(exportData.commands).length  == 0) {
+      .sort(step => step.a - step.b)
+      .forEach(step => {
+        exportData.commands[step.label] = step
+      })
+    if (Object.keys(exportData.commands).length === 0) {
       window.alert("Add nodes!");
       return;
     }
-    apiCalls.postData('command-chain', exportData); 
+    apiCalls.postData('command-chain', exportData)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.blob();
+      })
+      .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = exportData.excelFileName;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url); // Clean up the URL object
+        a.remove();
+      })
+      .catch(error => {
+        console.error('Error exporting data:', error);
+        window.alert('Failed to download file: ' + error.message);
+      });
   }
 
-  useEffect(()=> {
+  useEffect(() => {
     setSelectedEntity(entity[0]);
-  },[])
+  }, [])
 
-  useEffect(()=> {
+  useEffect(() => {
     const div = document.getElementById(selectedGroup);
     div.scrollTo({ top: div.scrollHeight, behavior: "smooth" });
-  },[groups])
+  }, [groups])
 
   useEffect(() => {
     setAvailableSteps(
-      predefinedSteps.filter(step => step.entityId && selectedEntity && selectedEntity.id && selectedEntity.id === step.entityId ) 
+      predefinedSteps.filter(step => step.entityId && selectedEntity && selectedEntity.id && selectedEntity.id === step.entityId)
     )
   }, [selectedEntity])
 
 
   return (
     <div className="app">
-      <Header flowSteps={flowSteps} handleExport={handleExport}/> 
+      <Header flowSteps={flowSteps} handleExport={handleExport} />
       <div className='d-flex flex-row h-webkit-height-available'>
-        <SideBar actionCodes={actionCodes} addStep={handleAddStep}/>
+        <SideBar actionCodes={actionCodes} addStep={handleAddStep} />
         <div className="container">
           <div className="flow-panel">
             <h2>Your Flow</h2>
             {
-                groups
-                  .sort((g1,g2) => g1.srNo - g2.srNo)
-                  .map((group, index) =>
-                    <Group
-                        key={index}
-                        group={group}
-                        flowSteps= {flowSteps.filter(step =>  { return step.groupId === group.id} )}
-                        handleDrop={handleDrop}
-                        handleDragOver={handleDragOver}
-                        handleDragStart={handleDragStart}
-                        handleFlowDrop={handleFlowDrop}
-                        handleFlowDragOver={handleFlowDragOver}
-                        removeStep={removeStep}
-                        handleDeleteGroup={handleDeleteGroup}
-                        handleGroupNameChange={handleGroupNameChange}
-                        handleSelectGroup={handleSelectGroup}
-                        handleMinimised={handleMinimised}
-                        handleStepDataChange={handleStepDataChange}
-                    />
+              groups
+                .sort((g1, g2) => g1.srNo - g2.srNo)
+                .map((group, index) =>
+                  <Group
+                    key={index}
+                    group={group}
+                    flowSteps={flowSteps.filter(step => { return step.groupId === group.id })}
+                    handleDrop={handleDrop}
+                    handleDragOver={handleDragOver}
+                    handleDragStart={handleDragStart}
+                    handleFlowDrop={handleFlowDrop}
+                    handleFlowDragOver={handleFlowDragOver}
+                    removeStep={removeStep}
+                    handleDeleteGroup={handleDeleteGroup}
+                    handleGroupNameChange={handleGroupNameChange}
+                    handleSelectGroup={handleSelectGroup}
+                    handleMinimised={handleMinimised}
+                    handleStepDataChange={handleStepDataChange}
+                  />
                 )
             }
           </div>

@@ -12,8 +12,11 @@ import io.swagger.v3.parser.core.models.ParseOptions;
 import io.swagger.v3.parser.core.models.SwaggerParseResult;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
+import org.json.JSONObject;
 
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -97,14 +100,20 @@ public class Parser {
             });
         }
 
+        JSONObject jsonObject = new JSONObject(pathPropertyListMap);
+        String orgJsonData = jsonObject.toString();
 
-        log.info("Property Map {}", pathPropertyListMap);
+        log.info("Property Map {}", orgJsonData);
     }
 
     private static <T> void extractProperties(Schema<T> schema, String path, String endPoint, ParameterType parameterType) {
         if (ObjectUtils.isNotEmpty(schema) && ObjectUtils.isNotEmpty(schema.getProperties())) {
             List<Property> finalPropertyList = pathPropertyListMap.get(endPoint).get(parameterType);
             schema.getProperties().forEach((kp, prop) -> {
+                Map<String, String> requiredMap = new HashMap<>();
+                if (ObjectUtils.isNotEmpty(schema.getRequired())) {
+                    requiredMap = schema.getRequired().stream().collect(Collectors.toMap(Function.identity(), Function.identity()));
+                }
                 if (prop instanceof ArraySchema) {
                     extractProperties(((ArraySchema) prop).getItems(), path + ":" + kp, endPoint, parameterType);
                 } else if (prop instanceof ComposedSchema) {
@@ -115,6 +124,7 @@ public class Parser {
                     log.info("EndPoint: {} Property: {}:{}", endPoint, path, kp);
                     Property property = new Property();
                     property.setTechnicalColumnName(kp);
+                    property.setIsMandatory(requiredMap.containsKey(kp));
                     property.setDerivedDataType(path);
                     finalPropertyList.add(property);
                 }

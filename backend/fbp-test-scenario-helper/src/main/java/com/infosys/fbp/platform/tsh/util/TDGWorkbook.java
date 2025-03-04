@@ -48,12 +48,20 @@ public class TDGWorkbook {
     }
 
     public Row getNewRow(String sheetName) {
+        sheetLastRow.replace(sheetName, sheetLastRow.get(sheetName) + 1);
         return sheetMap.get(sheetName).createRow(sheetLastRow.get(sheetName));
     }
 
     public static CellStyle createGreenStyle(Workbook workbook) {
         CellStyle style = workbook.createCellStyle();
         style.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex());
+        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        return style;
+    }
+
+    public CellStyle createBlueStyle() {
+        CellStyle style = workbook.createCellStyle();
+        style.setFillForegroundColor(IndexedColors.LIGHT_TURQUOISE.getIndex());
         style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         return style;
     }

@@ -182,6 +182,7 @@ public class OpenAPISpecParser {
             List<Property> finalPropertyList = "path".equals(parameter.getIn()) ? pathPropertyList : queryPropertyList;
             log.info("EndPoint: {} Parameter: {}", endPoint, parameter.getName());
             Property property = new Property();
+            property.setBusinessColumnName(parameter.getName());
             property.setTechnicalColumnName(parameter.getName());
             property.setDerivedDataType(parameter.getDescription());
             property.setIsMandatory(parameter.getRequired());

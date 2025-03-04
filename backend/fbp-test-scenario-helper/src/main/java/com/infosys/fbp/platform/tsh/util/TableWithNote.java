@@ -1,10 +1,7 @@
 package com.infosys.fbp.platform.tsh.util;
 
 import com.infosys.fbp.platform.tsh.PropertyType;
-import com.infosys.fbp.platform.tsh.model.FetchAndVerify;
-import com.infosys.fbp.platform.tsh.model.PostAndVerify;
-import com.infosys.fbp.platform.tsh.model.Property;
-import com.infosys.fbp.platform.tsh.model.TableMapper;
+import com.infosys.fbp.platform.tsh.model.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -20,9 +17,11 @@ import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTTableStyleInfo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.infosys.fbp.platform.tsh.Constants.*;
 import static com.infosys.fbp.platform.tsh.util.Note.addNoteToCell;
+import static com.infosys.fbp.platform.tsh.util.ParamCellList.addParamCellList;
 import static com.infosys.fbp.platform.tsh.util.TDGWorkbook.getSeparatorRow;
 
 @Slf4j
@@ -52,8 +51,16 @@ public class TableWithNote {
 
     public static void addTableWithNote(TDGWorkbook workbook, String sheetName, String commandName, FetchAndVerify fetchAndVerify) {
         getSeparatorRow(workbook, sheetName, commandName);
-        addTableWithNote(workbook, sheetName, "Fetch-" + commandName, fetchAndVerify.getPropertyListMap().get(PropertyType.PathParamList).stream().map(Property::getBusinessColumnName).toList(), new ArrayList<>(), List.of(fetchAndVerify.getConcordionCommand()));
-        addTableWithNote(workbook, sheetName, "Verify-" + commandName, fetchAndVerify.getPropertyListMap().get(PropertyType.ResponseBodyColumnList).stream().map(Property::getBusinessColumnName).toList(), new ArrayList<>(), fetchAndVerify.getVerifyCommands());
+        List<Parameter> paramColumnList = new ArrayList<>();
+        paramColumnList.addAll(fetchAndVerify.getPropertyListMap().get(PropertyType.PathParamList).stream().map(Property::getParameter).toList());
+        paramColumnList.addAll(fetchAndVerify.getPropertyListMap().get(PropertyType.QueryParamList).stream().map(Property::getParameter).toList());
+        if (!paramColumnList.isEmpty()) {
+            addParamCellList(workbook, sheetName, paramColumnList);
+        }
+        if(!fetchAndVerify.getPropertyListMap().get(PropertyType.RequestBodyColumnList).isEmpty()){
+            addTableWithNote(workbook, sheetName, "Fetch-Request-" + commandName, fetchAndVerify.getPropertyListMap().get(PropertyType.RequestBodyColumnList).stream().map(Property::getBusinessColumnName).toList(), new ArrayList<>(), fetchAndVerify.getVerifyCommands());
+        }
+        addTableWithNote(workbook, sheetName, "Verify-" + commandName, fetchAndVerify.getPropertyListMap().get(PropertyType.ResponseBodyColumnList).stream().map(Property::getBusinessColumnName).collect(Collectors.toSet()).stream().toList(), new ArrayList<>(), fetchAndVerify.getVerifyCommands());
     }
 
     public static void addTableWithNote(TDGWorkbook workbook, String sheetName,

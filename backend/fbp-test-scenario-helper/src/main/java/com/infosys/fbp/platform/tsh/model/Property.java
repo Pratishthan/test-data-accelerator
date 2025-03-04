@@ -15,4 +15,7 @@ public class Property {
     private Boolean isMandatory;
     private String derivedDataType;
 
+    public Parameter getParameter() {
+        return new Parameter(businessColumnName, businessColumnName, "");
+    }
 }

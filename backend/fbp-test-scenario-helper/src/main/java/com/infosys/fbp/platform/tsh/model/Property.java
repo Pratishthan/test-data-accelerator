@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Property {
+    private String businessColumnName;
     private String technicalColumnName;
     private Boolean isMandatory;
     private String derivedDataType;

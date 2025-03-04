@@ -164,6 +164,7 @@ public class OpenAPISpecParser {
                 } else {
                     log.info("EndPoint: {} Property: {}:{}", endPoint, path, kp);
                     Property property = new Property();
+                    property.setBusinessColumnName(kp); // todo: derive business column name
                     property.setTechnicalColumnName(kp);
                     property.setIsMandatory(requiredMap.containsKey(kp));
                     property.setDerivedDataType(path);

@@ -2,11 +2,13 @@ package com.infosys.fbp.platform.tsh.model;
 
 
 import com.infosys.fbp.platform.tsh.PatternType;
+import com.infosys.fbp.platform.tsh.PropertyType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +19,6 @@ public class Command {
     private String commandName;
     private String actionCode;
     private PatternType type;
-    private List<String> selectedColumns = new ArrayList<>();
+    private EnumMap<PropertyType, List<String>> propertyListMap;
     private List<Map<String, String>> data = new ArrayList<>();
 }

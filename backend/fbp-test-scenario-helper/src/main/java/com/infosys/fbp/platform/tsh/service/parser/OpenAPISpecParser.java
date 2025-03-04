@@ -88,7 +88,7 @@ public class OpenAPISpecParser {
                     postActionCode.setActionCodeGroupName(value.getPost().getTags().get(0));
                     postActionCode.setActionCode(value.getPost().getOperationId());
                     postActionCode.setEndPoint(key);
-                    postActionCode.setType(PatternType.FetchAndVerify);
+                    postActionCode.setType(PatternType.PostAndVerify);
 
                     actionCodeMap.put(value.getPost().getOperationId(), postActionCode);
 
@@ -111,7 +111,8 @@ public class OpenAPISpecParser {
                                 postActionCode.getPropertyListMap().get(PropertyType.PathParamList));
                     }
 
-                } else if (ObjectUtils.isNotEmpty(value.getGet())) {
+                }
+                if (ObjectUtils.isNotEmpty(value.getGet())) {
 
                     ActionCode getActionCode = createEmptyActionCode(component);
                     getActionCode.setActionCodeGroupName(value.getGet().getTags().get(0));

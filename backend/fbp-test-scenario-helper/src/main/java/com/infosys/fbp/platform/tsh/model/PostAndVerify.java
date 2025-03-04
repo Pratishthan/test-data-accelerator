@@ -12,19 +12,18 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FetchAndVerify extends AbstractConcordionHelper {
+public class PostAndVerify extends AbstractConcordionHelper {
     private String apiName;
     private EnumMap<PropertyType, List<Property>> propertyListMap;
 
-
     public String getConcordionCommand() {
-        return "(table)concordion:execute=\"#result=fetchResultList('" + apiName + "',#ROW)\"";
+        return "(table)concordion:execute=\"#result=callPostApi('" + apiName + "',#ROW)\"";
     }
 
     private String getVerifyCommand() {
         return """
                 (table)concordion:verify-rows="#result : resultList"
-                concordion:assertEquals="#result.""" + propertyListMap.get(PropertyType.ResponseBodyColumnList).stream().toList().get(0) + "\"";
+                concordion:assertEquals="#result.""" + propertyListMap.get(PropertyType.RequestBodyColumnList).get(0) + "\"";
     }
 
     private String getAssertCommand(Property resultColumn) {
@@ -34,7 +33,7 @@ public class FetchAndVerify extends AbstractConcordionHelper {
     public List<String> getVerifyCommands() {
         List<String> commands = new ArrayList<>();
         commands.add(getVerifyCommand());
-        commands.addAll(propertyListMap.get(PropertyType.ResponseBodyColumnList).stream().skip(1).map(this::getAssertCommand).toList());
+        commands.addAll(propertyListMap.get(PropertyType.RequestBodyColumnList).stream().skip(1).map(this::getAssertCommand).toList());
         return commands;
     }
 

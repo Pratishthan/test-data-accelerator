@@ -1,6 +1,9 @@
 package com.infosys.fbp.platform.tsh.util;
 
+import com.infosys.fbp.platform.tsh.PropertyType;
 import com.infosys.fbp.platform.tsh.model.FetchAndVerify;
+import com.infosys.fbp.platform.tsh.model.PostAndVerify;
+import com.infosys.fbp.platform.tsh.model.Property;
 import com.infosys.fbp.platform.tsh.model.TableMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
@@ -41,10 +44,16 @@ public class TableWithNote {
         addTableWithNote(workbook, sheetName, commandName, columnNameList, tableMapper.getData(), verifyCommandList);
     }
 
+    public static void addTableWithNote(TDGWorkbook workbook, String sheetName, String commandName, PostAndVerify postAndVerify) {
+        getSeparatorRow(workbook, sheetName, commandName);
+        addTableWithNote(workbook, sheetName, "Post-" + commandName, postAndVerify.getPropertyListMap().get(PropertyType.RequestBodyColumnList).stream().map(Property::getBusinessColumnName).toList(), new ArrayList<>(), List.of(postAndVerify.getConcordionCommand()));
+        addTableWithNote(workbook, sheetName, "Verify-" + commandName, postAndVerify.getPropertyListMap().get(PropertyType.ResponseBodyColumnList).stream().map(Property::getBusinessColumnName).toList(), new ArrayList<>(), postAndVerify.getVerifyCommands());
+    }
+
     public static void addTableWithNote(TDGWorkbook workbook, String sheetName, String commandName, FetchAndVerify fetchAndVerify) {
         getSeparatorRow(workbook, sheetName, commandName);
-        addTableWithNote(workbook, sheetName, "Fetch-" + commandName, fetchAndVerify.getParameterList(), new ArrayList<>(), List.of(fetchAndVerify.getConcordionCommand()));
-        addTableWithNote(workbook, sheetName, "Verify-" + commandName, fetchAndVerify.getResultColumnMap().keySet().stream().toList(), new ArrayList<>(), fetchAndVerify.getVerifyCommands());
+        addTableWithNote(workbook, sheetName, "Fetch-" + commandName, fetchAndVerify.getPropertyListMap().get(PropertyType.PathParamList).stream().map(Property::getBusinessColumnName).toList(), new ArrayList<>(), List.of(fetchAndVerify.getConcordionCommand()));
+        addTableWithNote(workbook, sheetName, "Verify-" + commandName, fetchAndVerify.getPropertyListMap().get(PropertyType.ResponseBodyColumnList).stream().map(Property::getBusinessColumnName).toList(), new ArrayList<>(), fetchAndVerify.getVerifyCommands());
     }
 
     public static void addTableWithNote(TDGWorkbook workbook, String sheetName,

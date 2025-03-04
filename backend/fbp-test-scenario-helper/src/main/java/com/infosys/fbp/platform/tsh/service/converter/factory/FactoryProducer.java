@@ -7,6 +7,7 @@ public class FactoryProducer {
         return switch (pattern) {
             case SimpleCommand -> new SimpleCommandFactory();
             case TableMapper -> new TableMapperFactory();
+            case PostAndVerify -> new PostAndVerifyFactory();
             case FetchAndVerify -> new FetchAndVerifyFactory();
             case SetAndExecute -> new SetAndExecuteFactory();
         };

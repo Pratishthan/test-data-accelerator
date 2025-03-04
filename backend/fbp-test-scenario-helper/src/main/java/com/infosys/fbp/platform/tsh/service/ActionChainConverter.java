@@ -27,7 +27,7 @@ public class ActionChainConverter {
     }
 
     @SneakyThrows
-    public TDGWorkbook process(String resourcePath){
+    public TDGWorkbook process(String resourcePath) {
         CommandChain commandChain = objectMapper.readValue(getContent(resourcePath), CommandChain.class);
         TDGWorkbook workbook = process(commandChain);
         log.info("About to write workbook to file {}", commandChain.getExcelFileName());
@@ -40,15 +40,18 @@ public class ActionChainConverter {
 
         AbstractFactory simpleCommandFactory = FactoryProducer.getFactory(SimpleCommand);
         AbstractFactory tableMapperFactory = FactoryProducer.getFactory(TableMapper);
+        AbstractFactory postAndVerifyFactory = FactoryProducer.getFactory(PostAndVerify);
         AbstractFactory fetchAndVerifyFactory = FactoryProducer.getFactory(FetchAndVerify);
         AbstractFactory setAndExecuteFactory = FactoryProducer.getFactory(SetAndExecute);
         try {
             TDGWorkbook workbook = new TDGWorkbook(commandChain.getSheetName(), commandChain.getExcelFileName());
 
             commandChain.getCommands().forEach((commandName, command) -> {
+                log.info("About to process {}", command.getActionCode());
                 Pattern pattern = switch (command.getType()) {
                     case SimpleCommand -> simpleCommandFactory.getPattern(command.getActionCode());
                     case TableMapper -> tableMapperFactory.getPattern(command.getActionCode());
+                    case PostAndVerify -> postAndVerifyFactory.getPattern(command.getActionCode());
                     case FetchAndVerify -> fetchAndVerifyFactory.getPattern(command.getActionCode());
                     case SetAndExecute -> setAndExecuteFactory.getPattern(command.getActionCode());
                 };

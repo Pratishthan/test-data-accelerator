@@ -5,9 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
+import java.util.*;
 
 @Data
 @AllArgsConstructor
@@ -23,7 +21,7 @@ public class PostAndVerify extends AbstractConcordionHelper {
     private String getVerifyCommand() {
         return """
                 (table)concordion:verify-rows="#result : resultList"
-                concordion:assertEquals="#result.""" + propertyListMap.get(PropertyType.RequestBodyColumnList).get(0) + "\"";
+                concordion:assertEquals="#result.""" + propertyListMap.get(PropertyType.RequestBodyColumnList).get(0).getTechnicalColumnName() + "\"";
     }
 
     private String getAssertCommand(Property resultColumn) {
@@ -37,4 +35,25 @@ public class PostAndVerify extends AbstractConcordionHelper {
         return commands;
     }
 
+    public Map<String, String> getColumnMapForRequest() {
+        Map<String, String> columnWithCommandMap = new LinkedHashMap<>();
+        if(!propertyListMap.get(PropertyType.RequestBodyColumnList).isEmpty()) {
+            Property idxProperty = propertyListMap.get(PropertyType.RequestBodyColumnList).get(0);
+            columnWithCommandMap.put(idxProperty.getBusinessColumnName(), getConcordionCommand());
+            propertyListMap.get(PropertyType.RequestBodyColumnList).stream().skip(1).forEach(property ->
+                    columnWithCommandMap.putIfAbsent(property.getBusinessColumnName(), ""));
+        }
+        return columnWithCommandMap;
+    }
+
+    public Map<String, String> getColumnMapForVerify() {
+        Map<String, String> columnWithCommandMap = new LinkedHashMap<>();
+        if(!propertyListMap.get(PropertyType.ResponseBodyColumnList).isEmpty()) {
+            Property idxProperty = propertyListMap.get(PropertyType.ResponseBodyColumnList).get(0);
+            columnWithCommandMap.put(idxProperty.getBusinessColumnName(), getVerifyCommand());
+            propertyListMap.get(PropertyType.ResponseBodyColumnList).stream().skip(1).forEach(property ->
+                    columnWithCommandMap.putIfAbsent(property.getBusinessColumnName(), getAssertCommand(property)));
+        }
+        return columnWithCommandMap;
+    }
 }

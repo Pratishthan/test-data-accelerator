@@ -15,9 +15,10 @@ import org.apache.poi.xssf.usermodel.XSSFTable;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTTableStyleInfo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.infosys.fbp.platform.tsh.Constants.*;
 import static com.infosys.fbp.platform.tsh.util.Note.addNoteToCell;
@@ -26,27 +27,42 @@ import static com.infosys.fbp.platform.tsh.util.TDGWorkbook.getSeparatorRow;
 
 @Slf4j
 public class TableWithNote {
+
     public static void addTableWithNote(TDGWorkbook workbook, String sheetName, String commandName, TableMapper tableMapper) {
         List<String> columnNameList = new ArrayList<>(tableMapper.getColumnNameMap().keySet());
         List<String> verifyCommandList = new ArrayList<>();
 
+        Map<String, String> columnWithCommandMap = new HashMap<>();
+
         columnNameList.forEach(columnName -> {
             if (verifyCommandList.isEmpty()) {
-                verifyCommandList.add(tableMapper.getConcordionCommand()); // #ROW is applicable for 1st column only
+                columnWithCommandMap.put(columnName, tableMapper.getConcordionCommand());
             } else if (StringUtils.isNotBlank(tableMapper.getConcordionVerifyCommand(columnName))) {
-                verifyCommandList.add(tableMapper.getConcordionVerifyCommand(columnName));
+                columnWithCommandMap.put(columnName, tableMapper.getConcordionVerifyCommand(columnName));
             } else {
-                verifyCommandList.add("");
+                columnWithCommandMap.put(columnName, "");
             }
         });
         getSeparatorRow(workbook, sheetName, commandName);
-        addTableWithNote(workbook, sheetName, commandName, columnNameList, tableMapper.getData(), verifyCommandList);
+        addTableWithNote(workbook, sheetName, commandName, columnWithCommandMap, tableMapper.getData());
     }
 
     public static void addTableWithNote(TDGWorkbook workbook, String sheetName, String commandName, PostAndVerify postAndVerify) {
         getSeparatorRow(workbook, sheetName, commandName);
-        addTableWithNote(workbook, sheetName, "Post-" + commandName, postAndVerify.getPropertyListMap().get(PropertyType.RequestBodyColumnList).stream().map(Property::getBusinessColumnName).toList(), new ArrayList<>(), List.of(postAndVerify.getConcordionCommand()));
-        addTableWithNote(workbook, sheetName, "Verify-" + commandName, postAndVerify.getPropertyListMap().get(PropertyType.ResponseBodyColumnList).stream().map(Property::getBusinessColumnName).toList(), new ArrayList<>(), postAndVerify.getVerifyCommands());
+        List<Parameter> paramColumnList = new ArrayList<>();
+        paramColumnList.addAll(postAndVerify.getPropertyListMap().get(PropertyType.PathParamList).stream().map(Property::getParameter).toList());
+        paramColumnList.addAll(postAndVerify.getPropertyListMap().get(PropertyType.QueryParamList).stream().map(Property::getParameter).toList());
+        if (!paramColumnList.isEmpty()) {
+            addParamCellList(workbook, sheetName, paramColumnList);
+        }
+        if (!postAndVerify.getPropertyListMap().get(PropertyType.RequestBodyColumnList).isEmpty()) {
+            addTableWithNote(workbook, sheetName, "Request-" + commandName, postAndVerify.getColumnMapForRequest(), new ArrayList<>());
+        }
+
+        if (!postAndVerify.getPropertyListMap().get(PropertyType.ResponseBodyColumnList).isEmpty()) {
+            addTableWithNote(workbook, sheetName, "Verify-" + commandName, postAndVerify.getColumnMapForVerify(), new ArrayList<>());
+        }
+
     }
 
     public static void addTableWithNote(TDGWorkbook workbook, String sheetName, String commandName, FetchAndVerify fetchAndVerify) {
@@ -57,17 +73,16 @@ public class TableWithNote {
         if (!paramColumnList.isEmpty()) {
             addParamCellList(workbook, sheetName, paramColumnList);
         }
-        if(!fetchAndVerify.getPropertyListMap().get(PropertyType.RequestBodyColumnList).isEmpty()){
-            addTableWithNote(workbook, sheetName, "Fetch-Request-" + commandName, fetchAndVerify.getPropertyListMap().get(PropertyType.RequestBodyColumnList).stream().map(Property::getBusinessColumnName).toList(), new ArrayList<>(), fetchAndVerify.getVerifyCommands());
+        if (!fetchAndVerify.getPropertyListMap().get(PropertyType.RequestBodyColumnList).isEmpty()) {
+            addTableWithNote(workbook, sheetName, "Fetch-Request-" + commandName, fetchAndVerify.getColumnMapForRequest(), new ArrayList<>());
         }
-        addTableWithNote(workbook, sheetName, "Verify-" + commandName, fetchAndVerify.getPropertyListMap().get(PropertyType.ResponseBodyColumnList).stream().map(Property::getBusinessColumnName).collect(Collectors.toSet()).stream().toList(), new ArrayList<>(), fetchAndVerify.getVerifyCommands());
+        addTableWithNote(workbook, sheetName, "Verify-" + commandName, fetchAndVerify.getColumnMapForVerify(), new ArrayList<>());
     }
 
     public static void addTableWithNote(TDGWorkbook workbook, String sheetName,
                                         String tableName,
-                                        List<String> tableColumnList,
-                                        List<Map<String, String>> data,
-                                        List<String> concordionCommandList) {
+                                        Map<String, String> columnWithCommandMap,
+                                        List<Map<String, String>> data) {
         // Empty row above
 
         Integer lastRow = workbook.getSheetLastRow().get(sheetName);
@@ -85,38 +100,43 @@ public class TableWithNote {
             }
         }
 
+        Map<String, Integer> columnIndex = new HashMap<>();
 
         // Create header row
         Row headerRow = sheet.createRow(lastRow++);
-        for (int i = 0; i < tableColumnList.size(); i++) {
-            Cell cell = headerRow.createCell(i + START_COLUMN);
-            cell.setCellValue(tableColumnList.get(i));
-            // Add note to cell if needed
-            if (concordionCommandList.size() > i && StringUtils.isNotBlank(concordionCommandList.get(i))) {
-                addNoteToCell(workbook, sheetName, cell, concordionCommandList.get(i));
+        AtomicInteger i = new AtomicInteger();
+        columnWithCommandMap.forEach((col, command) -> {
+            Cell cell = headerRow.createCell(i.get() + START_COLUMN);
+            cell.setCellValue(col);
+            if (StringUtils.isNotBlank(command)) {
+                addNoteToCell(workbook, sheetName, cell, command);
             }
-        }
+            columnIndex.put(col, i.get());
+            i.getAndIncrement();
+        });
 
 
         // Create data rows
         for (Map<String, String> datum : data) {
+
             Row dataRow = sheet.createRow(lastRow++);
-            for (int j = 0; j < tableColumnList.size(); j++) {
-                String header = tableColumnList.get(j);
-                Cell cell = dataRow.createCell(j + START_COLUMN);
-                cell.setCellValue(datum.get(header));
-            }
+
+            datum.forEach((key, value) -> {
+                if (columnIndex.containsKey(key)) {
+                    Integer idx = columnIndex.get(key);
+                    Cell cell = dataRow.createCell(idx + START_COLUMN);
+                    cell.setCellValue(value);
+                } else {
+                    log.error("{} not found", key);
+                }
+            });
         }
 
-        // Auto-size columns
-        for (int i = 0; i < tableColumnList.size(); i++) {
-            sheet.autoSizeColumn(i);
-        }
 
         // Create table
-        log.debug("Start {}, End {} & {}", startRow, lastRow, tableColumnList.size());
+        log.debug("Start {}, End {} & {}", startRow, lastRow, columnWithCommandMap.size());
         AreaReference tableArea = new AreaReference(new CellReference(startRow, START_COLUMN),
-                new CellReference(lastRow - 1, tableColumnList.size() + START_COLUMN - 1), null);
+                new CellReference(lastRow - 1, columnWithCommandMap.size() + START_COLUMN - 1), null);
         XSSFSheet xssfSheet = workbook.getSheetMap().get(sheetName);
         XSSFTable table = xssfSheet.createTable(tableArea);
         table.setName(tableName);
@@ -127,6 +147,11 @@ public class TableWithNote {
         styleInfo.setShowRowStripes(true);
 
         workbook.getSheetLastRow().replace(sheetName, lastRow + data.size() + GAP_BETWEEN_COMMANDS);
+
+        // Auto-size columns
+        for (int j = 0; j < columnWithCommandMap.size(); j++) {
+            sheet.autoSizeColumn(j);
+        }
 
     }
 }

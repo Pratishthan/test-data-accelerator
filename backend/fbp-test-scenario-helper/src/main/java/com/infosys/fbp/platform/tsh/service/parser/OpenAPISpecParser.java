@@ -35,7 +35,7 @@ public class OpenAPISpecParser {
         actionCode.setEndPoint(endPoint);
 
         EnumMap<PropertyType, List<Property>> enumMap = new EnumMap<>(PropertyType.class);
-        actionCode.setPathPropertyListMap(enumMap);
+        actionCode.setPropertyListMap(enumMap);
 
         List<Property> queryParameterPropertyList = new ArrayList<>();
         List<Property> pathParameterPropertyList = new ArrayList<>();
@@ -123,7 +123,7 @@ public class OpenAPISpecParser {
 
     private <T> void extractProperties(Schema<T> schema, String path, String endPoint, PropertyType PropertyType) {
         if (ObjectUtils.isNotEmpty(schema) && ObjectUtils.isNotEmpty(schema.getProperties())) {
-            List<Property> finalPropertyList = actionCodeMap.get(endPoint).getPathPropertyListMap().get(PropertyType);
+            List<Property> finalPropertyList = actionCodeMap.get(endPoint).getPropertyListMap().get(PropertyType);
             schema.getProperties().forEach((kp, prop) -> {
                 Map<String, String> requiredMap = new HashMap<>();
                 if (ObjectUtils.isNotEmpty(schema.getRequired())) {
@@ -151,7 +151,7 @@ public class OpenAPISpecParser {
 
     private void extractParameters(List<Parameter> parameterList, String endPoint) {
         parameterList.forEach(parameter -> {
-            List<Property> finalPropertyList = actionCodeMap.get(endPoint).getPathPropertyListMap().get("path".equals(parameter.getIn()) ? PropertyType.PathParamList : PropertyType.QueryParamList);
+            List<Property> finalPropertyList = actionCodeMap.get(endPoint).getPropertyListMap().get("path".equals(parameter.getIn()) ? PropertyType.PathParamList : PropertyType.QueryParamList);
             log.info("EndPoint: {} Parameter: {}", endPoint, parameter.getName());
             Property property = new Property();
             property.setTechnicalColumnName(parameter.getName());

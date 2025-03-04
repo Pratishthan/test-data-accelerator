@@ -75,6 +75,11 @@ public class TableWithNote {
         }
         if (!fetchAndVerify.getPropertyListMap().get(PropertyType.RequestBodyColumnList).isEmpty()) {
             addTableWithNote(workbook, sheetName, "Fetch-Request-" + commandName, fetchAndVerify.getColumnMapForRequest(), new ArrayList<>());
+        } else {
+            Row row = workbook.getNewRow(sheetName);
+            Cell textCell = row.createCell(1);
+            textCell.setCellValue("Call "+ fetchAndVerify.getApiName() + " API");
+            addNoteToCell(workbook, sheetName, textCell, fetchAndVerify.getConcordionCommand());
         }
         addTableWithNote(workbook, sheetName, "Verify-" + commandName, fetchAndVerify.getColumnMapForVerify(), new ArrayList<>());
     }

@@ -97,7 +97,7 @@ public class OpenAPISpecParser {
 
                     if (value.getPost().getResponses().containsKey("200")) {
                         Schema<T> postRespSchema = value.getPost().getResponses().get("200").getContent().get("application/json").getSchema();
-                        extractProperties(postRespSchema, "", key, postActionCode.getPropertyListMap().get(PropertyType.RequestBodyColumnList));
+                        extractProperties(postRespSchema, "", key, postActionCode.getPropertyListMap().get(PropertyType.ResponseBodyColumnList));
                     }
 
                     if (value.getPost().getResponses().containsKey("201")) {

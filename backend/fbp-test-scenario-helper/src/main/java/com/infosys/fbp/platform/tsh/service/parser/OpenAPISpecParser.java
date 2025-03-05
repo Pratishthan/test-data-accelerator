@@ -34,7 +34,7 @@ public class OpenAPISpecParser {
     private final Queue<Pair<String, Schema>> schemaVisit = new LinkedList<>();
 
     private final Map<String, String> componentMap = Map.of("Collection",
-            "https://raw.githubusercontent.com/Pratishthan/test-data-accelerator/refs/heads/main/backend/fbp-test-scenario-helper/src/main/resources/schema/petstore.json");
+            "https://raw.githubusercontent.com/Pratishthan/test-data-accelerator/refs/heads/main/backend/fbp-test-scenario-helper/src/main/resources/schema/petstore-minimal.json");
 
     @Bean
     public Map<String, Map<String, ActionCode>> componentActionCodeMap() {
@@ -99,6 +99,8 @@ public class OpenAPISpecParser {
             openAPI.getPaths().forEach((key, value) -> {
                 if (ObjectUtils.isNotEmpty(value.getPost())) {
 
+                    schemaVisit.clear();
+
                     ActionCode postActionCode = createEmptyActionCode(component);
                     postActionCode.setActionCodeGroupName(value.getPost().getTags().get(0));
                     postActionCode.setActionCode(value.getPost().getOperationId());
@@ -109,7 +111,6 @@ public class OpenAPISpecParser {
 
                     Schema<T> postBodySchema = value.getPost().getRequestBody().getContent().get("application/json").getSchema();
 
-                    schemaVisit.clear();
                     schemaVisit.add(Pair.of(":root", postBodySchema));
                     extractPropertiesToMap("", key, postActionCode.getTypeNormalPropertyMap().get(PropertyType.RequestBodyColumnList));
 
@@ -118,11 +119,15 @@ public class OpenAPISpecParser {
                     if (value.getPost().getResponses().containsKey("200")) {
                         Schema<T> postRespSchema = value.getPost().getResponses().get("200").getContent().get("application/json").getSchema();
                         extractPropertiesToList(postRespSchema, "", key, postActionCode.getTypeDenormPropertiesMap().get(PropertyType.ResponseBodyColumnList));
+                        schemaVisit.add(Pair.of(":root", postRespSchema));
+                        extractPropertiesToMap("", key, postActionCode.getTypeNormalPropertyMap().get(PropertyType.ResponseBodyColumnList));
                     }
 
                     if (value.getPost().getResponses().containsKey("201")) {
                         Schema<T> postRespSchema = value.getPost().getResponses().get("201").getContent().get("application/json").getSchema();
                         extractPropertiesToList(postRespSchema, "", key, postActionCode.getTypeDenormPropertiesMap().get(PropertyType.ResponseBodyColumnList));
+                        schemaVisit.add(Pair.of(":root", postRespSchema));
+                        extractPropertiesToMap("", key, postActionCode.getTypeNormalPropertyMap().get(PropertyType.ResponseBodyColumnList));
                     }
 
                     if (ObjectUtils.isNotEmpty(value.getPost().getParameters())) {
@@ -146,10 +151,14 @@ public class OpenAPISpecParser {
                     if (ObjectUtils.isNotEmpty(value.getGet().getRequestBody())) {
                         Schema<T> postBodySchema = value.getGet().getRequestBody().getContent().get("application/json").getSchema();
                         extractPropertiesToList(postBodySchema, "", key, getActionCode.getTypeDenormPropertiesMap().get(PropertyType.RequestBodyColumnList));
+                        schemaVisit.add(Pair.of(":root", postBodySchema));
+                        extractPropertiesToMap("", key, getActionCode.getTypeNormalPropertyMap().get(PropertyType.RequestBodyColumnList));
                     }
                     if (value.getGet().getResponses().containsKey("200")) {
                         Schema<T> getRespSchema = value.getGet().getResponses().get("200").getContent().get("application/json").getSchema();
                         extractPropertiesToList(getRespSchema, "", key, getActionCode.getTypeDenormPropertiesMap().get(PropertyType.ResponseBodyColumnList));
+                        schemaVisit.add(Pair.of(":root", getRespSchema));
+                        extractPropertiesToMap("", key, getActionCode.getTypeNormalPropertyMap().get(PropertyType.ResponseBodyColumnList));
                     }
 
                     if (ObjectUtils.isNotEmpty(value.getGet().getParameters())) {
@@ -214,13 +223,13 @@ public class OpenAPISpecParser {
                     requiredMap = schema.getRequired().stream().collect(Collectors.toMap(Function.identity(), Function.identity()));
                 }
                 if (prop instanceof ArraySchema) {
-                    schemaVisit.add(Pair.of(kp, ((ArraySchema) prop).getItems()));
+                    schemaVisit.add(Pair.of(currentPath + ":" + kp, ((ArraySchema) prop).getItems()));
                     composite = true;
                 } else if (prop instanceof ComposedSchema) {
-                    schemaVisit.add(Pair.of(kp, ((ComposedSchema) prop).getItems()));
+                    schemaVisit.add(Pair.of(currentPath + ":" + kp, ((ComposedSchema) prop).getItems()));
                     composite = true;
                 } else if (prop instanceof ObjectSchema) {
-                    schemaVisit.add(Pair.of(kp, (ObjectSchema) prop));
+                    schemaVisit.add(Pair.of(currentPath + ":" + kp, (ObjectSchema) prop));
                     composite = true;
                 }
                 if (!composite) {
@@ -236,7 +245,7 @@ public class OpenAPISpecParser {
 
             });
             if (!propertyList.isEmpty()) {
-                propertyMap.put(path + ":" + currentPath, propertyList);
+                propertyMap.put(currentPath.toString(), propertyList);
             }
 
         }

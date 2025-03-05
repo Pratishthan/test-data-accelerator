@@ -96,6 +96,95 @@
           "isCreate": true
         }
       }
+    },
+    "/api/demandCode": {
+      "get": {
+        "tags": [
+          "Demand Code"
+        ],
+        "description": "Fetch Demand Code",
+        "operationId": "fetch-demandCode",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "query",
+            "description": "Demand Code",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "DC01": {
+                "value": "DC01"
+              }
+            }
+          },
+          {
+            "name": "includeDeletedRecords",
+            "in": "query",
+            "description": "Include deleted records in fetch",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Y",
+                "N"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Fetch Demand Code Resp",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiSingleResponseDemandCode"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseAbstractDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "You are not authorized to view the resource"
+          },
+          "403": {
+            "description": "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404": {
+            "description": "The resource you were trying to reach is not found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseAbstractDTO"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseAbstractDTO"
+                }
+              }
+            }
+          }
+        },
+        "x-fbp-params": {
+          "isFetch": true
+        }
+      }
     }
   },
   "components": {

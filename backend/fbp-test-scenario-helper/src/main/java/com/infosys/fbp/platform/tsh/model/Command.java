@@ -20,6 +20,17 @@ public class Command {
     private String actionCode;
     private PatternType type;
     private EnumMap<PropertyType, List<Property>> selectPropertyListMap;
-    private EnumMap<PropertyType, InputType> inputTypeMap;
+    private EnumMap<PropertyType, InputType> inputTypeMap = denormMap();
     private List<Map<String, String>> data = new ArrayList<>();
+
+    private EnumMap<PropertyType, InputType> denormMap() {
+        EnumMap<PropertyType, InputType> denormMap = new EnumMap<>(PropertyType.class);
+
+        denormMap.put(PropertyType.RequestBodyColumnList, InputType.Denorm);
+        denormMap.put(PropertyType.ResponseBodyColumnList, InputType.Denorm);
+        denormMap.put(PropertyType.PathParamList, InputType.Denorm);
+        denormMap.put(PropertyType.QueryParamList, InputType.Denorm);
+
+        return denormMap;
+    }
 }

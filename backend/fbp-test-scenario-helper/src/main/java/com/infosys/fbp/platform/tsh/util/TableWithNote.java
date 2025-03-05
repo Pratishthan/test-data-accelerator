@@ -47,20 +47,32 @@ public class TableWithNote {
         addTableWithNote(workbook, sheetName, commandName, columnWithCommandMap, tableMapper.getData());
     }
 
-    public static void addTableWithNote(TDGWorkbook workbook, String sheetName, String commandName, PostAndVerify postAndVerify) {
-        getSeparatorRow(workbook, sheetName, commandName);
+    public static void addTableWithNote(TDGWorkbook workbook, String sheetName, Command command, PostAndVerify postAndVerify) {
+        getSeparatorRow(workbook, sheetName, command.getCommandName());
         List<Parameter> paramColumnList = new ArrayList<>();
-        paramColumnList.addAll(postAndVerify.getPropertyListMap().get(PropertyType.PathParamList).stream().map(Property::getParameter).toList());
-        paramColumnList.addAll(postAndVerify.getPropertyListMap().get(PropertyType.QueryParamList).stream().map(Property::getParameter).toList());
+        paramColumnList.addAll(postAndVerify.getTypeDenormPropertiesMap().get(PropertyType.PathParamList).stream().map(Property::getParameter).toList());
+        paramColumnList.addAll(postAndVerify.getTypeDenormPropertiesMap().get(PropertyType.QueryParamList).stream().map(Property::getParameter).toList());
         if (!paramColumnList.isEmpty()) {
             addParamCellList(workbook, sheetName, paramColumnList);
         }
-        if (!postAndVerify.getPropertyListMap().get(PropertyType.RequestBodyColumnList).isEmpty()) {
-            addTableWithNote(workbook, sheetName, "Request-" + commandName, postAndVerify.getColumnMapForRequest(), new ArrayList<>());
+        if ((InputType.Denorm.equals(command.getInputTypeMap().get(PropertyType.RequestBodyColumnList))
+                && !postAndVerify.getTypeDenormPropertiesMap().get(PropertyType.RequestBodyColumnList).isEmpty())) {
+            addTableWithNote(workbook, sheetName, "Request-" + command.getCommandName(), postAndVerify.getDenormColumnMapForRequest(), new ArrayList<>());
         }
 
-        if (!postAndVerify.getPropertyListMap().get(PropertyType.ResponseBodyColumnList).isEmpty()) {
-            addTableWithNote(workbook, sheetName, "Verify-" + commandName, postAndVerify.getColumnMapForVerify(), new ArrayList<>());
+        if ((InputType.Normal.equals(command.getInputTypeMap().get(PropertyType.RequestBodyColumnList))
+                && !postAndVerify.getTypeNormalPropertyMap().get(PropertyType.RequestBodyColumnList).isEmpty())) {
+            addTablesWithNote(workbook, sheetName, "Request-" + command.getCommandName(), postAndVerify.getNormalColumnMapForRequest(), new ArrayList<>());
+        }
+
+        if ((InputType.Denorm.equals(command.getInputTypeMap().get(PropertyType.ResponseBodyColumnList))
+                && !postAndVerify.getTypeDenormPropertiesMap().get(PropertyType.ResponseBodyColumnList).isEmpty())) {
+            addTableWithNote(workbook, sheetName, "Request-" + command.getCommandName(), postAndVerify.getDenormColumnMapForVerify(), new ArrayList<>());
+        }
+
+        if ((InputType.Normal.equals(command.getInputTypeMap().get(PropertyType.ResponseBodyColumnList))
+                && !postAndVerify.getTypeNormalPropertyMap().get(PropertyType.ResponseBodyColumnList).isEmpty())) {
+            addTablesWithNote(workbook, sheetName, "Request-" + command.getCommandName(), postAndVerify.getNormalColumnMapForVerify(), new ArrayList<>());
         }
 
     }
@@ -78,10 +90,18 @@ public class TableWithNote {
         } else {
             Row row = workbook.getNewRow(sheetName);
             Cell textCell = row.createCell(1);
-            textCell.setCellValue("Call "+ fetchAndVerify.getApiName() + " API");
+            textCell.setCellValue("Call " + fetchAndVerify.getApiName() + " API");
             addNoteToCell(workbook, sheetName, textCell, fetchAndVerify.getConcordionCommand());
         }
         addTableWithNote(workbook, sheetName, "Verify-" + commandName, fetchAndVerify.getColumnMapForVerify(), new ArrayList<>());
+    }
+
+    public static void addTablesWithNote(TDGWorkbook workbook, String sheetName,
+                                         String tableName,
+                                         Map<String, Map<String, String>> columnWithCommandMap,
+                                         List<Map<String, String>> data) {
+        columnWithCommandMap.forEach((schema, columnMap) ->
+                addTableWithNote(workbook, sheetName, tableName + "-" + schema, columnMap, data));
     }
 
     public static void addTableWithNote(TDGWorkbook workbook, String sheetName,

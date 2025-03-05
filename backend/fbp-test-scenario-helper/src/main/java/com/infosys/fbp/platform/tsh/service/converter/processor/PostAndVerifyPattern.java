@@ -21,7 +21,7 @@ public class PostAndVerifyPattern implements Pattern {
     @Override
     public void process(TDGWorkbook workbook, CommandChain commandChain, String commandName) {
         log.info("PostAndVerifyPattern: About to process {}", postAndVerify.getApiName());
-        addTableWithNote(workbook, commandChain.getSheetName(), commandName, postAndVerify);
+        addTableWithNote(workbook, commandChain.getSheetName(), commandChain.getCommands().get(commandName), postAndVerify);
     }
 
     @Override

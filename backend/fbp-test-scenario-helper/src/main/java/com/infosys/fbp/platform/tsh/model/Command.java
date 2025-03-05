@@ -19,6 +19,7 @@ public class Command {
     private String commandName;
     private String actionCode;
     private PatternType type;
-    private EnumMap<PropertyType, List<Property>> propertyListMap;
+    private EnumMap<PropertyType, List<Property>> selectPropertyListMap;
+    private EnumMap<PropertyType, InputType> inputTypeMap;
     private List<Map<String, String>> data = new ArrayList<>();
 }

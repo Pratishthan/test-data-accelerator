@@ -12,7 +12,8 @@ import java.util.*;
 @NoArgsConstructor
 public class PostAndVerify extends AbstractConcordionHelper {
     private String apiName;
-    private EnumMap<PropertyType, List<Property>> propertyListMap;
+    private EnumMap<PropertyType, List<Property>> typeDenormPropertiesMap;
+    private EnumMap<PropertyType, Map<String, List<Property>>> typeNormalPropertyMap;
 
     public String getConcordionCommand() {
         return "(table)concordion:execute=\"#result=callPostApi('" + apiName + "',#ROW)\"";
@@ -21,7 +22,7 @@ public class PostAndVerify extends AbstractConcordionHelper {
     private String getVerifyCommand() {
         return """
                 (table)concordion:verify-rows="#result : resultList"
-                concordion:assertEquals="#result.""" + propertyListMap.get(PropertyType.RequestBodyColumnList).get(0).getTechnicalColumnName() + "\"";
+                concordion:assertEquals="#result.""" + typeDenormPropertiesMap.get(PropertyType.RequestBodyColumnList).get(0).getTechnicalColumnName() + "\"";
     }
 
     private String getAssertCommand(Property resultColumn) {
@@ -31,29 +32,60 @@ public class PostAndVerify extends AbstractConcordionHelper {
     public List<String> getVerifyCommands() {
         List<String> commands = new ArrayList<>();
         commands.add(getVerifyCommand());
-        commands.addAll(propertyListMap.get(PropertyType.RequestBodyColumnList).stream().skip(1).map(this::getAssertCommand).toList());
+        commands.addAll(typeDenormPropertiesMap.get(PropertyType.RequestBodyColumnList).stream().skip(1).map(this::getAssertCommand).toList());
         return commands;
     }
 
-    public Map<String, String> getColumnMapForRequest() {
+    public Map<String, String> getDenormColumnMapForRequest() {
         Map<String, String> columnWithCommandMap = new LinkedHashMap<>();
-        if(!propertyListMap.get(PropertyType.RequestBodyColumnList).isEmpty()) {
-            Property idxProperty = propertyListMap.get(PropertyType.RequestBodyColumnList).get(0);
+        if(!typeDenormPropertiesMap.get(PropertyType.RequestBodyColumnList).isEmpty()) {
+            Property idxProperty = typeDenormPropertiesMap.get(PropertyType.RequestBodyColumnList).get(0);
             columnWithCommandMap.put(idxProperty.getBusinessColumnName(), getConcordionCommand());
-            propertyListMap.get(PropertyType.RequestBodyColumnList).stream().skip(1).forEach(property ->
+            typeDenormPropertiesMap.get(PropertyType.RequestBodyColumnList).stream().skip(1).forEach(property ->
                     columnWithCommandMap.putIfAbsent(property.getBusinessColumnName(), ""));
         }
         return columnWithCommandMap;
     }
 
-    public Map<String, String> getColumnMapForVerify() {
+    public Map<String, Map<String, String>> getNormalColumnMapForRequest() {
+        Map<String, Map<String, String>> columnWithCommandMap = new LinkedHashMap<>();
+        typeNormalPropertyMap.get(PropertyType.RequestBodyColumnList).forEach( (schema, properties) ->  {
+            Map<String, String> schemaColumnWithCommandMap = new LinkedHashMap<>();
+
+            Property idxProperty = properties.get(0);
+            schemaColumnWithCommandMap.put(idxProperty.getBusinessColumnName(), getConcordionCommand());
+            properties.stream().skip(1).forEach(property ->
+                    schemaColumnWithCommandMap.putIfAbsent(property.getBusinessColumnName(), ""));
+
+            columnWithCommandMap.put(schema, schemaColumnWithCommandMap);
+        });
+        return columnWithCommandMap;
+    }
+
+    public Map<String, String> getDenormColumnMapForVerify() {
         Map<String, String> columnWithCommandMap = new LinkedHashMap<>();
-        if(!propertyListMap.get(PropertyType.ResponseBodyColumnList).isEmpty()) {
-            Property idxProperty = propertyListMap.get(PropertyType.ResponseBodyColumnList).get(0);
+        if(!typeDenormPropertiesMap.get(PropertyType.ResponseBodyColumnList).isEmpty()) {
+            Property idxProperty = typeDenormPropertiesMap.get(PropertyType.ResponseBodyColumnList).get(0);
             columnWithCommandMap.put(idxProperty.getBusinessColumnName(), getVerifyCommand());
-            propertyListMap.get(PropertyType.ResponseBodyColumnList).stream().skip(1).forEach(property ->
+            typeDenormPropertiesMap.get(PropertyType.ResponseBodyColumnList).stream().skip(1).forEach(property ->
                     columnWithCommandMap.putIfAbsent(property.getBusinessColumnName(), getAssertCommand(property)));
         }
+        return columnWithCommandMap;
+    }
+
+
+    public Map<String, Map<String, String>> getNormalColumnMapForVerify() {
+        Map<String, Map<String, String>> columnWithCommandMap = new LinkedHashMap<>();
+        typeNormalPropertyMap.get(PropertyType.ResponseBodyColumnList).forEach( (schema, properties) ->  {
+            Map<String, String> schemaColumnWithCommandMap = new LinkedHashMap<>();
+
+            Property idxProperty = properties.get(0);
+            schemaColumnWithCommandMap.put(idxProperty.getBusinessColumnName(), getConcordionCommand());
+            properties.stream().skip(1).forEach(property ->
+                    schemaColumnWithCommandMap.putIfAbsent(property.getBusinessColumnName(), ""));
+
+            columnWithCommandMap.put(schema, schemaColumnWithCommandMap);
+        });
         return columnWithCommandMap;
     }
 }

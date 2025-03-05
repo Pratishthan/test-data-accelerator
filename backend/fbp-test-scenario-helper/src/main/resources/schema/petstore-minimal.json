@@ -1,0 +1,4923 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "merged spec",
+    "description": "merged spec",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080"
+    }
+  ],
+  "paths": {
+    "/api/demandCodeCreation/{code}": {
+      "post": {
+        "tags": [
+          "Demand Code"
+        ],
+        "description": "Create Demand Code",
+        "operationId": "create-demandCode",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "description": "Demand Code",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "DC01": {
+                "value": "DC01"
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiSingleRequestDemandCode"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Demand Code Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiSingleResponseDemandCode"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseAbstractDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "You are not authorized to view the resource"
+          },
+          "403": {
+            "description": "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404": {
+            "description": "The resource you were trying to reach is not found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseAbstractDTO"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseAbstractDTO"
+                }
+              }
+            }
+          }
+        },
+        "x-fbp-params": {
+          "isCreate": true
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ApiResponseCollectionLedger": {
+        "type": "object",
+        "properties": {
+          "errorResponse": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          },
+          "results": {
+            "type": "array",
+            "description": "",
+            "items": {
+              "$ref": "#/components/schemas/CollectionLedgerDTO"
+            }
+          }
+        },
+        "description": ""
+      },
+      "ApiResponseAbstractDTO": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AbstractDTO"
+            }
+          },
+          "errorResponse": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        }
+      },
+      "AbstractDTO": {
+        "type": "object"
+      },
+      "ErrorResponse": {
+        "required": [
+          "code",
+          "correlationId",
+          "message",
+          "path",
+          "status",
+          "timestamp"
+        ],
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "correlationId": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ApiRequestLedgerContra": {
+        "required": [
+          "request"
+        ],
+        "type": "object",
+        "properties": {
+          "request": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LedgerContraDTO"
+            }
+          }
+        }
+      },
+      "ApiSingleResponseCollectionResponse": {
+        "type": "object",
+        "properties": {
+          "errorResponse": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          },
+          "result": {
+            "$ref": "#/components/schemas/CollectionResponseDTO"
+          }
+        },
+        "description": ""
+      },
+      "ApiRequestCollectionResponse": {
+        "required": [
+          "request"
+        ],
+        "type": "object",
+        "properties": {
+          "request": {
+            "$ref": "#/components/schemas/CollectionResponseDTO"
+          }
+        },
+        "description": ""
+      },
+      "ApiRequestCollectionLedger": {
+        "required": [
+          "request"
+        ],
+        "type": "object",
+        "properties": {
+          "request": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CollectionLedgerDTO"
+            }
+          }
+        }
+      },
+      "ApiSingleResponseTargetSystem": {
+        "type": "object",
+        "properties": {
+          "errorResponse": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          },
+          "result": {
+            "$ref": "#/components/schemas/TargetSystemDTO"
+          }
+        },
+        "description": ""
+      },
+      "ApiRequestTargetSystemUpdate": {
+        "required": [
+          "request"
+        ],
+        "type": "object",
+        "properties": {
+          "request": {
+            "$ref": "#/components/schemas/TargetSystemUpdateDTO"
+          }
+        }
+      },
+      "ApiSingleResponseCollectionRequestOverride": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "array",
+            "description": "",
+            "items": {
+              "$ref": "#/components/schemas/CollectionRequestOverride"
+            }
+          },
+          "errorResponse": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        },
+        "description": ""
+      },
+      "ApiSingleRequestCollectionRequestOverride": {
+        "required": [
+          "request"
+        ],
+        "type": "object",
+        "properties": {
+          "request": {
+            "$ref": "#/components/schemas/CollectionRequestOverride"
+          }
+        },
+        "description": ""
+      },
+      "ApiResponseCollectionDemandFetch": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "description": "",
+            "items": {
+              "$ref": "#/components/schemas/CollectionDemandStatusDTO"
+            }
+          },
+          "errorResponse": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        },
+        "description": "Response container for output of Collection demand Fetch could result in multiple collection demands."
+      },
+      "ApiSingleResponseCollectionEntity": {
+        "type": "object",
+        "properties": {
+          "errorResponse": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          },
+          "result": {
+            "$ref": "#/components/schemas/CollectionEntityDTO"
+          }
+        },
+        "description": ""
+      },
+      "ApiSingleRequestCollectionEntityModify": {
+        "required": [
+          "request"
+        ],
+        "type": "object",
+        "properties": {
+          "request": {
+            "$ref": "#/components/schemas/CollectionEntityModifyDTO"
+          }
+        }
+      },
+      "ApiSingleResponseCollectionRequestGeneration": {
+        "type": "object",
+        "properties": {
+          "errorResponse": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          },
+          "result": {
+            "$ref": "#/components/schemas/CollectionRequestGenerationResponseDTO"
+          }
+        },
+        "description": ""
+      },
+      "ApiSingleRequestCollectionRetryRequest": {
+        "required": [
+          "request"
+        ],
+        "type": "object",
+        "properties": {
+          "request": {
+            "$ref": "#/components/schemas/CollectionRequestGenerationRequestDTO"
+          }
+        },
+        "description": ""
+      },
+      "ApiSingleResponseCollectionLedgerAmountDTO": {
+        "type": "object",
+        "properties": {
+          "errorResponse": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          },
+          "result": {
+            "$ref": "#/components/schemas/LedgerAmountDTO"
+          }
+        },
+        "description": ""
+      },
+      "ApiSingleResponseDemandCode": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "description": "",
+            "items": {
+              "$ref": "#/components/schemas/DemandCode"
+            }
+          },
+          "errorResponse": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        },
+        "description": ""
+      },
+      "ApiSingleRequestDemandCodeUpdate": {
+        "required": [
+          "request"
+        ],
+        "type": "object",
+        "properties": {
+          "request": {
+            "$ref": "#/components/schemas/DemandCodeUpdate"
+          }
+        },
+        "description": ""
+      },
+      "DemandCodeUpdate": {
+        "required": [
+          "demandCode",
+          "recordVersion",
+          "temporalOperation"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Generated UUID",
+            "readOnly": false,
+            "example": "1234567890"
+          },
+          "demandCode": {
+            "type": "string",
+            "description": "Demand Code",
+            "readOnly": false,
+            "example": "DC01"
+          },
+          "description": {
+            "type": "string",
+            "description": "Demand Code Description",
+            "readOnly": false,
+            "example": "Demand Code 01"
+          },
+          "demandCodeGroup": {
+            "type": "string",
+            "description": "Demand Code Group",
+            "readOnly": false,
+            "example": "PRINCIPLE"
+          },
+          "deleted": {
+            "type": "string",
+            "description": "Logical deleted",
+            "readOnly": true,
+            "enum": [
+              "Y",
+              "N"
+            ]
+          },
+          "props": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DemandCodePropertyUpdate"
+            }
+          },
+          "mappings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DemandCodeMappingUpdate"
+            }
+          },
+          "recordVersion": {
+            "type": "integer",
+            "description": "Record Version",
+            "readOnly": false,
+            "example": 1
+          },
+          "temporalOperation": {
+            "type": "string",
+            "enum": [
+              "CURRENT",
+              "MODIFY"
+            ]
+          }
+        },
+        "description": "Payload for update of DemandCode",
+        "x-fbp-params": {
+          "isUpdate": true
+        }
+      },
+      "DemandCodePropertyUpdate": {
+        "required": [
+          "demandCode",
+          "recordVersion",
+          "temporalOperation"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Generated UUID",
+            "readOnly": false
+          },
+          "demandCode": {
+            "type": "string",
+            "description": "Demand Code",
+            "readOnly": false,
+            "example": "DC01"
+          },
+          "demandAggregationPeriod": {
+            "type": "string",
+            "description": "Demand Aggregation Period",
+            "readOnly": false,
+            "enum": [
+              "DAILY",
+              "WEEKLY",
+              "MONTHLY",
+              "DUE_DATE"
+            ]
+          },
+          "demandAggregationAttributes": {
+            "type": "array",
+            "description": "Demand Aggregation Attributes",
+            "items": {
+              "type": "string"
+            }
+          },
+          "drillDownAggregationPeriod": {
+            "type": "string",
+            "description": "Drill Down Aggregation Period",
+            "readOnly": false,
+            "enum": [
+              "DAILY",
+              "WEEKLY",
+              "MONTHLY",
+              "DUE_DATE"
+            ]
+          },
+          "drillDownAggregationAttributes": {
+            "type": "array",
+            "description": "Drill Down Aggregation Attributes",
+            "items": {
+              "type": "string"
+            }
+          },
+          "effectiveFrom": {
+            "$ref": "#/components/schemas/BusinessDateDTO"
+          },
+          "effectiveTill": {
+            "$ref": "#/components/schemas/NullableBusinessDateDTO"
+          },
+          "deleted": {
+            "type": "string",
+            "description": "Logical deleted",
+            "readOnly": true,
+            "enum": [
+              "Y",
+              "N"
+            ]
+          },
+          "recordVersion": {
+            "type": "integer",
+            "description": "Record Version",
+            "readOnly": false,
+            "example": 1
+          },
+          "temporalOperation": {
+            "type": "string",
+            "enum": [
+              "CURRENT",
+              "MODIFY",
+              "DELETE",
+              "ADD",
+              "EXPIRE"
+            ]
+          }
+        },
+        "description": "Payload for update of DemandCodeProperty",
+        "x-fbp-params": {
+          "isUpdate": true
+        }
+      },
+      "DemandCodeMappingUpdate": {
+        "required": [
+          "demandCode",
+          "recordVersion",
+          "temporalOperation"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Generated UUID",
+            "readOnly": false
+          },
+          "demandCode": {
+            "type": "string",
+            "description": "Demand Code",
+            "readOnly": false,
+            "example": "DC01"
+          },
+          "collectableEventCode": {
+            "maxLength": 20,
+            "minLength": 1,
+            "type": "string",
+            "description": "Collectable Event Code"
+          },
+          "host": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Source of collectable event code"
+          },
+          "effectiveFrom": {
+            "$ref": "#/components/schemas/BusinessDateDTO"
+          },
+          "effectiveTill": {
+            "$ref": "#/components/schemas/NullableBusinessDateDTO"
+          },
+          "deleted": {
+            "type": "string",
+            "description": "Logical deleted",
+            "readOnly": true,
+            "enum": [
+              "Y",
+              "N"
+            ]
+          },
+          "recordVersion": {
+            "type": "integer",
+            "description": "Record Version",
+            "readOnly": false,
+            "example": 1
+          },
+          "temporalOperation": {
+            "type": "string",
+            "enum": [
+              "CURRENT",
+              "MODIFY",
+              "DELETE",
+              "ADD",
+              "EXPIRE"
+            ]
+          }
+        },
+        "description": "Payload for update of DemandCodeMapping",
+        "x-fbp-params": {
+          "isUpdate": true
+        }
+      },
+      "ApiResponseCollectionEntityFetch": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "description": "",
+            "items": {
+              "$ref": "#/components/schemas/CollectionEntityDTO"
+            }
+          },
+          "errorResponse": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        },
+        "description": "Response container for output of Collection request Fetch could result in multiple collection requests."
+      },
+      "ApiResponseResponseErrorCodes": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "description": "",
+            "items": {
+              "$ref": "#/components/schemas/ResponseErrorCode"
+            }
+          },
+          "errorResponse": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        },
+        "description": ""
+      },
+      "ApiRequestResponseErrorCodes": {
+        "required": [
+          "request"
+        ],
+        "type": "object",
+        "properties": {
+          "request": {
+            "type": "array",
+            "description": "",
+            "items": {
+              "$ref": "#/components/schemas/ResponseErrorCode"
+            }
+          }
+        },
+        "description": ""
+      },
+      "ApiResponseAuditDTO": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "description": "",
+            "items": {
+              "$ref": "#/components/schemas/FbpAuditDTO"
+            }
+          },
+          "errorResponse": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        },
+        "description": ""
+      },
+      "ApiSingleRequestAuditInquiry": {
+        "required": [
+          "request"
+        ],
+        "type": "object",
+        "properties": {
+          "request": {
+            "$ref": "#/components/schemas/FbpAuditInquiryDTO"
+          }
+        },
+        "description": ""
+      },
+      "ApiResponseCollectionRequestOverride": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "$ref": "#/components/schemas/CollectionRequestOverride"
+          },
+          "errorResponse": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        },
+        "description": ""
+      },
+      "ApiResponseTsCmMappingFetch": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "description": "",
+            "items": {
+              "$ref": "#/components/schemas/TsCmMappingDTO"
+            }
+          },
+          "errorResponse": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        },
+        "description": "Response container for output of Collection request Fetch could result in multiple collection requests."
+      },
+      "ApiSingleResponseCollectionMethod": {
+        "type": "object",
+        "properties": {
+          "errorResponse": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          },
+          "result": {
+            "$ref": "#/components/schemas/CollectionMethodDTO"
+          }
+        },
+        "description": ""
+      },
+      "ApiRequestCollectionMethod": {
+        "required": [
+          "request"
+        ],
+        "type": "object",
+        "properties": {
+          "request": {
+            "$ref": "#/components/schemas/CollectionMethodDTO"
+          }
+        }
+      },
+      "ApiSingleResponseCollectionDemandFinalisation": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "description": "",
+            "items": {
+              "$ref": "#/components/schemas/CollectionDemandFinalisationResponseDTO"
+            }
+          },
+          "errorResponse": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        },
+        "description": "Response container for output of Collection request Fetch could result in multiple collection requests."
+      },
+      "ApiSingleRequestCollectionDemandFinalisation": {
+        "required": [
+          "request"
+        ],
+        "type": "object",
+        "properties": {
+          "request": {
+            "$ref": "#/components/schemas/CollectionDemandFinalisationRequestDTO"
+          }
+        },
+        "description": ""
+      },
+      "ApiResponseCollectionResponseFetch": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "description": "",
+            "items": {
+              "$ref": "#/components/schemas/CollectionResponseDTO"
+            }
+          },
+          "errorResponse": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        },
+        "description": "Response container for output of Collection request Fetch could result in multiple collection requests."
+      },
+      "ApiSingleResponseCollectionResponseManual": {
+        "type": "object",
+        "properties": {
+          "errorResponse": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          },
+          "result": {
+            "$ref": "#/components/schemas/CollectionResponseBaseDTO"
+          }
+        },
+        "description": ""
+      },
+      "ApiRequestCollectionResponseManual": {
+        "required": [
+          "request"
+        ],
+        "type": "object",
+        "properties": {
+          "request": {
+            "$ref": "#/components/schemas/CollectionResponseBaseDTO"
+          }
+        },
+        "description": ""
+      },
+      "ApiSingleResponseOnlineCRO": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "array",
+            "description": "",
+            "items": {
+              "$ref": "#/components/schemas/OnlineCollectionRequestOverride"
+            }
+          },
+          "errorResponse": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        },
+        "description": ""
+      },
+      "ApiSingleResponseCollectionLedger": {
+        "type": "object",
+        "properties": {
+          "errorResponse": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          },
+          "result": {
+            "$ref": "#/components/schemas/CollectionLedgerDTO"
+          }
+        },
+        "description": ""
+      },
+      "ApiRequestTargetSystem": {
+        "required": [
+          "request"
+        ],
+        "type": "object",
+        "properties": {
+          "request": {
+            "$ref": "#/components/schemas/TargetSystemDTO"
+          }
+        }
+      },
+      "ApiSingleRequestCollectionEntity": {
+        "required": [
+          "request"
+        ],
+        "type": "object",
+        "properties": {
+          "request": {
+            "$ref": "#/components/schemas/CollectionEntityDTO"
+          }
+        }
+      },
+      "ApiSingleRequestCollectionEntityExpire": {
+        "required": [
+          "request"
+        ],
+        "type": "object",
+        "properties": {
+          "request": {
+            "$ref": "#/components/schemas/CollectionEntityExpireDTO"
+          }
+        }
+      },
+      "ApiRequestLedgerReversal": {
+        "required": [
+          "request"
+        ],
+        "type": "object",
+        "properties": {
+          "request": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LedgerReversalDTO"
+            }
+          }
+        }
+      },
+      "ApiResponseTsCmMappings": {
+        "type": "object",
+        "properties": {
+          "errorResponse": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          },
+          "results": {
+            "type": "array",
+            "description": "",
+            "items": {
+              "$ref": "#/components/schemas/TsCmMappingDTO"
+            }
+          }
+        },
+        "description": ""
+      },
+      "ApiRequestTsCmMappings": {
+        "required": [
+          "request"
+        ],
+        "type": "object",
+        "properties": {
+          "request": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TsCmMappingDTO"
+            }
+          }
+        }
+      },
+      "ApiResponseCollectionRequestFetch": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "description": "",
+            "items": {
+              "$ref": "#/components/schemas/CollectionRequestDTO"
+            }
+          },
+          "errorResponse": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        },
+        "description": "Response container for output of Collection request Fetch could result in multiple collection requests."
+      },
+      "ApiRequestCollectionMethodUpdate": {
+        "required": [
+          "request"
+        ],
+        "type": "object",
+        "properties": {
+          "request": {
+            "$ref": "#/components/schemas/CollectionMethodUpdateDTO"
+          }
+        }
+      },
+      "ApiSingleRequestDemandCode": {
+        "required": [
+          "request"
+        ],
+        "type": "object",
+        "properties": {
+          "request": {
+            "$ref": "#/components/schemas/DemandCode"
+          }
+        },
+        "description": ""
+      },
+      "ApiResponseCollectableEvent": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "description": "",
+            "items": {
+              "$ref": "#/components/schemas/CollectableEventDTO"
+            }
+          },
+          "errorResponse": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        },
+        "description": ""
+      },
+      "ApiSingleRequestInquireCollectableEvent": {
+        "required": [
+          "request"
+        ],
+        "type": "object",
+        "properties": {
+          "request": {
+            "$ref": "#/components/schemas/CollectableEventFilterCriteria"
+          }
+        },
+        "description": ""
+      },
+      "ApiResponseCollectableEventFetch": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "description": "",
+            "items": {
+              "$ref": "#/components/schemas/CollectableEventDTO"
+            }
+          },
+          "errorResponse": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        },
+        "description": ""
+      },
+      "ApiSingleResponseCollectableEvent": {
+        "type": "object",
+        "properties": {
+          "errorResponse": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          },
+          "result": {
+            "$ref": "#/components/schemas/CollectableEventDTO"
+          }
+        },
+        "description": ""
+      },
+      "ApiRequestCollectableEvent": {
+        "required": [
+          "request"
+        ],
+        "type": "object",
+        "properties": {
+          "request": {
+            "$ref": "#/components/schemas/CollectableEventDTO"
+          }
+        },
+        "description": ""
+      },
+      "ApiRequestResponseErrorCodeUpdate": {
+        "required": [
+          "request"
+        ],
+        "type": "object",
+        "properties": {
+          "request": {
+            "type": "array",
+            "description": "",
+            "items": {
+              "$ref": "#/components/schemas/ResponseErrorCodeUpdateDTO"
+            }
+          }
+        },
+        "description": ""
+      },
+      "ApiSingleRequestCollectionRequestByCustomer": {
+        "required": [
+          "request"
+        ],
+        "type": "object",
+        "properties": {
+          "request": {
+            "$ref": "#/components/schemas/CollectionRequestByCustomerDTO"
+          }
+        },
+        "description": ""
+      },
+      "ApiRequestTsCmMappingUpdate": {
+        "required": [
+          "request"
+        ],
+        "type": "object",
+        "properties": {
+          "request": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TsCmMappingUpdateDTO"
+            }
+          }
+        }
+      },
+      "ApiResponseCollectionMethodFetch": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "description": "",
+            "items": {
+              "$ref": "#/components/schemas/CollectionMethodDTO"
+            }
+          },
+          "errorResponse": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        },
+        "description": "Response container for output of Collection request Fetch could result in multiple collection requests."
+      },
+      "ApiResponseTargetSystemFetch": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "description": "",
+            "items": {
+              "$ref": "#/components/schemas/TargetSystemDTO"
+            }
+          },
+          "errorResponse": {
+            "$ref": "#/components/schemas/ErrorResponse"
+          }
+        },
+        "description": "Response container for output of Collection request Fetch could result in multiple collection requests."
+      },
+      "CollectionLedgerDTO": {
+        "required": [
+          "entityId",
+          "entityType",
+          "sourceReferenceId",
+          "targetAccount",
+          "transactionDateTime",
+          "transactionValue"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "targetAccount": {
+            "type": "string"
+          },
+          "requestKey": {
+            "type": "string"
+          },
+          "allocationKey": {
+            "type": "string"
+          },
+          "entityId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "entityType": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "subEntityId": {
+            "type": "string"
+          },
+          "subEntityType": {
+            "type": "string"
+          },
+          "businessEvent": {
+            "type": "string"
+          },
+          "businessEventType": {
+            "type": "string"
+          },
+          "subBusinessEvent": {
+            "type": "string"
+          },
+          "businessEventClassification": {
+            "type": "string"
+          },
+          "transactionValue": {
+            "$ref": "#/components/schemas/TxnValueVO"
+          },
+          "crDrIndicator": {
+            "type": "string",
+            "enum": [
+              "CR",
+              "DR"
+            ]
+          },
+          "transactionDateTime": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "postingDateTime": {
+            "type": "string"
+          },
+          "backDatedEvent": {
+            "type": "boolean"
+          },
+          "eventType": {
+            "type": "string",
+            "enum": [
+              "ACTUAL",
+              "REVERSAL",
+              "MANUAL"
+            ]
+          },
+          "initiatedBy": {
+            "type": "string"
+          },
+          "sourceType": {
+            "type": "string"
+          },
+          "sourceIdentifier": {
+            "type": "string"
+          },
+          "sourceReferenceId": {
+            "type": "string"
+          },
+          "sourceSubReferenceId": {
+            "type": "string"
+          },
+          "runningBalance": {
+            "$ref": "#/components/schemas/TxnValueVO"
+          },
+          "previousBalance": {
+            "$ref": "#/components/schemas/TxnValueVO"
+          },
+          "additionalAttributes": {
+            "type": "object"
+          }
+        }
+      },
+      "TxnValueVO": {
+        "required": [
+          "unit",
+          "unitType",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "value": {
+            "maximum": 999999999999.99,
+            "exclusiveMaximum": true,
+            "type": "number",
+            "description": "Amount value",
+            "format": "double"
+          },
+          "unitType": {
+            "minLength": 1,
+            "type": "string",
+            "description": "unitType"
+          },
+          "unit": {
+            "minLength": 1,
+            "type": "string",
+            "description": "unit"
+          }
+        },
+        "description": "TxnValueVO"
+      },
+      "LedgerContraDTO": {
+        "required": [
+          "dateTime",
+          "id",
+          "transactionValue"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "transactionValue": {
+            "$ref": "#/components/schemas/TxnValueVO"
+          },
+          "dateTime": {
+            "minLength": 1,
+            "type": "string"
+          }
+        }
+      },
+      "CollectionResponseDTO": {
+        "required": [
+          "crDrIndicator",
+          "externalReferenceId",
+          "targetAccountNumber",
+          "targetSystem",
+          "transactionDate"
+        ],
+        "type": "object",
+        "properties": {
+          "collectionRequestId": {
+            "type": "string",
+            "description": "",
+            "nullable": true
+          },
+          "transactionAmount": {
+            "$ref": "#/components/schemas/AmountDTO"
+          },
+          "transactionDate": {
+            "$ref": "#/components/schemas/BusinessDateDTO"
+          },
+          "crDrIndicator": {
+            "minLength": 1,
+            "type": "string",
+            "enum": [
+              "CR",
+              "DR"
+            ]
+          },
+          "targetSystem": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "errorCode": {
+            "type": "string"
+          },
+          "errorMessage": {
+            "type": "string"
+          },
+          "extendedAttributes": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "processingTimestamp": {
+            "type": "string",
+            "description": "Date time at which the response was processed in the target system",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "targetAccountNumber": {
+            "minLength": 1,
+            "type": "string",
+            "description": ""
+          },
+          "status": {
+            "type": "string",
+            "readOnly": true,
+            "enum": [
+              "FULL",
+              "PARTIAL",
+              "FAILURE"
+            ]
+          },
+          "externalReferenceId": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Unique ref id in response"
+          },
+          "allocationDetails": {
+            "$ref": "#/components/schemas/AllocationEventDTO"
+          },
+          "originalResponseId": {
+            "type": "string",
+            "description": "",
+            "nullable": true
+          },
+          "reversalResponseId": {
+            "type": "string",
+            "description": "",
+            "nullable": true,
+            "readOnly": true
+          },
+          "originalExternalReferenceId": {
+            "type": "string",
+            "description": "",
+            "nullable": true
+          },
+          "originalTargetSystem": {
+            "type": "string",
+            "description": "",
+            "nullable": true
+          },
+          "reversed": {
+            "type": "string",
+            "readOnly": true,
+            "enum": [
+              "Y",
+              "N"
+            ]
+          },
+          "allocationScope": {
+            "$ref": "#/components/schemas/AllocationScopeDTO"
+          },
+          "excessDetails": {
+            "$ref": "#/components/schemas/ExcessDetailsDTO"
+          }
+        },
+        "description": ""
+      },
+      "AllocationScopeDTO": {
+        "type": "object",
+        "properties": {
+          "collectableEventIdentifierList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CollectableEventIdentifierDTO"
+            }
+          },
+          "customerId": {
+            "type": "string",
+            "description": "",
+            "nullable": true
+          },
+          "accountNumber": {
+            "type": "string",
+            "description": "",
+            "nullable": true
+          },
+          "collectableEventCode": {
+            "type": "string",
+            "description": "",
+            "nullable": true
+          },
+          "serviceCode": {
+            "type": "string",
+            "description": "",
+            "nullable": true
+          },
+          "collectionEntityIdList": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "eventType": {
+            "type": "string",
+            "description": "",
+            "nullable": true
+          },
+          "eventSubType": {
+            "type": "string",
+            "description": "",
+            "nullable": true
+          },
+          "extendedAttributes": {
+            "type": "object"
+          },
+          "allocationBoundary": {
+            "type": "string",
+            "description": "",
+            "enum": [
+              "CUSTOMER",
+              "ALLOCATION_SCOPE",
+              "COLLECTION_ENTITY"
+            ]
+          }
+        },
+        "description": ""
+      },
+      "CollectableEventIdentifierDTO": {
+        "required": [
+          "collectableEventId",
+          "host"
+        ],
+        "type": "object",
+        "properties": {
+          "collectableEventLineIdList": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "collectableEventId": {
+            "minLength": 1,
+            "type": "string",
+            "description": ""
+          },
+          "host": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "description": ""
+      },
+      "ExcessDetailsDTO": {
+        "type": "object",
+        "properties": {
+          "accountNumber": {
+            "type": "string",
+            "description": "",
+            "nullable": true
+          },
+          "serviceCode": {
+            "type": "string",
+            "description": "",
+            "nullable": true
+          },
+          "collectionEntityId": {
+            "type": "string",
+            "description": "",
+            "nullable": true
+          },
+          "eventType": {
+            "type": "string",
+            "description": "",
+            "nullable": true
+          },
+          "eventSubType": {
+            "type": "string",
+            "description": "",
+            "nullable": true
+          },
+          "collectableEventCode": {
+            "type": "string",
+            "description": "",
+            "nullable": true
+          },
+          "excessParkingLevel": {
+            "type": "string",
+            "description": "",
+            "enum": [
+              "CUSTOMER",
+              "COLLECTION_ENTITY",
+              "ACCOUNT",
+              "SERVICE_CODE",
+              "EVENT_TYPE",
+              "EVENT_TYPE_EVENT_SUB_TYPE"
+            ]
+          }
+        },
+        "description": ""
+      },
+      "TargetSystemDTO": {
+        "required": [
+          "code",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "maxLength": 20,
+            "minLength": 1,
+            "pattern": "^[A-Z0-9_-]*$",
+            "type": "string",
+            "description": "Target system code E.g. FINACLE"
+          },
+          "name": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Name of target system E.g. Finacle Core Banking"
+          },
+          "defaultTargetSystem": {
+            "maxLength": 1,
+            "type": "string",
+            "description": "Is this a default target system?",
+            "enum": [
+              "Y",
+              "N"
+            ]
+          }
+        },
+        "description": ""
+      },
+      "TargetSystemUpdateDTO": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Name of target system E.g. Finacle Core Banking"
+          },
+          "defaultTargetSystem": {
+            "maxLength": 1,
+            "type": "string",
+            "description": "Is this a default target system?",
+            "enum": [
+              "Y",
+              "N"
+            ]
+          }
+        },
+        "description": ""
+      },
+      "CollectionRequestOverride": {
+        "required": [
+          "overrideProperties",
+          "overrideScopeCriteria"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true,
+            "x-fbp-props": {
+              "businessName": "Id"
+            }
+          },
+          "host": {
+            "type": "string",
+            "x-fbp-props": {
+              "businessName": "Host"
+            }
+          },
+          "externalReferenceId": {
+            "type": "string",
+            "x-fbp-props": {
+              "businessName": "External Reference Id"
+            }
+          },
+          "purposeCode": {
+            "type": "string",
+            "x-fbp-props": {
+              "businessName": "Purpose Code"
+            }
+          },
+          "status": {
+            "type": "string",
+            "description": "",
+            "readOnly": true,
+            "enum": [
+              "ACK",
+              "INPROCESS",
+              "PROCESS_COMPLETED",
+              "ACTIVE",
+              "INACTIVE"
+            ],
+            "x-fbp-enum-name": "CollectionRequestOverrideStatus",
+            "x-fbp-props": {
+              "businessName": "Status"
+            }
+          },
+          "extendedAttributes": {
+            "type": "object",
+            "x-fbp-props": {
+              "businessName": "extendedAttributes"
+            }
+          },
+          "overrideProperties": {
+            "$ref": "#/components/schemas/OverrideProperties"
+          },
+          "overrideScopeCriteria": {
+            "$ref": "#/components/schemas/OverrideScopeCriteria"
+          },
+          "effectiveFrom": {
+            "$ref": "#/components/schemas/BusinessDateDTO"
+          },
+          "effectiveTill": {
+            "$ref": "#/components/schemas/NullableBusinessDateDTO"
+          }
+        },
+        "x-fbp-params": {
+          "rootSchema": true,
+          "endPoints": [
+            {
+              "name": "collectionRequestOverride",
+              "type": "create",
+              "singleRequest": true,
+              "singleResponse": true,
+              "parameters": []
+            },
+            {
+              "name": "collectionRequestOverride",
+              "type": "update",
+              "singleRequest": true,
+              "singleResponse": true,
+              "parameters": []
+            },
+            {
+              "name": "collectionRequestOverride",
+              "type": "fetch",
+              "singleResponse": false,
+              "parameters": [
+                {
+                  "name": "id",
+                  "description": "Id",
+                  "type": "string",
+                  "example": "FINACLE",
+                  "path": false,
+                  "requiredParam": false
+                },
+                {
+                  "name": "customerId",
+                  "description": "Id",
+                  "type": "string",
+                  "example": "FINACLE",
+                  "path": false,
+                  "requiredParam": false
+                },
+                {
+                  "name": "status",
+                  "description": "",
+                  "enum": [
+                    "ACK",
+                    "PROCESSING",
+                    "PROCESS_COMPLETED",
+                    "ACTIVE",
+                    "INACTIVE"
+                  ],
+                  "type": "string",
+                  "example": "ACTIVE",
+                  "path": false,
+                  "requiredParam": false
+                }
+              ]
+            },
+            {
+              "name": "onlineCollectionRequestOverride",
+              "type": "create",
+              "singleRequest": true,
+              "singleResponse": true,
+              "parameters": []
+            }
+          ],
+          "behaviours": {
+            "persist": true,
+            "setDefaults": true
+          },
+          "isModifiable": true,
+          "nonModifiableAttributes": [
+            "id",
+            "overrideScopeCriteria"
+          ]
+        }
+      },
+      "OverrideProperties": {
+        "type": "object",
+        "properties": {
+          "targetAccountIdentifier": {
+            "$ref": "#/components/schemas/TargetAccountIdentifier"
+          },
+          "dueDate": {
+            "$ref": "#/components/schemas/BusinessDateDTO"
+          }
+        },
+        "description": "DTO for managing Collection Request Override properties.",
+        "x-fbp-params": {
+          "repoMethods": [],
+          "overrideMethods": [],
+          "interfaces": [],
+          "rootSchema": false,
+          "endPoints": [],
+          "behaviours": {
+            "persist": true,
+            "setDefaults": true
+          },
+          "isModifiable": true,
+          "nonModifiableAttributes": [
+            "id"
+          ]
+        }
+      },
+      "OverrideScopeCriteria": {
+        "$ref": "#/components/schemas/CollectableEventFilterCriteria"
+      },
+      "CollectableEventFilterCriteria": {
+        "required": [
+          "customerId"
+        ],
+        "type": "object",
+        "properties": {
+          "customerId": {
+            "minLength": 1,
+            "type": "string",
+            "nullable": true,
+            "x-fbp-props": {
+              "businessName": "Customer Id"
+            }
+          },
+          "accountNumber": {
+            "type": "string",
+            "nullable": true,
+            "x-fbp-props": {
+              "businessName": "Account Number"
+            }
+          },
+          "serviceCode": {
+            "type": "string",
+            "nullable": true,
+            "x-fbp-props": {
+              "businessName": "Service Code"
+            }
+          },
+          "collectableEventCode": {
+            "type": "string",
+            "nullable": true,
+            "x-fbp-props": {
+              "businessName": "Collectable Event Code"
+            }
+          },
+          "collectionConditions": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/RuleSetLL"
+            }
+          },
+          "collectionEntityIdList": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            },
+            "x-fbp-props": {
+              "businessName": "Collection Entity Id List"
+            }
+          },
+          "collectableEventIdentifierList": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/CollectableEventIdentifier"
+            },
+            "x-fbp-props": {
+              "businessName": "Collectable Event List"
+            }
+          },
+          "targetSystemList": {
+            "type": "array",
+            "nullable": true,
+            "readOnly": true,
+            "items": {
+              "type": "string"
+            },
+            "x-fbp-props": {
+              "businessName": "Target System List"
+            }
+          },
+          "collectionMethodCodeList": {
+            "type": "array",
+            "nullable": true,
+            "readOnly": true,
+            "items": {
+              "type": "string"
+            },
+            "x-fbp-props": {
+              "businessName": "Collection Method Code List"
+            }
+          },
+          "dueDateRange": {
+            "$ref": "#/components/schemas/DateRange"
+          },
+          "targetAccountIdentifierList": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/TargetAccountIdentifier"
+            },
+            "x-fbp-props": {
+              "businessName": "Target Account List"
+            }
+          },
+          "demandStatus": {
+            "$ref": "#/components/schemas/DemandStatus"
+          }
+        }
+      },
+      "RuleSetLL": {
+        "title": "Root Type for RuleSetLLDTO",
+        "required": [
+          "conditions",
+          "groupId"
+        ],
+        "type": "object",
+        "properties": {
+          "groupId": {
+            "type": "string"
+          },
+          "conditions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Condition"
+            }
+          },
+          "groupLogicalOperator": {
+            "type": "string",
+            "description": "groupLogicalOperator"
+          }
+        },
+        "description": "RuleSetLLDTO",
+        "example": {
+          "groupId": "1",
+          "conditions": [
+            {
+              "attributeName": "productId",
+              "compOperator": "IN",
+              "value": "P1,P2",
+              "logicalOperator": "AND"
+            },
+            {
+              "attributeName": "location",
+              "compOperator": "IN",
+              "value": "MUMBAI,PUNE"
+            }
+          ]
+        }
+      },
+      "Condition": {
+        "title": "Root Type for ConditionDTO",
+        "required": [
+          "attributeName",
+          "compOperator",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "attributeName": {
+            "type": "string"
+          },
+          "compOperator": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "logicalOperator": {
+            "type": "string"
+          }
+        },
+        "description": "ConditionDTO",
+        "example": {
+          "attributeName": "productId",
+          "compOperator": "IN",
+          "value": "P1,P2",
+          "logicalOperator": "AND"
+        }
+      },
+      "CollectableEventIdentifier": {
+        "type": "object",
+        "properties": {
+          "collectableEventId": {
+            "type": "string"
+          },
+          "host": {
+            "type": "string"
+          },
+          "collectableEventLineIdList": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "DateRange": {
+        "type": "object",
+        "properties": {
+          "effectiveFrom": {
+            "$ref": "#/components/schemas/NullableBusinessDateDTO"
+          },
+          "effectiveTill": {
+            "$ref": "#/components/schemas/NullableBusinessDateDTO"
+          }
+        },
+        "nullable": true
+      },
+      "NullableBusinessDateDTO": {
+        "type": "string",
+        "description": "Business Date",
+        "format": "date",
+        "nullable": true,
+        "example": "2020-10-25"
+      },
+      "TargetAccountIdentifier": {
+        "type": "object",
+        "properties": {
+          "targetAccountNumber": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "targetSystemCode": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "collectionMethodCode": {
+            "minLength": 1,
+            "type": "string"
+          }
+        }
+      },
+      "DemandStatus": {
+        "type": "string",
+        "description": "",
+        "enum": [
+          "DRAFT",
+          "NEW",
+          "REQUEST_INFLIGHT",
+          "RETRY_INFLIGHT",
+          "FULL",
+          "PARTIAL",
+          "ERROR",
+          "ABORT"
+        ]
+      },
+      "CollectionDemandStatusDTO": {
+        "type": "object",
+        "properties": {
+          "demandId": {
+            "type": "string",
+            "description": "",
+            "readOnly": true
+          },
+          "demandSerialNumber": {
+            "type": "integer",
+            "description": "",
+            "readOnly": true
+          },
+          "demandStatus": {
+            "$ref": "#/components/schemas/DemandStatus"
+          },
+          "demandAmount": {
+            "$ref": "#/components/schemas/AmountDTO"
+          },
+          "remainingAmount": {
+            "$ref": "#/components/schemas/AmountDTO"
+          },
+          "retryCount": {
+            "type": "integer",
+            "description": ""
+          },
+          "crDrIndicator": {
+            "type": "string",
+            "description": "",
+            "enum": [
+              "CR",
+              "DR"
+            ]
+          },
+          "maxRetryCount": {
+            "type": "integer",
+            "description": "",
+            "readOnly": true
+          },
+          "lastErrorCode": {
+            "type": "string",
+            "description": "",
+            "readOnly": true
+          },
+          "lastSequenceNumber": {
+            "type": "integer",
+            "description": "",
+            "readOnly": true
+          },
+          "nextRetryDate": {
+            "$ref": "#/components/schemas/BusinessDateDTO"
+          },
+          "accountIndicator": {
+            "type": "string",
+            "description": "",
+            "enum": [
+              "PRIMARY",
+              "SECONDARY"
+            ]
+          },
+          "expectedResponseDate": {
+            "$ref": "#/components/schemas/BusinessDateDTO"
+          }
+        },
+        "description": ""
+      },
+      "CollectionEntityDTO": {
+        "required": [
+          "collectionPreferences",
+          "collectionScopeCriteria",
+          "customerId",
+          "effectiveFrom",
+          "name",
+          "purpose"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "customerId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "purpose": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "effectiveFrom": {
+            "$ref": "#/components/schemas/BusinessDateDTO"
+          },
+          "effectiveTill": {
+            "$ref": "#/components/schemas/NullableBusinessDateDTO"
+          },
+          "collectionScopeCriteria": {
+            "minItems": 1,
+            "type": "array",
+            "description": "",
+            "items": {
+              "$ref": "#/components/schemas/CollectionScopeCriteriaDTO"
+            }
+          },
+          "collectionSplitCriteria": {
+            "type": "array",
+            "description": "",
+            "items": {
+              "$ref": "#/components/schemas/CollectionRequestConsolidationCriteriaDTO"
+            }
+          },
+          "collectionPreferences": {
+            "minItems": 1,
+            "type": "array",
+            "description": "",
+            "items": {
+              "$ref": "#/components/schemas/CollectionPreferenceDTO"
+            }
+          }
+        },
+        "x-fbp-params": {
+          "repoMethods": [],
+          "overrideMethods": [],
+          "interfaces": [],
+          "rootSchema": true,
+          "endPoints": [],
+          "behaviours": {
+            "persist": true,
+            "setDefaults": true
+          }
+        }
+      },
+      "CollectionScopeCriteriaDTO": {
+        "required": [
+          "effectiveFrom"
+        ],
+        "type": "object",
+        "properties": {
+          "customerId": {
+            "type": "string"
+          },
+          "accountNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "serviceCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "collectableEventCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "collectionConditions": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/RuleSetLL"
+            }
+          },
+          "effectiveFrom": {
+            "$ref": "#/components/schemas/BusinessDateDTO"
+          },
+          "effectiveTill": {
+            "$ref": "#/components/schemas/NullableBusinessDateDTO"
+          },
+          "includeHierarchy": {
+            "type": "string",
+            "nullable": true
+          },
+          "remarks": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "description": "DTO for managing colleciton scope definition.",
+        "x-fbp-params": {
+          "repoMethods": [],
+          "overrideMethods": [],
+          "interfaces": [],
+          "rootSchema": true,
+          "endPoints": [],
+          "behaviours": {
+            "persist": true,
+            "setDefaults": true
+          }
+        }
+      },
+      "CollectionRequestConsolidationCriteriaDTO": {
+        "type": "object",
+        "properties": {
+          "consolidateBasedOn": {
+            "type": "string",
+            "nullable": true
+          },
+          "consolidationDetails": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ConsolidationProperties"
+            }
+          }
+        },
+        "description": "DTO for managing colleciton split criteria.",
+        "nullable": true,
+        "x-fbp-params": {
+          "repoMethods": [],
+          "overrideMethods": [],
+          "interfaces": [],
+          "rootSchema": true,
+          "endPoints": [],
+          "behaviours": {
+            "persist": true,
+            "setDefaults": true
+          }
+        }
+      },
+      "ConsolidationProperties": {
+        "required": [
+          "effectiveFrom"
+        ],
+        "type": "object",
+        "properties": {
+          "attributeBasedSplitDetails": {
+            "type": "string",
+            "description": "attributeBasedSplitDetails"
+          },
+          "splitCurrency": {
+            "type": "string",
+            "description": "splitCurrency"
+          },
+          "valueBasedSplitDetails": {
+            "type": "array",
+            "description": "valueBasedSplitDetails",
+            "items": {
+              "$ref": "#/components/schemas/RuleSetLL"
+            }
+          },
+          "effectiveFrom": {
+            "$ref": "#/components/schemas/BusinessDateDTO"
+          },
+          "effectiveTill": {
+            "$ref": "#/components/schemas/NullableBusinessDateDTO"
+          }
+        },
+        "description": "ConsolidationProperties",
+        "x-fbp-params": {
+          "repoMethods": [],
+          "overrideMethods": [],
+          "interfaces": [],
+          "rootSchema": true,
+          "endPoints": [],
+          "behaviours": {
+            "persist": true,
+            "setDefaults": true
+          }
+        }
+      },
+      "CollectionPreferenceDTO": {
+        "required": [
+          "collectionMethodCode",
+          "collectionRequestProportionType",
+          "effectiveFrom",
+          "targetAccount",
+          "targetAccountCurrencyCode",
+          "targetSystem"
+        ],
+        "type": "object",
+        "properties": {
+          "targetSystem": {
+            "maxLength": 20,
+            "minLength": 1,
+            "type": "string",
+            "description": ""
+          },
+          "id": {
+            "type": "string",
+            "description": ""
+          },
+          "targetAccount": {
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9]+$",
+            "type": "string",
+            "description": ""
+          },
+          "targetAccountProperties": {
+            "type": "object",
+            "description": ""
+          },
+          "collectionRequestProportionType": {
+            "type": "string",
+            "description": "",
+            "enum": [
+              "FULL",
+              "PARTIAL"
+            ]
+          },
+          "percentage": {
+            "type": "number",
+            "description": "",
+            "format": "double",
+            "readOnly": false,
+            "writeOnly": false
+          },
+          "reviewBreCode": {
+            "maxLength": 20,
+            "minLength": 1,
+            "type": "string",
+            "description": ""
+          },
+          "effectiveFrom": {
+            "$ref": "#/components/schemas/BusinessDateDTO"
+          },
+          "effectiveTill": {
+            "$ref": "#/components/schemas/NullableBusinessDateDTO"
+          },
+          "targetAccountCurrencyCode": {
+            "maxLength": 3,
+            "minLength": 3,
+            "pattern": "[A-Z]{3}",
+            "type": "string",
+            "description": ""
+          },
+          "collectionMethodCode": {
+            "maxLength": 20,
+            "minLength": 1,
+            "type": "string",
+            "description": ""
+          },
+          "secondaryTargetSystem": {
+            "type": "string",
+            "description": ""
+          },
+          "secondaryTargetAccountNumber": {
+            "type": "string",
+            "description": ""
+          },
+          "secondaryCollectionMethodCode": {
+            "type": "string",
+            "description": ""
+          },
+          "secondaryTargetAccountCurrencyCode": {
+            "maxLength": 3,
+            "minLength": 3,
+            "pattern": "[A-Z]{3}",
+            "type": "string",
+            "description": ""
+          },
+          "secondaryTargetAccountProperties": {
+            "type": "object",
+            "description": ""
+          }
+        },
+        "description": "DTO for managing collection preferences",
+        "x-fbp-params": {
+          "repoMethods": [],
+          "overrideMethods": [],
+          "interfaces": [],
+          "rootSchema": true,
+          "endPoints": [],
+          "behaviours": {
+            "persist": true,
+            "setDefaults": true
+          }
+        }
+      },
+      "CollectionEntityModifyDTO": {
+        "required": [
+          "_recordVersion",
+          "collectionPreferences",
+          "collectionScopeCriteria",
+          "effectiveFrom",
+          "id",
+          "name",
+          "purpose",
+          "temporalOperation"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "customerId": {
+            "minLength": 1,
+            "type": "string",
+            "readOnly": true
+          },
+          "purpose": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "effectiveFrom": {
+            "$ref": "#/components/schemas/BusinessDateDTO"
+          },
+          "effectiveTill": {
+            "$ref": "#/components/schemas/NullableBusinessDateDTO"
+          },
+          "collectionScopeCriteria": {
+            "minItems": 1,
+            "type": "array",
+            "description": "",
+            "items": {
+              "$ref": "#/components/schemas/CollectionScopeCriteriaModifyDTO"
+            }
+          },
+          "collectionSplitCriteria": {
+            "type": "array",
+            "description": "",
+            "items": {
+              "$ref": "#/components/schemas/CollectionRequestConsolidationCriteriaDTO"
+            }
+          },
+          "collectionPreferences": {
+            "minItems": 1,
+            "type": "array",
+            "description": "",
+            "items": {
+              "$ref": "#/components/schemas/CollectionPreferenceModifyDTO"
+            }
+          },
+          "temporalOperation": {
+            "type": "string",
+            "enum": [
+              "MODIFY",
+              "CURRENT",
+              "EXPIRE"
+            ]
+          },
+          "_recordVersion": {
+            "type": "integer"
+          }
+        },
+        "x-fbp-params": {
+          "repoMethods": [],
+          "overrideMethods": [],
+          "interfaces": [],
+          "rootSchema": true,
+          "endPoints": [],
+          "behaviours": {
+            "persist": true,
+            "setDefaults": true
+          }
+        }
+      },
+      "CollectionScopeCriteriaModifyDTO": {
+        "required": [
+          "_recordVersion",
+          "effectiveFrom",
+          "temporalOperation"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "customerId": {
+            "type": "string"
+          },
+          "accountNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "serviceCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "collectableEventCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "collectionConditions": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/RuleSetLL"
+            }
+          },
+          "effectiveFrom": {
+            "$ref": "#/components/schemas/BusinessDateDTO"
+          },
+          "effectiveTill": {
+            "$ref": "#/components/schemas/NullableBusinessDateDTO"
+          },
+          "includeHierarchy": {
+            "type": "string",
+            "nullable": true
+          },
+          "remarks": {
+            "type": "string",
+            "description": ""
+          },
+          "temporalOperation": {
+            "type": "string",
+            "enum": [
+              "CURRENT",
+              "MODIFY",
+              "EXPIRE",
+              "DELETE",
+              "ADD"
+            ]
+          },
+          "_recordVersion": {
+            "type": "integer"
+          }
+        },
+        "description": "DTO for managing collection scope definition.",
+        "x-fbp-params": {
+          "repoMethods": [],
+          "overrideMethods": [],
+          "interfaces": [],
+          "rootSchema": true,
+          "endPoints": [],
+          "behaviours": {
+            "persist": true,
+            "setDefaults": true
+          }
+        }
+      },
+      "CollectionPreferenceModifyDTO": {
+        "required": [
+          "_recordVersion",
+          "collectionMethodCode",
+          "collectionRequestProportionType",
+          "effectiveFrom",
+          "targetAccount",
+          "targetAccountCurrencyCode",
+          "targetSystem",
+          "temporalOperation"
+        ],
+        "type": "object",
+        "properties": {
+          "targetSystem": {
+            "maxLength": 20,
+            "minLength": 1,
+            "type": "string",
+            "description": ""
+          },
+          "id": {
+            "type": "string"
+          },
+          "targetAccount": {
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9]+$",
+            "type": "string",
+            "description": ""
+          },
+          "targetAccountProperties": {
+            "type": "object",
+            "description": ""
+          },
+          "collectionRequestProportionType": {
+            "type": "string",
+            "description": "",
+            "enum": [
+              "FULL",
+              "PARTIAL"
+            ]
+          },
+          "percentage": {
+            "type": "number",
+            "description": "",
+            "format": "double",
+            "readOnly": false,
+            "writeOnly": false
+          },
+          "reviewBreCode": {
+            "maxLength": 20,
+            "minLength": 1,
+            "type": "string",
+            "description": ""
+          },
+          "effectiveFrom": {
+            "$ref": "#/components/schemas/BusinessDateDTO"
+          },
+          "effectiveTill": {
+            "$ref": "#/components/schemas/NullableBusinessDateDTO"
+          },
+          "targetAccountCurrencyCode": {
+            "maxLength": 3,
+            "minLength": 3,
+            "pattern": "[A-Z]{3}",
+            "type": "string",
+            "description": ""
+          },
+          "collectionMethodCode": {
+            "maxLength": 20,
+            "minLength": 1,
+            "type": "string",
+            "description": ""
+          },
+          "secondaryTargetSystem": {
+            "type": "string",
+            "description": ""
+          },
+          "secondaryTargetAccountNumber": {
+            "type": "string",
+            "description": ""
+          },
+          "secondaryCollectionMethodCode": {
+            "type": "string",
+            "description": ""
+          },
+          "secondaryTargetAccountCurrencyCode": {
+            "maxLength": 3,
+            "minLength": 3,
+            "pattern": "[A-Z]{3}",
+            "type": "string",
+            "description": ""
+          },
+          "secondaryTargetAccountProperties": {
+            "type": "object",
+            "description": ""
+          },
+          "temporalOperation": {
+            "type": "string",
+            "enum": [
+              "MODIFY",
+              "CURRENT",
+              "EXPIRE",
+              "ADD",
+              "DELETE"
+            ]
+          },
+          "_recordVersion": {
+            "type": "integer"
+          }
+        },
+        "description": "DTO for modifying collection preferences",
+        "x-fbp-params": {
+          "repoMethods": [],
+          "overrideMethods": [],
+          "interfaces": [],
+          "rootSchema": true,
+          "endPoints": [],
+          "behaviours": {
+            "persist": true,
+            "setDefaults": true
+          }
+        }
+      },
+      "CollectionRequestGenerationResponseDTO": {
+        "type": "object",
+        "properties": {
+          "batchId": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "description": ""
+      },
+      "CollectionRequestGenerationRequestDTO": {
+        "required": [
+          "demandIdentifier",
+          "requestGenerationDate"
+        ],
+        "type": "object",
+        "properties": {
+          "demandIdentifier": {
+            "type": "string",
+            "description": "Demand Identifier for which retry request is to be created",
+            "example": "TA1_TS1_CM1_2024-01-15_CE_CSanity1_1:999"
+          },
+          "requestGenerationDate": {
+            "$ref": "#/components/schemas/BusinessDateDTO"
+          }
+        },
+        "description": ""
+      },
+      "LedgerAmountDTO": {
+        "type": "object",
+        "properties": {
+          "entityId": {
+            "type": "string",
+            "description": ""
+          },
+          "entityType": {
+            "type": "string",
+            "description": ""
+          },
+          "balances": {
+            "type": "array",
+            "description": "",
+            "items": {
+              "$ref": "#/components/schemas/AmountDTO"
+            }
+          }
+        },
+        "description": ""
+      },
+      "DemandCode": {
+        "required": [
+          "demandCode",
+          "mappings",
+          "props"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Generated UUID",
+            "readOnly": true,
+            "example": "1234567890",
+            "x-fbp-props": {
+              "businessName": "Id"
+            }
+          },
+          "demandCode": {
+            "maxLength": 20,
+            "minLength": 1,
+            "type": "string",
+            "description": "Demand Code",
+            "readOnly": false,
+            "example": "DC01",
+            "x-fbp-props": {
+              "businessName": "Demand Code"
+            }
+          },
+          "description": {
+            "type": "string",
+            "description": "Demand Code Description",
+            "readOnly": false,
+            "example": "Demand Code 01",
+            "x-fbp-props": {
+              "businessName": "Description"
+            }
+          },
+          "demandCodeGroup": {
+            "type": "string",
+            "description": "Demand Code Group",
+            "readOnly": false,
+            "example": "PRINCIPLE",
+            "x-fbp-props": {
+              "businessName": "Demand Code Group"
+            }
+          },
+          "deleted": {
+            "type": "string",
+            "description": "Logical deleted",
+            "readOnly": true,
+            "enum": [
+              "Y",
+              "N"
+            ],
+            "x-fbp-props": {
+              "businessName": "Deleted"
+            }
+          },
+          "props": {
+            "type": "array",
+            "description": "Properties of the demand code",
+            "items": {
+              "$ref": "#/components/schemas/DemandCodeProperty"
+            },
+            "x-fbp-props": {
+              "businessName": "Properties"
+            }
+          },
+          "mappings": {
+            "type": "array",
+            "description": "Mappings of the demand code to collectable event code",
+            "items": {
+              "$ref": "#/components/schemas/DemandCodeMapping"
+            },
+            "x-fbp-props": {
+              "businessName": "Mappings"
+            }
+          }
+        },
+        "description": "Manages the demand code within collection boundary",
+        "x-fbp-params": {
+          "rootSchema": true,
+          "repoMethods": [
+            {
+              "query": "from DemandCode tbl WHERE coalesce(tbl.code, 'x') = coalesce(:code, tbl.code, 'x') and tbl.orgCode = :orgCode",
+              "fetchMethod": "fetchForDemandCode",
+              "fetchParams": "String code, String orgCode"
+            }
+          ],
+          "overrideMethods": [],
+          "interfaces": [],
+          "lookups": [
+            {
+              "name": "Id",
+              "context": "DemandCode"
+            }
+          ],
+          "endPoints": [
+            {
+              "name": "demandCodeCreation",
+              "isCreate": true,
+              "isUpdate": false,
+              "isFetch": false,
+              "singleRequest": true,
+              "singleResponse": true,
+              "pathParameters": [
+                {
+                  "name": "code",
+                  "description": "Demand Code",
+                  "type": "string",
+                  "example": "DC01"
+                }
+              ]
+            },
+            {
+              "name": "demandCodeModification",
+              "isCreate": false,
+              "isUpdate": true,
+              "isFetch": false,
+              "singleRequest": true,
+              "singleResponse": true,
+              "pathParameters": [
+                {
+                  "name": "code",
+                  "description": "Demand Code",
+                  "type": "string",
+                  "example": "DC01",
+                  "path": true,
+                  "requiredParam": true
+                }
+              ]
+            },
+            {
+              "name": "demandCode",
+              "isCreate": false,
+              "isUpdate": false,
+              "isFetch": true,
+              "singleResponse": false,
+              "repoMethod": "fetchForDemandCode",
+              "queryParameters": [
+                {
+                  "name": "code",
+                  "description": "Demand Code",
+                  "type": "string",
+                  "example": "DC01",
+                  "path": false,
+                  "requiredParam": false
+                }
+              ]
+            }
+          ],
+          "behaviours": {
+            "persist": true,
+            "setDefaults": true
+          },
+          "isModifiable": true,
+          "nonModifiableAttributes": [
+            "id",
+            "overrideScopeCriteria"
+          ],
+          "auditBusinessEvent": "DEMAND_CODE"
+        }
+      },
+      "DemandCodeProperty": {
+        "required": [
+          "demandAggregationPeriod",
+          "demandCode",
+          "effectiveFrom"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Generated UUID",
+            "readOnly": true
+          },
+          "demandCode": {
+            "maxLength": 20,
+            "minLength": 1,
+            "type": "string",
+            "description": "Demand Code",
+            "readOnly": false,
+            "example": "DC01"
+          },
+          "demandAggregationPeriod": {
+            "type": "string",
+            "description": "Demand Aggregation Period",
+            "readOnly": false,
+            "enum": [
+              "DAILY",
+              "WEEKLY",
+              "MONTHLY",
+              "DUE_DATE"
+            ],
+            "x-fbp-enum-name": "DemandAggregationPeriod"
+          },
+          "demandAggregationAttributes": {
+            "type": "array",
+            "description": "Demand Aggregation Attributes",
+            "items": {
+              "type": "string"
+            }
+          },
+          "drillDownAggregationPeriod": {
+            "type": "string",
+            "description": "Drill Down Aggregation Period",
+            "readOnly": false,
+            "enum": [
+              "DAILY",
+              "WEEKLY",
+              "MONTHLY",
+              "DUE_DATE"
+            ],
+            "x-fbp-enum-name": "DrillDownAggregationPeriod"
+          },
+          "drillDownAggregationAttributes": {
+            "type": "array",
+            "description": "Drill Down Aggregation Attributes",
+            "items": {
+              "type": "string"
+            }
+          },
+          "effectiveFrom": {
+            "$ref": "#/components/schemas/BusinessDateDTO"
+          },
+          "effectiveTill": {
+            "$ref": "#/components/schemas/NullableBusinessDateDTO"
+          },
+          "deleted": {
+            "type": "string",
+            "description": "Logical deleted",
+            "readOnly": true,
+            "enum": [
+              "Y",
+              "N"
+            ]
+          }
+        },
+        "description": "Manages the properties of demand code",
+        "x-fbp-params": {
+          "repoMethods": [
+            {
+              "query": "from DemandCodeProperty dcp WHERE coalesce(dcp.demandAggregationPeriod, 'x') = coalesce(:demandAggregationPeriod, dcp.demandAggregationPeriod, 'x') and coalesce(dcp.drillDownAggregationPeriod, 'x') = coalesce(:drillDownAggregationPeriod, dcp.drillDownAggregationPeriod, 'x') and coalesce(dcp.deleted, 'x') = coalesce(:includeDeletedRecords, dcp.deleted, 'x') and dcp.orgCode = :orgCode",
+              "fetchMethod": "fetchForDemandCodeProperty",
+              "fetchParams": "String demandAggregationPeriod, String drillDownAggregationPeriod, String includeDeletedRecords, String orgCode"
+            }
+          ],
+          "overrideMethods": [
+            {
+              "type": "String",
+              "function": "getNaturalKey",
+              "params": "",
+              "body": "return demandCode;"
+            }
+          ],
+          "interfaces": [
+            {
+              "iface": "ITemporalEntity",
+              "package": "com.infosys.fbp.framework.util.interfaces"
+            }
+          ],
+          "endPoints": [],
+          "lookups": [
+            {
+              "name": "Id",
+              "context": "DemandCodeProperty"
+            }
+          ],
+          "behaviours": {
+            "persist": true,
+            "setDefaults": true
+          },
+          "isModifiable": true,
+          "nonModifiableAttributes": [
+            "id",
+            "overrideScopeCriteria"
+          ]
+        }
+      },
+      "DemandCodeMapping": {
+        "required": [
+          "collectableEventCode",
+          "demandCode",
+          "effectiveFrom",
+          "host"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Generated UUID",
+            "readOnly": true
+          },
+          "demandCode": {
+            "maxLength": 20,
+            "minLength": 1,
+            "type": "string",
+            "description": "Demand Code",
+            "readOnly": false,
+            "example": "DC01"
+          },
+          "collectableEventCode": {
+            "maxLength": 20,
+            "minLength": 1,
+            "type": "string",
+            "description": "Collectable Event Code"
+          },
+          "host": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Source of collectable event code"
+          },
+          "effectiveFrom": {
+            "$ref": "#/components/schemas/BusinessDateDTO"
+          },
+          "effectiveTill": {
+            "$ref": "#/components/schemas/NullableBusinessDateDTO"
+          },
+          "deleted": {
+            "type": "string",
+            "description": "Logical deleted",
+            "readOnly": true,
+            "enum": [
+              "Y",
+              "N"
+            ]
+          }
+        },
+        "description": "Manages the mapping of demand code to collectable event code",
+        "x-fbp-params": {
+          "repoMethods": [
+            {
+              "query": "from DemandCodeMapping dcm WHERE coalesce(dcm.collectableEventCode, 'x') = coalesce(:collectableEventCode, dcm.collectableEventCode, 'x') and coalesce(dcm.host, 'x') = coalesce(:host, dcm.host, 'x') and coalesce(dcm.deleted, 'x') = coalesce(:includeDeletedRecords, dcm.deleted, 'x') and dcm.orgCode = :orgCode",
+              "fetchMethod": "fetchForDemandCodeMapping",
+              "fetchParams": "String collectableEventCode, String host, String includeDeletedRecords, String orgCode"
+            }
+          ],
+          "overrideMethods": [
+            {
+              "type": "String",
+              "function": "getNaturalKey",
+              "params": "",
+              "body": "return demandCode;"
+            }
+          ],
+          "interfaces": [
+            {
+              "iface": "ITemporalEntity",
+              "package": "com.infosys.fbp.framework.util.interfaces"
+            }
+          ],
+          "endPoints": [],
+          "lookups": [
+            {
+              "name": "Id",
+              "context": "DemandCodeMapping"
+            }
+          ],
+          "behaviours": {
+            "persist": true,
+            "setDefaults": true
+          },
+          "isModifiable": true,
+          "nonModifiableAttributes": [
+            "id",
+            "overrideScopeCriteria"
+          ]
+        }
+      },
+      "BusinessDateDTO": {
+        "type": "string",
+        "description": "Business Date",
+        "format": "date",
+        "example": "2020-10-25"
+      },
+      "ResponseErrorCode": {
+        "required": [
+          "effectiveFrom",
+          "errorCode",
+          "errorRetryCount",
+          "errorSequenceNumber",
+          "retryHandlingCode",
+          "targetSystemCode"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Generated UUID",
+            "readOnly": true
+          },
+          "targetSystemCode": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Target system for the setup"
+          },
+          "collectionMethodCode": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Collection Method for the target system error code combination"
+          },
+          "errorCode": {
+            "minLength": 1,
+            "pattern": "^[A-Z0-9_-]*$",
+            "type": "string",
+            "description": "Error code from target system expected to be part of Collection response for which handling is being setup"
+          },
+          "retryHandlingCode": {
+            "minLength": 1,
+            "type": "string",
+            "description": "What action to be taken in case of the TS, CM & error code combination is received in the collection response",
+            "enum": [
+              "STOP",
+              "CONTINUE",
+              "EVENT",
+              "FALLBACK"
+            ],
+            "x-fbp-enum-name": "RetryHandlingCode"
+          },
+          "errorSequenceNumber": {
+            "maximum": 99,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "retryFrequencyDays": {
+            "maximum": 99,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "errorRetryCount": {
+            "maximum": 99,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "exhaustRetryHandlingCode": {
+            "type": "string",
+            "description": "What action to be taken in case of the TS, CM & error code combination is received in the collection response",
+            "enum": [
+              "STOP",
+              "CONTINUE",
+              "EVENT",
+              "FALLBACK"
+            ]
+          },
+          "effectiveFrom": {
+            "$ref": "#/components/schemas/BusinessDateDTO"
+          },
+          "effectiveTill": {
+            "$ref": "#/components/schemas/NullableBusinessDateDTO"
+          },
+          "deleted": {
+            "type": "string",
+            "description": "Logical deleted",
+            "readOnly": true,
+            "enum": [
+              "Y",
+              "N"
+            ]
+          }
+        },
+        "description": "Creating mapping of Target system (TS), collection method (CM) and list of error codes for which we are setting up handling",
+        "x-fbp-params": {
+          "repoMethods": [
+            {
+              "query": "from ResponseErrorCode cresp WHERE coalesce(cresp.targetSystemCode, 'x') = coalesce(:targetSystemCode, cresp.targetSystemCode, 'x') and coalesce(cresp.collectionMethodCode, 'x') = coalesce(:collectionMethodCode, cresp.collectionMethodCode, 'x') and coalesce(cresp.errorCode, 'x') = coalesce(:errorCode, cresp.errorCode, 'x') and coalesce(cresp.deleted, 'x') = coalesce(:includeDeletedRecords, cresp.deleted, 'x') and cresp.orgCode = :orgCode",
+              "fetchMethod": "findByParams",
+              "fetchParams": "String targetSystemCode, String collectionMethodCode, String errorCode, String includeDeletedRecords, String orgCode"
+            }
+          ],
+          "overrideMethods": [
+            {
+              "type": "String",
+              "function": "getNaturalKey",
+              "params": "",
+              "body": "return targetSystemCode;"
+            }
+          ],
+          "interfaces": [
+            {
+              "iface": "ITemporalEntity",
+              "package": "com.infosys.fbp.framework.util.interfaces"
+            }
+          ],
+          "rootSchema": true,
+          "endPoints": [
+            {
+              "name": "responseErrorCodeCreation",
+              "type": "create",
+              "singleRequest": false,
+              "singleResponse": false,
+              "parameters": [
+                {
+                  "name": "targetSystemCode",
+                  "description": "Target System to be created",
+                  "type": "string",
+                  "example": "FINACLE",
+                  "path": true,
+                  "requiredParam": true
+                }
+              ]
+            },
+            {
+              "name": "responseErrorCodeModification",
+              "type": "update",
+              "singleRequest": false,
+              "singleResponse": false,
+              "parameters": [
+                {
+                  "name": "targetSystemCode",
+                  "description": "Target System to be updated",
+                  "type": "string",
+                  "example": "FINACLE",
+                  "path": true,
+                  "requiredParam": true
+                }
+              ]
+            },
+            {
+              "name": "responseErrorCodesFetch",
+              "type": "fetch",
+              "singleResponse": false,
+              "repoMethod": "findByParams",
+              "parameters": [
+                {
+                  "name": "targetSystemCode",
+                  "description": "Target System to be fetched",
+                  "type": "string",
+                  "example": "FINACLE",
+                  "path": false
+                },
+                {
+                  "name": "collectionMethodCode",
+                  "description": "Collection Method to be fetched",
+                  "type": "string",
+                  "example": "CASH",
+                  "path": false
+                },
+                {
+                  "name": "errorCode",
+                  "description": "Error Code to be fetched",
+                  "type": "string",
+                  "example": "INSUFFICIENT_BALANCE",
+                  "path": false
+                },
+                {
+                  "name": "includeDeletedRecords",
+                  "description": "Include deleted records in fetch",
+                  "type": "string",
+                  "enum": [
+                    "Y",
+                    "N"
+                  ],
+                  "path": false
+                }
+              ]
+            }
+          ],
+          "behaviours": {
+            "persist": true,
+            "setDefaults": true
+          }
+        }
+      },
+      "FbpAuditDTO": {
+        "type": "object",
+        "properties": {
+          "auditId": {
+            "$ref": "#/components/schemas/AuditId"
+          },
+          "serviceName": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "SUCCESS",
+              "FAILURE"
+            ]
+          },
+          "businessEvent": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "type": "object",
+            "nullable": true
+          },
+          "previousData": {
+            "type": "object",
+            "nullable": true
+          },
+          "diffData": {
+            "type": "object",
+            "nullable": true
+          },
+          "args": {
+            "type": "object",
+            "nullable": true
+          },
+          "response": {
+            "type": "object",
+            "nullable": true
+          },
+          "errorMessage": {
+            "type": "string",
+            "nullable": true
+          },
+          "operation": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "CREATE",
+              "UPDATE",
+              "DELETE",
+              "FETCH",
+              "DERIVE_BASED_ON_EXISTING_DATA"
+            ]
+          },
+          "headers": {
+            "type": "object",
+            "nullable": true
+          },
+          "correlationId": {
+            "type": "string",
+            "nullable": true
+          },
+          "systemInfo": {
+            "type": "object",
+            "nullable": true
+          },
+          "createdBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "modifiedBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "modifiedDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "extensions": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "AuditId": {
+        "type": "object",
+        "properties": {
+          "auditId": {
+            "type": "string",
+            "nullable": true
+          },
+          "version": {
+            "type": "number",
+            "nullable": true
+          },
+          "businessEvent": {
+            "type": "string",
+            "nullable": true
+          },
+          "orgCode": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "FbpAuditInquiryDTO": {
+        "type": "object",
+        "properties": {
+          "auditId": {
+            "$ref": "#/components/schemas/AuditId"
+          },
+          "serviceName": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "SUCCESS",
+              "FAILURE"
+            ]
+          },
+          "data": {
+            "type": "object",
+            "nullable": true
+          },
+          "previousData": {
+            "type": "object",
+            "nullable": true
+          },
+          "diffData": {
+            "type": "object",
+            "nullable": true
+          },
+          "args": {
+            "type": "object",
+            "nullable": true
+          },
+          "response": {
+            "type": "object",
+            "nullable": true
+          },
+          "errorMessage": {
+            "type": "string",
+            "nullable": true
+          },
+          "operation": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "CREATE",
+              "UPDATE",
+              "DELETE",
+              "FETCH",
+              "DERIVE_BASED_ON_EXISTING_DATA"
+            ]
+          },
+          "headers": {
+            "type": "object",
+            "nullable": true
+          },
+          "correlationId": {
+            "type": "string",
+            "nullable": true
+          },
+          "matchPattern": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "EQUAL",
+              "NOT_EQUAL",
+              "LIKE",
+              "NOT_LIKE",
+              "STARTS_WITH",
+              "ENDS_WITH"
+            ]
+          },
+          "createdDateRange": {
+            "$ref": "#/components/schemas/DateRange"
+          },
+          "createdBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "modifiedBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "modifiedDateRange": {
+            "$ref": "#/components/schemas/DateRange"
+          }
+        }
+      },
+      "TsCmMappingDTO": {
+        "required": [
+          "ackModeForBatchCollection",
+          "ackModeForOneOffCollection",
+          "collectionMethodCode",
+          "defaultRetryFrequencyDays",
+          "defaultRetryHandlingCode",
+          "deliveryChannel",
+          "effectiveFrom",
+          "leadDays",
+          "targetSystemCode"
+        ],
+        "type": "object",
+        "properties": {
+          "targetSystemCode": {
+            "type": "string",
+            "description": "Target System Code - should be a valid Target system",
+            "readOnly": true
+          },
+          "collectionMethodCode": {
+            "type": "string",
+            "description": "Collection Method Code e.g. CASH - should be a valid collection method",
+            "readOnly": true
+          },
+          "effectiveFrom": {
+            "$ref": "#/components/schemas/BusinessDateDTO"
+          },
+          "effectiveTill": {
+            "$ref": "#/components/schemas/BusinessDateDTO"
+          },
+          "leadDays": {
+            "maximum": 100,
+            "minimum": 0,
+            "type": "integer",
+            "description": "How many days in advance the collection request has to be generated"
+          },
+          "actionOnHoliday": {
+            "type": "string",
+            "description": "How to handle holiday for request generation?  Should we generate in advance, on the day or later."
+          },
+          "ackModeForBatchCollection": {
+            "type": "string",
+            "description": "Acknowledge Mode for Batch collection",
+            "enum": [
+              "DEEMED",
+              "FACTUAL"
+            ]
+          },
+          "ackModeForOneOffCollection": {
+            "type": "string",
+            "description": "Acknowledge Mode for One-off or Ad Hoc collection",
+            "enum": [
+              "DEEMED",
+              "FACTUAL"
+            ]
+          },
+          "maxRetryCount": {
+            "maximum": 99,
+            "minimum": 0,
+            "type": "integer",
+            "description": "How many retries are allowed",
+            "nullable": true
+          },
+          "defaultRetryFrequencyDays": {
+            "maximum": 99,
+            "minimum": 0,
+            "type": "integer",
+            "description": "No of days after which retry should be attempted"
+          },
+          "defaultRetryHandlingCode": {
+            "$ref": "#/components/schemas/RetryHandlingCode"
+          },
+          "deliveryChannel": {
+            "$ref": "#/components/schemas/DeliveryChannel"
+          },
+          "id": {
+            "type": "string",
+            "description": "Unique ID for the record - System generated",
+            "readOnly": true
+          }
+        },
+        "description": ""
+      },
+      "CollectionMethodDTO": {
+        "required": [
+          "code",
+          "collectionMethodType",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "maxLength": 20,
+            "minLength": 1,
+            "pattern": "^[A-Z0-9_-]*$",
+            "type": "string",
+            "description": "Collection Method Code - e.g. NEFT, UPI etc."
+          },
+          "collectionMethodType": {
+            "type": "string",
+            "description": "Either AUTO or MANUAL",
+            "enum": [
+              "AUTO",
+              "MANUAL"
+            ]
+          },
+          "name": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Name of collection method. E.g. Unified Payment Interface"
+          }
+        },
+        "description": ""
+      },
+      "CollectionDemandFinalisationResponseDTO": {
+        "type": "object",
+        "properties": {
+          "batchId": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "description": ""
+      },
+      "CollectionDemandFinalisationRequestDTO": {
+        "required": [
+          "demandIdentifier"
+        ],
+        "type": "object",
+        "properties": {
+          "demandIdentifier": {
+            "pattern": "^[a-zA-Z0-9_-]+:[1-9][0-9]*$",
+            "type": "string",
+            "description": "DemandId with Serial number"
+          }
+        },
+        "description": ""
+      },
+      "CollectionResponseBaseDTO": {
+        "required": [
+          "crDrIndicator",
+          "externalReferenceId",
+          "targetSystem",
+          "transactionDate"
+        ],
+        "type": "object",
+        "properties": {
+          "transactionAmount": {
+            "$ref": "#/components/schemas/AmountDTO"
+          },
+          "transactionDate": {
+            "$ref": "#/components/schemas/BusinessDateDTO"
+          },
+          "crDrIndicator": {
+            "minLength": 1,
+            "type": "string",
+            "enum": [
+              "CR",
+              "DR"
+            ]
+          },
+          "targetSystem": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "extendedAttributes": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "processingTimestamp": {
+            "type": "string",
+            "description": "Date time at which the response was processed in the target system",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "targetAccountNumber": {
+            "type": "string",
+            "description": "",
+            "nullable": true
+          },
+          "originalResponseId": {
+            "type": "string",
+            "description": "",
+            "nullable": true
+          },
+          "reversalResponseId": {
+            "type": "string",
+            "description": "",
+            "nullable": true,
+            "readOnly": true
+          },
+          "originalExternalReferenceId": {
+            "type": "string",
+            "description": "",
+            "nullable": true
+          },
+          "originalTargetSystem": {
+            "type": "string",
+            "description": "",
+            "nullable": true
+          },
+          "reversed": {
+            "type": "string",
+            "readOnly": true,
+            "enum": [
+              "Y",
+              "N"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "readOnly": true,
+            "enum": [
+              "FULL",
+              "PARTIAL",
+              "FAILURE"
+            ]
+          },
+          "externalReferenceId": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Unique ref id in response"
+          },
+          "allocationScope": {
+            "$ref": "#/components/schemas/AllocationScopeDTO"
+          },
+          "excessDetails": {
+            "$ref": "#/components/schemas/ExcessDetailsDTO"
+          }
+        },
+        "description": ""
+      },
+      "OnlineCollectionRequestOverride": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CollectionRequestOverride"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "overriddenCollectableEventList": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/OverriddenCollectableEvent"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "OverriddenCollectableEvent": {
+        "type": "object",
+        "properties": {
+          "collectableEventId": {
+            "type": "string"
+          },
+          "host": {
+            "type": "string"
+          },
+          "dueDate": {
+            "type": "object",
+            "properties": {
+              "original": {
+                "$ref": "#/components/schemas/NullableBusinessDateDTO"
+              },
+              "overridden": {
+                "$ref": "#/components/schemas/NullableBusinessDateDTO"
+              }
+            }
+          },
+          "collectableEventLineList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OverriddenCollectableEventLine"
+            }
+          }
+        }
+      },
+      "OverriddenCollectableEventLine": {
+        "type": "object",
+        "properties": {
+          "collectableEventLineId": {
+            "type": "string"
+          },
+          "targetAccountIdentifier": {
+            "type": "object",
+            "properties": {
+              "original": {
+                "$ref": "#/components/schemas/TargetAccountIdentifier"
+              },
+              "overridden": {
+                "$ref": "#/components/schemas/TargetAccountIdentifier"
+              }
+            }
+          },
+          "dueDate": {
+            "type": "object",
+            "properties": {
+              "original": {
+                "$ref": "#/components/schemas/NullableBusinessDateDTO"
+              },
+              "overridden": {
+                "$ref": "#/components/schemas/NullableBusinessDateDTO"
+              }
+            }
+          }
+        }
+      },
+      "CollectionEntityExpireDTO": {
+        "required": [
+          "effectiveTill",
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "effectiveTill": {
+            "$ref": "#/components/schemas/BusinessDateDTO"
+          }
+        },
+        "x-fbp-params": {
+          "repoMethods": [],
+          "overrideMethods": [],
+          "interfaces": [],
+          "rootSchema": true,
+          "endPoints": [],
+          "behaviours": {
+            "persist": true,
+            "setDefaults": true
+          }
+        }
+      },
+      "LedgerReversalDTO": {
+        "required": [
+          "id",
+          "reversalDateTime"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "reversalDateTime": {
+            "minLength": 1,
+            "type": "string"
+          }
+        }
+      },
+      "CollectionRequestDTO": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "description": ""
+          },
+          "batchId": {
+            "type": "string",
+            "description": ""
+          },
+          "amount": {
+            "$ref": "#/components/schemas/AmountDTO"
+          },
+          "targetAccountNumber": {
+            "pattern": "^[a-zA-Z0-9]*$",
+            "type": "string",
+            "description": ""
+          },
+          "targetSystem": {
+            "type": "string",
+            "description": ""
+          },
+          "requestKey": {
+            "type": "string",
+            "description": ""
+          },
+          "collectionMethodCode": {
+            "type": "string",
+            "description": ""
+          },
+          "collectionMethodType": {
+            "description": ""
+          },
+          "dueDate": {
+            "$ref": "#/components/schemas/BusinessDateDTO"
+          },
+          "targetRequestGenerationDate": {
+            "$ref": "#/components/schemas/BusinessDateDTO"
+          },
+          "crDrIndicator": {
+            "type": "string",
+            "description": "",
+            "enum": [
+              "CR",
+              "DR"
+            ]
+          },
+          "demandId": {
+            "type": "string",
+            "description": ""
+          },
+          "customerId": {
+            "type": "string",
+            "description": "Customer ID of the Collection entity"
+          },
+          "accountPreference": {
+            "type": "array",
+            "description": "",
+            "items": {
+              "type": "string"
+            }
+          },
+          "ackModeForBatchCollection": {
+            "type": "string",
+            "description": "Acknowledge Mode for collection request",
+            "enum": [
+              "DEEMED",
+              "FACTUAL"
+            ]
+          },
+          "deliveryChannel": {
+            "$ref": "#/components/schemas/DeliveryChannel"
+          },
+          "allocationDetails": {
+            "$ref": "#/components/schemas/AllocationEventDTO"
+          }
+        },
+        "description": ""
+      },
+      "CollectionMethodUpdateDTO": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Name of collection method. E.g. Unified Payment Interface"
+          }
+        },
+        "description": ""
+      },
+      "CollectableEventDTO": {
+        "required": [
+          "collectableEventId",
+          "collectableEventLines",
+          "customerId",
+          "dueDate",
+          "eventDate",
+          "host",
+          "passThroughCollection",
+          "totalAmount"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "customerId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "accountId": {
+            "type": "string"
+          },
+          "collectableEventId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "host": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "eventDate": {
+            "$ref": "#/components/schemas/BusinessDateDTO"
+          },
+          "dueDate": {
+            "$ref": "#/components/schemas/BusinessDateDTO"
+          },
+          "totalAmount": {
+            "$ref": "#/components/schemas/AmountDTO"
+          },
+          "eventType": {
+            "type": "string",
+            "description": "Type of Event - e.g. SIP, Bill, Fee etc."
+          },
+          "modeOfExchange": {
+            "type": "string"
+          },
+          "passThroughCollection": {
+            "type": "string",
+            "enum": [
+              "Y",
+              "N"
+            ]
+          },
+          "effectiveDueDate": {
+            "$ref": "#/components/schemas/BusinessDateDTO"
+          },
+          "extendedAttributes": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "collectableEventLines": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CollectableEventLineDTO"
+            }
+          }
+        }
+      },
+      "CollectableEventLineDTO": {
+        "required": [
+          "collectableEventCode",
+          "collectableEventId",
+          "collectableEventLineId",
+          "crDrIndicator",
+          "customerId",
+          "dueDate",
+          "eventDate",
+          "host",
+          "passThroughCollection",
+          "totalAmount"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "collectableEventLineId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "collectableEventCode": {
+            "maxLength": 20,
+            "minLength": 1,
+            "type": "string"
+          },
+          "customerId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "accountId": {
+            "type": "string"
+          },
+          "serviceCode": {
+            "type": "string"
+          },
+          "totalAmount": {
+            "$ref": "#/components/schemas/AmountDTO"
+          },
+          "preTaxAmount": {
+            "$ref": "#/components/schemas/NullableAmount"
+          },
+          "taxAmount": {
+            "$ref": "#/components/schemas/NullableAmount"
+          },
+          "eventDate": {
+            "$ref": "#/components/schemas/BusinessDateDTO"
+          },
+          "dueDate": {
+            "$ref": "#/components/schemas/BusinessDateDTO"
+          },
+          "crDrIndicator": {
+            "type": "string",
+            "enum": [
+              "CR",
+              "DR"
+            ]
+          },
+          "narration": {
+            "type": "string"
+          },
+          "eventClassification": {
+            "type": "string"
+          },
+          "collectionEntityId": {
+            "type": "string"
+          },
+          "host": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "modeOfExchange": {
+            "type": "string"
+          },
+          "passThroughCollection": {
+            "type": "string",
+            "enum": [
+              "Y",
+              "N"
+            ]
+          },
+          "collectionAccountDetails": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "extendedAttributes": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "allocationAttributes": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "requestConsolidationAttributes": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "enrichedCollectableEventLineDTOS": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EnrichedCollectableEventLineDTO"
+            }
+          },
+          "eventType": {
+            "type": "string",
+            "description": "Type of Event - e.g. SIP, Bill, Fee etc."
+          },
+          "eventSubType": {
+            "type": "string",
+            "description": "Sub type of event"
+          },
+          "collectableEventId": {
+            "minLength": 1,
+            "type": "string"
+          }
+        }
+      },
+      "EnrichedCollectableEventLineDTO": {
+        "type": "object",
+        "properties": {
+          "targetSystem": {
+            "type": "string"
+          },
+          "targetAccountNumber": {
+            "type": "string"
+          },
+          "targetRequestGenerationDate": {
+            "$ref": "#/components/schemas/BusinessDateDTO"
+          },
+          "allocationKey": {
+            "type": "string"
+          },
+          "demandConsolidationKey": {
+            "type": "string"
+          },
+          "demandId": {
+            "type": "string"
+          },
+          "collectionMethodCode": {
+            "type": "string"
+          },
+          "collectionMethodType": {
+            "type": "string",
+            "enum": [
+              "AUTO",
+              "MANUAL"
+            ]
+          },
+          "amountDTO": {
+            "$ref": "#/components/schemas/AmountDTO"
+          },
+          "processed": {
+            "type": "string"
+          },
+          "collectableEventId": {
+            "type": "string"
+          },
+          "host": {
+            "type": "string"
+          },
+          "collectedAmount": {
+            "$ref": "#/components/schemas/AmountDTO"
+          },
+          "targetAccountCurrencyCode": {
+            "maxLength": 3,
+            "minLength": 3,
+            "pattern": "[A-Z]{3}",
+            "type": "string",
+            "description": ""
+          },
+          "targetAccountProperties": {
+            "type": "object",
+            "description": ""
+          },
+          "secondaryTargetSystem": {
+            "type": "string",
+            "description": ""
+          },
+          "secondaryTargetAccountNumber": {
+            "type": "string",
+            "description": ""
+          },
+          "secondaryCollectionMethodCode": {
+            "type": "string",
+            "description": ""
+          },
+          "secondaryTargetAccountCurrencyCode": {
+            "maxLength": 3,
+            "minLength": 3,
+            "pattern": "[A-Z]{3}",
+            "type": "string",
+            "description": ""
+          },
+          "secondaryTargetAccountProperties": {
+            "type": "object",
+            "description": ""
+          },
+          "deliveryChannel": {
+            "$ref": "#/components/schemas/DeliveryChannel"
+          },
+          "extendedAttributes": {
+            "type": "object",
+            "description": ""
+          },
+          "collectableEventCode": {
+            "type": "string",
+            "description": ""
+          },
+          "demandStatus": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DemandStatus"
+            }
+          }
+        }
+      },
+      "ResponseErrorCodeUpdateDTO": {
+        "required": [
+          "_recordVersion",
+          "collectionMethodCode",
+          "errorCode",
+          "errorSequenceNumber",
+          "targetSystemCode",
+          "temporalOperation"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Generated UUID",
+            "readOnly": false,
+            "x-fbp-props": {
+              "type": "String",
+              "isComplex": false,
+              "requiredProp": false,
+              "name": "id",
+              "upperCaseName": "Id",
+              "generate": {
+                "entity": {
+                  "annotations": [
+                    {
+                      "annotation": "@Id"
+                    },
+                    {
+                      "annotation": "@GeneratedValue(generator = \"uuid\")"
+                    },
+                    {
+                      "annotation": "@UuidGenerator"
+                    },
+                    {
+                      "annotation": "@Setter(AccessLevel.NONE)"
+                    }
+                  ]
+                }
+              },
+              "businessName": "Id",
+              "mapperFunction": "DataTableHelper.convertToString",
+              "isModifiable": false,
+              "columnName": "id",
+              "columnType": "varchar(255)"
+            }
+          },
+          "targetSystemCode": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Target system for the setup",
+            "x-fbp-props": {
+              "type": "String",
+              "isComplex": false,
+              "name": "targetSystemCode",
+              "upperCaseName": "TargetSystemCode",
+              "requiredProp": true,
+              "businessName": "TargetSystemCode",
+              "mapperFunction": "DataTableHelper.convertToString",
+              "isModifiable": false,
+              "columnName": "target_system_code",
+              "columnType": "varchar(255)"
+            }
+          },
+          "collectionMethodCode": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Collection Method for the target system error code combination",
+            "x-fbp-props": {
+              "type": "String",
+              "isComplex": false,
+              "name": "collectionMethodCode",
+              "upperCaseName": "CollectionMethodCode",
+              "businessName": "CollectionMethodCode",
+              "mapperFunction": "DataTableHelper.convertToString",
+              "requiredProp": true,
+              "isModifiable": false,
+              "columnName": "collection_method_code",
+              "columnType": "varchar(255)"
+            }
+          },
+          "errorCode": {
+            "minLength": 1,
+            "pattern": "^[A-Z0-9_-]*$",
+            "type": "string",
+            "description": "Error code from target system expected to be part of Collection response for which handling is being setup",
+            "x-fbp-props": {
+              "type": "String",
+              "isComplex": false,
+              "name": "errorCode",
+              "upperCaseName": "ErrorCode",
+              "requiredProp": true,
+              "businessName": "ErrorCode",
+              "mapperFunction": "DataTableHelper.convertToString",
+              "isModifiable": false,
+              "columnName": "error_code",
+              "columnType": "varchar(255)"
+            }
+          },
+          "retryHandlingCode": {
+            "$ref": "#/components/schemas/RetryHandlingCode"
+          },
+          "errorSequenceNumber": {
+            "maximum": 99,
+            "minimum": 1,
+            "type": "integer",
+            "x-fbp-props": {
+              "type": "Integer",
+              "isComplex": false,
+              "name": "errorSequenceNumber",
+              "upperCaseName": "ErrorSequenceNumber",
+              "requiredProp": true,
+              "businessName": "ErrorSequenceNumber",
+              "mapperFunction": "DataTableHelper.convertToInteger",
+              "isModifiable": false,
+              "columnName": "error_sequence_number",
+              "columnType": "integer"
+            }
+          },
+          "retryFrequencyDays": {
+            "maximum": 99,
+            "minimum": 1,
+            "type": "integer",
+            "x-fbp-props": {
+              "type": "Integer",
+              "isComplex": false,
+              "name": "retryFrequencyDays",
+              "upperCaseName": "RetryFrequencyDays",
+              "businessName": "RetryFrequencyDays",
+              "mapperFunction": "DataTableHelper.convertToInteger",
+              "isModifiable": true,
+              "requiredProp": false,
+              "columnName": "retry_frequency_days",
+              "columnType": "integer"
+            }
+          },
+          "errorRetryCount": {
+            "maximum": 99,
+            "minimum": 0,
+            "type": "integer",
+            "x-fbp-props": {
+              "type": "Integer",
+              "isComplex": false,
+              "name": "errorRetryCount",
+              "upperCaseName": "ErrorRetryCount",
+              "requiredProp": false,
+              "businessName": "ErrorRetryCount",
+              "mapperFunction": "DataTableHelper.convertToInteger",
+              "isModifiable": true,
+              "columnName": "error_retry_count",
+              "columnType": "integer"
+            }
+          },
+          "exhaustRetryHandlingCode": {
+            "$ref": "#/components/schemas/RetryHandlingCode"
+          },
+          "effectiveFrom": {
+            "$ref": "#/components/schemas/BusinessDateDTO"
+          },
+          "effectiveTill": {
+            "$ref": "#/components/schemas/NullableBusinessDateDTO"
+          },
+          "deleted": {
+            "type": "string",
+            "description": "Logical deleted",
+            "readOnly": true,
+            "enum": [
+              "Y",
+              "N"
+            ],
+            "x-fbp-props": {
+              "type": "string",
+              "isComplex": false,
+              "subType": "String",
+              "enumName": "Deleted",
+              "enumMap": {
+                "Deleted": {
+                  "type": "string",
+                  "property": "type",
+                  "enumValues": [
+                    {
+                      "code": "Y",
+                      "value": "Y",
+                      "lastEnumVal": false
+                    },
+                    {
+                      "code": "N",
+                      "value": "N",
+                      "lastEnumVal": true
+                    }
+                  ]
+                }
+              },
+              "name": "deleted",
+              "upperCaseName": "Deleted",
+              "generate": {
+                "spec.enum": {
+                  "filePath": "fbp-core-collection-spec/src/main/java/com/infosys/fbp/collection/consts/"
+                }
+              },
+              "businessName": "Deleted",
+              "mapperFunction": "DataTableHelper.convertToCharacter",
+              "isModifiable": true,
+              "columnName": "deleted",
+              "columnType": "varchar(255)",
+              "property": "type",
+              "enumValues": [
+                {
+                  "code": "Y",
+                  "value": "Y",
+                  "lastEnumVal": false
+                },
+                {
+                  "code": "N",
+                  "value": "N",
+                  "lastEnumVal": true
+                }
+              ],
+              "common": {
+                "timestamp": "2024-08-18 19:34:25",
+                "basePackage": "com.infosys.fbp.collection",
+                "serviceImplPackage": "com.infosys.fbp.collection.services.impl",
+                "entityPackage": "com.infosys.fbp.collection.entity",
+                "controllerPackage": "com.infosys.fbp.collection.controllers",
+                "baseDtoPackage": "com.infosys.fbp.framework.model.base.dto",
+                "dtoPackageName": "com.infosys.fbp.collection.dto",
+                "constsPackageName": "com.infosys.fbp.collection.consts",
+                "specIfacePackage": "com.infosys.fbp.collection.interfaces",
+                "repositoryPackage": "com.infosys.fbp.collection.repositories",
+                "servicesPackage": "com.infosys.fbp.collection.services",
+                "exceptionPackage": "com.infosys.fbp.collection.exception",
+                "dataSetName": "ResponseErrorCode",
+                "dataSetNameVariable": "responseErrorCode",
+                "dataSetNameVariablePlural": "responseErrorCodes",
+                "dataSetNamePlural": "ResponseErrorCodes",
+                "dataSetNameEnglish": "Response Error Code",
+                "basePackageName": "com.infosys.fbp.collection",
+                "entityClassName": "ResponseErrorCode",
+                "idm": "CollectionExecutionDataModel",
+                "idmVariable": "collectionExecutionDataModel",
+                "enumPath": "fbp-core-collection-spec/src/main/java/com/infosys/fbp/collection/consts/",
+                "schema": "ResponseErrorCode",
+                "schemaPlural": "ResponseErrorCodeList"
+              }
+            }
+          },
+          "temporalOperation": {
+            "type": "string",
+            "enum": [
+              "CURRENT",
+              "MODIFY",
+              "UNCHANGED",
+              "DELETE",
+              "ADD",
+              "EXPIRE"
+            ]
+          },
+          "_recordVersion": {
+            "type": "integer"
+          }
+        },
+        "description": "Creating mapping of Target system (TS), collection method (CM) and list of error codes for which we are setting up handling",
+        "x-fbp-params": {
+          "repoMethods": [
+            {
+              "query": "from ResponseErrorCode cresp WHERE coalesce(cresp.targetSystemCode, 'x') = coalesce(:targetSystemCode, cresp.targetSystemCode, 'x') and coalesce(cresp.collectionMethodCode, 'x') = coalesce(:collectionMethodCode, cresp.collectionMethodCode, 'x') and coalesce(cresp.errorCode, 'x') = coalesce(:errorCode, cresp.errorCode, 'x') and coalesce(cresp.deleted, 'x') = coalesce(:includeDeletedRecords, cresp.deleted, 'x') and cresp.orgCode = :orgCode",
+              "fetchMethod": "findByParams",
+              "fetchParams": "String targetSystemCode, String collectionMethodCode, String errorCode, String includeDeletedRecords, String orgCode"
+            }
+          ],
+          "overrideMethods": [
+            {
+              "type": "String",
+              "function": "getNaturalKey",
+              "params": "",
+              "body": "return targetSystemCode;"
+            }
+          ],
+          "interfaces": [
+            {
+              "iface": "ITemporalEntity",
+              "package": "com.infosys.fbp.framework.util.interfaces"
+            }
+          ],
+          "rootSchema": true,
+          "endPoints": [
+            {
+              "name": "responseErrorCodeCreation",
+              "type": "create",
+              "singleRequest": false,
+              "singleResponse": false,
+              "parameters": [
+                {
+                  "name": "targetSystemCode",
+                  "description": "Target System to be created",
+                  "type": "string",
+                  "example": "FINACLE",
+                  "path": true,
+                  "requiredParam": true,
+                  "lastParam": true,
+                  "paramType": "String",
+                  "isString": true,
+                  "upperCaseName": "TargetSystemCode"
+                }
+              ],
+              "action": "Create",
+              "httpMethod": "post",
+              "httpMethodAnnotation": "Post",
+              "isCreate": true,
+              "methodName": "createResponseErrorCodeCreation",
+              "methodNameUpper": "CreateResponseErrorCodeCreation"
+            },
+            {
+              "name": "responseErrorCodeModification",
+              "type": "update",
+              "singleRequest": true,
+              "singleResponse": false,
+              "parameters": [
+                {
+                  "name": "targetSystemCode",
+                  "description": "Target System to be updated",
+                  "type": "string",
+                  "example": "FINACLE",
+                  "path": true,
+                  "requiredParam": true,
+                  "lastParam": true,
+                  "paramType": "String",
+                  "isString": true,
+                  "upperCaseName": "TargetSystemCode"
+                }
+              ],
+              "action": "Update",
+              "httpMethod": "post",
+              "httpMethodAnnotation": "Post",
+              "isUpdate": true,
+              "methodName": "updateResponseErrorCodeModification",
+              "methodNameUpper": "UpdateResponseErrorCodeModification"
+            },
+            {
+              "name": "responseErrorCodesFetch",
+              "type": "fetch",
+              "singleResponse": false,
+              "repoMethod": "findByParams",
+              "parameters": [
+                {
+                  "name": "targetSystemCode",
+                  "description": "Target System to be fetched",
+                  "type": "string",
+                  "example": "FINACLE",
+                  "path": false,
+                  "paramType": "String",
+                  "isString": true,
+                  "upperCaseName": "TargetSystemCode"
+                },
+                {
+                  "name": "collectionMethodCode",
+                  "description": "Collection Method to be fetched",
+                  "type": "string",
+                  "example": "CASH",
+                  "path": false,
+                  "paramType": "String",
+                  "isString": true,
+                  "upperCaseName": "CollectionMethodCode"
+                },
+                {
+                  "name": "errorCode",
+                  "description": "Error Code to be fetched",
+                  "type": "string",
+                  "example": "INSUFFICIENT_BALANCE",
+                  "path": false,
+                  "paramType": "String",
+                  "isString": true,
+                  "upperCaseName": "ErrorCode"
+                },
+                {
+                  "name": "includeDeletedRecords",
+                  "description": "Include deleted records in fetch",
+                  "type": "string",
+                  "enum": [
+                    "Y",
+                    "N"
+                  ],
+                  "path": false,
+                  "lastParam": true,
+                  "paramType": "String",
+                  "isString": true,
+                  "enumMap": {
+                    "enumValues": [
+                      {
+                        "code": "Y",
+                        "value": "Y",
+                        "lastEnumVal": false
+                      },
+                      {
+                        "code": "N",
+                        "value": "N",
+                        "lastEnumVal": true
+                      }
+                    ]
+                  },
+                  "upperCaseName": "IncludeDeletedRecords"
+                }
+              ],
+              "action": "Fetch",
+              "httpMethod": "get",
+              "httpMethodAnnotation": "Get",
+              "isFetch": true,
+              "methodName": "fetchResponseErrorCodesFetch",
+              "methodNameUpper": "FetchResponseErrorCodesFetch",
+              "last": true
+            }
+          ],
+          "behaviours": {
+            "persist": true,
+            "setDefaults": true
+          }
+        },
+        "x-tableName": "response_error_code",
+        "x-isRoot": true
+      },
+      "CollectionRequestByCustomerDTO": {
+        "required": [
+          "customerId",
+          "requestGenerationDate"
+        ],
+        "type": "object",
+        "properties": {
+          "customerId": {
+            "type": "string",
+            "description": ""
+          },
+          "requestGenerationDate": {
+            "$ref": "#/components/schemas/BusinessDateDTO"
+          }
+        },
+        "description": ""
+      },
+      "TsCmMappingUpdateDTO": {
+        "required": [
+          "_recordVersion",
+          "ackModeForBatchCollection",
+          "ackModeForOneOffCollection",
+          "leadDays",
+          "temporalOperation"
+        ],
+        "type": "object",
+        "properties": {
+          "effectiveFrom": {
+            "$ref": "#/components/schemas/BusinessDateDTO"
+          },
+          "effectiveTill": {
+            "$ref": "#/components/schemas/BusinessDateDTO"
+          },
+          "leadDays": {
+            "maximum": 100,
+            "minimum": 0,
+            "type": "integer",
+            "description": "How many days in advance the collection request has to be generated",
+            "example": 1
+          },
+          "actionOnHoliday": {
+            "type": "string",
+            "description": "How to handle holiday for request generation?  Should we generate in advance, on the day or later."
+          },
+          "ackModeForBatchCollection": {
+            "type": "string",
+            "description": "Acknowledge Mode for Batch collection",
+            "enum": [
+              "DEEMED",
+              "FACTUAL"
+            ]
+          },
+          "ackModeForOneOffCollection": {
+            "type": "string",
+            "description": "Acknowledge Mode for One-off or Ad Hoc collection",
+            "enum": [
+              "DEEMED",
+              "FACTUAL"
+            ]
+          },
+          "maxRetryCount": {
+            "minimum": 0,
+            "type": "integer",
+            "description": "How many retries are allowed",
+            "nullable": true
+          },
+          "defaultRetryFrequencyDays": {
+            "minimum": 0,
+            "type": "integer",
+            "description": "No of days after which retry should be attempted"
+          },
+          "defaultRetryHandlingCode": {
+            "$ref": "#/components/schemas/RetryHandlingCode"
+          },
+          "deliveryChannel": {
+            "$ref": "#/components/schemas/DeliveryChannel"
+          },
+          "id": {
+            "type": "string",
+            "description": "Unique ID for the record - System generated"
+          },
+          "_recordVersion": {
+            "type": "integer",
+            "description": "Record Version",
+            "readOnly": false,
+            "example": 1
+          },
+          "temporalOperation": {
+            "type": "string",
+            "enum": [
+              "CURRENT",
+              "MODIFY",
+              "DELETE",
+              "ADD",
+              "EXPIRE"
+            ]
+          }
+        },
+        "description": ""
+      },
+      "AmountDTO": {
+        "required": [
+          "currencyCode",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "value": {
+            "maximum": 999999999999.99,
+            "exclusiveMaximum": true,
+            "type": "number",
+            "description": "Amount value",
+            "format": "double"
+          },
+          "currencyCode": {
+            "$ref": "#/components/schemas/CurrencyCode"
+          }
+        }
+      },
+      "CurrencyCode": {
+        "maxLength": 3,
+        "minLength": 3,
+        "pattern": "[A-Z]{3}",
+        "type": "string"
+      },
+      "AllocationEventDTO": {
+        "type": "object",
+        "properties": {
+          "collectionResponseBaseDTO": {
+            "$ref": "#/components/schemas/CollectionResponseBaseDTO"
+          },
+          "allocationLevelDTO": {
+            "$ref": "#/components/schemas/AllocationLevelDTO"
+          },
+          "reversed": {
+            "type": "string",
+            "readOnly": true,
+            "enum": [
+              "Y",
+              "N"
+            ]
+          }
+        }
+      },
+      "AllocationLevelDTO": {
+        "type": "object",
+        "properties": {
+          "collectableEvents": {
+            "type": "array",
+            "description": "",
+            "items": {
+              "$ref": "#/components/schemas/AllocatedCollectableEventDTO"
+            }
+          },
+          "collectableEventLines": {
+            "type": "array",
+            "description": "",
+            "items": {
+              "$ref": "#/components/schemas/AllocatedCollectableEventLineDTO"
+            }
+          },
+          "customers": {
+            "type": "array",
+            "description": "",
+            "items": {
+              "$ref": "#/components/schemas/AllocatedCustomerDTO"
+            }
+          },
+          "excess": {
+            "type": "array",
+            "description": "",
+            "items": {
+              "$ref": "#/components/schemas/AllocatedExcessDTO"
+            }
+          }
+        }
+      },
+      "AllocatedCollectableEventDTO": {
+        "type": "object",
+        "properties": {
+          "collectableEventId": {
+            "type": "string"
+          },
+          "host": {
+            "type": "string"
+          },
+          "crDrIndicator": {
+            "type": "string",
+            "description": "",
+            "enum": [
+              "CR",
+              "DR"
+            ]
+          },
+          "collectableAmount": {
+            "$ref": "#/components/schemas/AmountDTO"
+          },
+          "allocationDetails": {
+            "$ref": "#/components/schemas/AllocationDetailDTO"
+          }
+        }
+      },
+      "AllocationDetailDTO": {
+        "type": "object",
+        "properties": {
+          "previousAllocatedAmount": {
+            "$ref": "#/components/schemas/AmountDTO"
+          },
+          "allocatedAmount": {
+            "$ref": "#/components/schemas/AmountDTO"
+          },
+          "outstandingAmount": {
+            "$ref": "#/components/schemas/AmountDTO"
+          }
+        }
+      },
+      "AllocatedCollectableEventLineDTO": {
+        "type": "object",
+        "properties": {
+          "collectableEventId": {
+            "type": "string"
+          },
+          "collectableEventLineId": {
+            "type": "string"
+          },
+          "payload": {
+            "type": "object"
+          },
+          "demandCodeGroup": {
+            "type": "string"
+          },
+          "host": {
+            "type": "string"
+          },
+          "crDrIndicator": {
+            "type": "string",
+            "description": "",
+            "enum": [
+              "CR",
+              "DR"
+            ]
+          },
+          "collectableAmount": {
+            "$ref": "#/components/schemas/AmountDTO"
+          },
+          "allocationDetails": {
+            "$ref": "#/components/schemas/AllocationDetailDTO"
+          }
+        }
+      },
+      "AllocatedCustomerDTO": {
+        "type": "object",
+        "properties": {
+          "customerId": {
+            "type": "string"
+          },
+          "crDrIndicator": {
+            "type": "string",
+            "description": "",
+            "enum": [
+              "CR",
+              "DR"
+            ]
+          },
+          "collectableAmount": {
+            "$ref": "#/components/schemas/AmountDTO"
+          },
+          "allocationDetails": {
+            "$ref": "#/components/schemas/AllocationDetailDTO"
+          }
+        }
+      },
+      "AllocatedExcessDTO": {
+        "type": "object",
+        "properties": {
+          "customerId": {
+            "type": "string"
+          },
+          "collectionEntityId": {
+            "type": "string"
+          },
+          "excessAllocationDetails": {
+            "$ref": "#/components/schemas/ExcessAllocationDetailDTO"
+          }
+        }
+      },
+      "ExcessAllocationDetailDTO": {
+        "type": "object",
+        "properties": {
+          "previousExcessAmount": {
+            "$ref": "#/components/schemas/AmountDTO"
+          },
+          "allocatedAmount": {
+            "$ref": "#/components/schemas/AmountDTO"
+          },
+          "excessAmount": {
+            "$ref": "#/components/schemas/AmountDTO"
+          }
+        }
+      },
+      "RetryHandlingCode": {
+        "type": "string",
+        "description": "Retry handling code",
+        "enum": [
+          "STOP",
+          "CONTINUE",
+          "EVENT",
+          "FALLBACK"
+        ]
+      },
+      "DeliveryChannel": {
+        "type": "string",
+        "description": "Delivery Channel",
+        "enum": [
+          "EVENT",
+          "API",
+          "FILE"
+        ]
+      },
+      "NullableAmount": {
+        "type": "object",
+        "description": "",
+        "anyOf": [
+          {
+            "nullable": true
+          },
+          {
+            "$ref": "#/components/schemas/OptionalAmountDTO"
+          }
+        ]
+      },
+      "OptionalAmountDTO": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "maximum": 999999999999.99,
+            "exclusiveMaximum": true,
+            "type": "number",
+            "description": "Amount value",
+            "format": "double"
+          },
+          "currencyCode": {
+            "$ref": "#/components/schemas/CurrencyCode"
+          }
+        }
+      }
+    }
+  }
+}

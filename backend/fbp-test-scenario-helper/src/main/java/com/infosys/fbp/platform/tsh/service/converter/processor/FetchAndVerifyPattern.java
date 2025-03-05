@@ -21,7 +21,7 @@ public class FetchAndVerifyPattern implements Pattern {
     @Override
     public void process(TDGWorkbook workbook, CommandChain commandChain, String commandName) {
         log.info("FetchAndVerifyPattern: About to process {}", fetchAndVerify.getApiName());
-        addTableWithNote(workbook, commandChain.getSheetName(), commandName, fetchAndVerify);
+        addTableWithNote(workbook, commandChain.getSheetName(), commandChain.getCommands().get(commandName), fetchAndVerify);
     }
 
     @Override

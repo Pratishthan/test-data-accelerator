@@ -67,33 +67,53 @@ public class TableWithNote {
 
         if ((InputType.Denorm.equals(command.getInputTypeMap().get(PropertyType.ResponseBodyColumnList))
                 && !postAndVerify.getTypeDenormPropertiesMap().get(PropertyType.ResponseBodyColumnList).isEmpty())) {
-            addTableWithNote(workbook, sheetName, "Request-" + command.getCommandName(), postAndVerify.getDenormColumnMapForVerify(), new ArrayList<>());
+            addTableWithNote(workbook, sheetName, "Response-" + command.getCommandName(), postAndVerify.getDenormColumnMapForVerify(), new ArrayList<>());
         }
 
         if ((InputType.Normal.equals(command.getInputTypeMap().get(PropertyType.ResponseBodyColumnList))
                 && !postAndVerify.getTypeNormalPropertyMap().get(PropertyType.ResponseBodyColumnList).isEmpty())) {
-            addTablesWithNote(workbook, sheetName, "Request-" + command.getCommandName(), postAndVerify.getNormalColumnMapForVerify(), new ArrayList<>());
+            addTablesWithNote(workbook, sheetName, "Response-" + command.getCommandName(), postAndVerify.getNormalColumnMapForVerify(), new ArrayList<>());
         }
 
     }
 
-    public static void addTableWithNote(TDGWorkbook workbook, String sheetName, String commandName, FetchAndVerify fetchAndVerify) {
-        getSeparatorRow(workbook, sheetName, commandName);
+    public static void addTableWithNote(TDGWorkbook workbook, String sheetName, Command command, FetchAndVerify fetchAndVerify) {
+        getSeparatorRow(workbook, sheetName, command.getCommandName());
         List<Parameter> paramColumnList = new ArrayList<>();
-        paramColumnList.addAll(fetchAndVerify.getPropertyListMap().get(PropertyType.PathParamList).stream().map(Property::getParameter).toList());
-        paramColumnList.addAll(fetchAndVerify.getPropertyListMap().get(PropertyType.QueryParamList).stream().map(Property::getParameter).toList());
+        paramColumnList.addAll(fetchAndVerify.getTypeDenormPropertiesMap().get(PropertyType.PathParamList).stream().map(Property::getParameter).toList());
+        paramColumnList.addAll(fetchAndVerify.getTypeDenormPropertiesMap().get(PropertyType.QueryParamList).stream().map(Property::getParameter).toList());
         if (!paramColumnList.isEmpty()) {
             addParamCellList(workbook, sheetName, paramColumnList);
         }
-        if (!fetchAndVerify.getPropertyListMap().get(PropertyType.RequestBodyColumnList).isEmpty()) {
-            addTableWithNote(workbook, sheetName, "Fetch-Request-" + commandName, fetchAndVerify.getColumnMapForRequest(), new ArrayList<>());
+        if (!fetchAndVerify.getTypeDenormPropertiesMap().get(PropertyType.RequestBodyColumnList).isEmpty()) {
+            if ((InputType.Denorm.equals(command.getInputTypeMap().get(PropertyType.RequestBodyColumnList))
+                    && !fetchAndVerify.getTypeDenormPropertiesMap().get(PropertyType.RequestBodyColumnList).isEmpty())) {
+                addTableWithNote(workbook, sheetName, "Fetch-Request-" + command.getCommandName(), fetchAndVerify.getDenormColumnMapForRequest(), new ArrayList<>());
+            }
+
+            if ((InputType.Normal.equals(command.getInputTypeMap().get(PropertyType.RequestBodyColumnList))
+                    && !fetchAndVerify.getTypeNormalPropertyMap().get(PropertyType.RequestBodyColumnList).isEmpty())) {
+                addTablesWithNote(workbook, sheetName, "Fetch-Request-" + command.getCommandName(), fetchAndVerify.getNormalColumnMapForRequest(), new ArrayList<>());
+            }
+
         } else {
             Row row = workbook.getNewRow(sheetName);
             Cell textCell = row.createCell(1);
             textCell.setCellValue("Call " + fetchAndVerify.getApiName() + " API");
             addNoteToCell(workbook, sheetName, textCell, fetchAndVerify.getConcordionCommand());
         }
-        addTableWithNote(workbook, sheetName, "Verify-" + commandName, fetchAndVerify.getColumnMapForVerify(), new ArrayList<>());
+
+        if ((InputType.Denorm.equals(command.getInputTypeMap().get(PropertyType.ResponseBodyColumnList))
+                && !fetchAndVerify.getTypeDenormPropertiesMap().get(PropertyType.ResponseBodyColumnList).isEmpty())) {
+            addTableWithNote(workbook, sheetName, "Verify-" + command.getCommandName(), fetchAndVerify.getDenormColumnMapForVerify(), new ArrayList<>());
+        }
+
+        if ((InputType.Normal.equals(command.getInputTypeMap().get(PropertyType.ResponseBodyColumnList))
+                && !fetchAndVerify.getTypeNormalPropertyMap().get(PropertyType.ResponseBodyColumnList).isEmpty())) {
+            addTablesWithNote(workbook, sheetName, "Verify-" + command.getCommandName(), fetchAndVerify.getNormalColumnMapForVerify(), new ArrayList<>());
+        }
+
+
     }
 
     public static void addTablesWithNote(TDGWorkbook workbook, String sheetName,

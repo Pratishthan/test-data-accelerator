@@ -16,7 +16,7 @@ public class PostAndVerifyFactory extends AbstractFactory {
                 ac_map.forEach((op, ac) -> {
                     if (PatternType.PostAndVerify.equals(ac.getType())) {
                         PostAndVerify postAndVerify = new PostAndVerify();
-                        postAndVerify.setPropertyListMap(ac.getPropertyListMap());
+                        postAndVerify.setPropertyListMap(ac.getTypeDenormPropertiesMap());
                         postAndVerify.setApiName(ac.getActionCode());
                         PostAndVerifyPattern postAndVerifyPattern = new PostAndVerifyPattern(postAndVerify);
                         patternMap.put(op, postAndVerifyPattern);

@@ -15,7 +15,7 @@ public class FetchAndVerifyFactory extends AbstractFactory {
                 ac_map.forEach((op, ac) -> {
                     if (PatternType.FetchAndVerify.equals(ac.getType())) {
                         FetchAndVerify fetchAndVerify = new FetchAndVerify();
-                        fetchAndVerify.setPropertyListMap(ac.getPropertyListMap());
+                        fetchAndVerify.setPropertyListMap(ac.getTypeDenormPropertiesMap());
                         fetchAndVerify.setApiName(ac.getActionCode());
                         FetchAndVerifyPattern fetchAndVerifyPattern = new FetchAndVerifyPattern(fetchAndVerify);
                         patternMap.put(op, fetchAndVerifyPattern);

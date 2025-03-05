@@ -18,6 +18,7 @@ public class ActionCode {
     private String actionCode;
     private String endPoint;
     private PatternType type;
-    private EnumMap<PropertyType, List<Property>> propertyListMap;
+    private EnumMap<PropertyType, List<Property>> typeDenormPropertiesMap;
+    private EnumMap<PropertyType, Map<String, List<Property>>> typeNormalPropertyMap;
     private List<Map<String, String>> defaultData;
 }

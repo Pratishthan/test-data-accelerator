@@ -15,6 +15,7 @@ import io.swagger.v3.parser.core.models.ParseOptions;
 import io.swagger.v3.parser.core.models.SwaggerParseResult;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.json.JSONObject;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +31,7 @@ public class OpenAPISpecParser {
 
 
     private final Map<String, Map<String, ActionCode>> componentActionCodeMap = new HashMap<>();
+    private final Queue<Pair<String, Schema>> schemaVisit = new LinkedList<>();
 
     private final Map<String, String> componentMap = Map.of("Collection",
             "https://raw.githubusercontent.com/Pratishthan/test-data-accelerator/refs/heads/main/backend/fbp-test-scenario-helper/src/main/resources/schema/petstore.json");
@@ -46,7 +48,7 @@ public class OpenAPISpecParser {
         actionCode.setComponentName(component);
 
         EnumMap<PropertyType, List<Property>> enumMap = new EnumMap<>(PropertyType.class);
-        actionCode.setPropertyListMap(enumMap);
+        actionCode.setTypeDenormPropertiesMap(enumMap);
 
         List<Property> queryParameterPropertyList = new ArrayList<>();
         List<Property> pathParameterPropertyList = new ArrayList<>();
@@ -57,6 +59,19 @@ public class OpenAPISpecParser {
         enumMap.put(PropertyType.PathParamList, pathParameterPropertyList);
         enumMap.put(PropertyType.RequestBodyColumnList, bodyPropertyList);
         enumMap.put(PropertyType.ResponseBodyColumnList, respPropertyList);
+
+        EnumMap<PropertyType, Map<String, List<Property>>> normalEnumMap = new EnumMap<>(PropertyType.class);
+        actionCode.setTypeNormalPropertyMap(normalEnumMap);
+
+        Map<String, List<Property>> queryParameterPropertyMap = new LinkedHashMap<>();
+        Map<String, List<Property>> pathParameterPropertyMap = new LinkedHashMap<>();
+        Map<String, List<Property>> bodyPropertyMap = new LinkedHashMap<>();
+        Map<String, List<Property>> respPropertyMap = new LinkedHashMap<>();
+
+        normalEnumMap.put(PropertyType.QueryParamList, queryParameterPropertyMap);
+        normalEnumMap.put(PropertyType.PathParamList, pathParameterPropertyMap);
+        normalEnumMap.put(PropertyType.RequestBodyColumnList, bodyPropertyMap);
+        normalEnumMap.put(PropertyType.ResponseBodyColumnList, respPropertyMap);
 
         return actionCode;
 
@@ -93,22 +108,27 @@ public class OpenAPISpecParser {
                     actionCodeMap.put(value.getPost().getOperationId(), postActionCode);
 
                     Schema<T> postBodySchema = value.getPost().getRequestBody().getContent().get("application/json").getSchema();
-                    extractProperties(postBodySchema, "", key, postActionCode.getPropertyListMap().get(PropertyType.RequestBodyColumnList));
+
+                    schemaVisit.clear();
+                    schemaVisit.add(Pair.of(":root", postBodySchema));
+                    extractPropertiesToMap("", key, postActionCode.getTypeNormalPropertyMap().get(PropertyType.RequestBodyColumnList));
+
+                    extractPropertiesToList(postBodySchema, "", key, postActionCode.getTypeDenormPropertiesMap().get(PropertyType.RequestBodyColumnList));
 
                     if (value.getPost().getResponses().containsKey("200")) {
                         Schema<T> postRespSchema = value.getPost().getResponses().get("200").getContent().get("application/json").getSchema();
-                        extractProperties(postRespSchema, "", key, postActionCode.getPropertyListMap().get(PropertyType.ResponseBodyColumnList));
+                        extractPropertiesToList(postRespSchema, "", key, postActionCode.getTypeDenormPropertiesMap().get(PropertyType.ResponseBodyColumnList));
                     }
 
                     if (value.getPost().getResponses().containsKey("201")) {
                         Schema<T> postRespSchema = value.getPost().getResponses().get("201").getContent().get("application/json").getSchema();
-                        extractProperties(postRespSchema, "", key, postActionCode.getPropertyListMap().get(PropertyType.ResponseBodyColumnList));
+                        extractPropertiesToList(postRespSchema, "", key, postActionCode.getTypeDenormPropertiesMap().get(PropertyType.ResponseBodyColumnList));
                     }
 
                     if (ObjectUtils.isNotEmpty(value.getPost().getParameters())) {
                         extractParameters(value.getPost().getParameters(), key,
-                                postActionCode.getPropertyListMap().get(PropertyType.QueryParamList),
-                                postActionCode.getPropertyListMap().get(PropertyType.PathParamList));
+                                postActionCode.getTypeDenormPropertiesMap().get(PropertyType.QueryParamList),
+                                postActionCode.getTypeDenormPropertiesMap().get(PropertyType.PathParamList));
                     }
 
                 }
@@ -125,17 +145,17 @@ public class OpenAPISpecParser {
 
                     if (ObjectUtils.isNotEmpty(value.getGet().getRequestBody())) {
                         Schema<T> postBodySchema = value.getGet().getRequestBody().getContent().get("application/json").getSchema();
-                        extractProperties(postBodySchema, "", key, getActionCode.getPropertyListMap().get(PropertyType.RequestBodyColumnList));
+                        extractPropertiesToList(postBodySchema, "", key, getActionCode.getTypeDenormPropertiesMap().get(PropertyType.RequestBodyColumnList));
                     }
                     if (value.getGet().getResponses().containsKey("200")) {
                         Schema<T> getRespSchema = value.getGet().getResponses().get("200").getContent().get("application/json").getSchema();
-                        extractProperties(getRespSchema, "", key, getActionCode.getPropertyListMap().get(PropertyType.ResponseBodyColumnList));
+                        extractPropertiesToList(getRespSchema, "", key, getActionCode.getTypeDenormPropertiesMap().get(PropertyType.ResponseBodyColumnList));
                     }
 
                     if (ObjectUtils.isNotEmpty(value.getGet().getParameters())) {
                         extractParameters(value.getGet().getParameters(), key,
-                                getActionCode.getPropertyListMap().get(PropertyType.QueryParamList),
-                                getActionCode.getPropertyListMap().get(PropertyType.PathParamList));
+                                getActionCode.getTypeDenormPropertiesMap().get(PropertyType.QueryParamList),
+                                getActionCode.getTypeDenormPropertiesMap().get(PropertyType.PathParamList));
                     }
                 }
 
@@ -149,7 +169,7 @@ public class OpenAPISpecParser {
         return actionCodeMap;
     }
 
-    private <T> void extractProperties(Schema<T> schema, String path, String endPoint, List<Property> finalPropertyList) {
+    private <T> void extractPropertiesToList(Schema<T> schema, String path, String endPoint, List<Property> finalPropertyList) {
         if (ObjectUtils.isNotEmpty(schema) && ObjectUtils.isNotEmpty(schema.getProperties())) {
             schema.getProperties().forEach((kp, prop) -> {
                 Map<String, String> requiredMap = new HashMap<>();
@@ -157,11 +177,11 @@ public class OpenAPISpecParser {
                     requiredMap = schema.getRequired().stream().collect(Collectors.toMap(Function.identity(), Function.identity()));
                 }
                 if (prop instanceof ArraySchema) {
-                    extractProperties(((ArraySchema) prop).getItems(), path + ":" + kp, endPoint, finalPropertyList);
+                    extractPropertiesToList(((ArraySchema) prop).getItems(), path + ":" + kp, endPoint, finalPropertyList);
                 } else if (prop instanceof ComposedSchema) {
-                    extractProperties(((ComposedSchema) prop).getItems(), path + ":" + kp, endPoint, finalPropertyList);
+                    extractPropertiesToList(((ComposedSchema) prop).getItems(), path + ":" + kp, endPoint, finalPropertyList);
                 } else if (prop instanceof ObjectSchema) {
-                    extractProperties((ObjectSchema) prop, path + ":" + kp, endPoint, finalPropertyList);
+                    extractPropertiesToList((ObjectSchema) prop, path + ":" + kp, endPoint, finalPropertyList);
                 } else {
                     log.info("EndPoint: {} Property: {}:{}", endPoint, path, kp);
                     Property property = new Property();
@@ -176,6 +196,56 @@ public class OpenAPISpecParser {
         }
     }
 
+
+    private <T> void extractPropertiesToMap(String path, String endPoint, Map<String, List<Property>> propertyMap) {
+        if (schemaVisit.isEmpty()) {
+            return;
+        }
+        String location = schemaVisit.peek().getLeft();
+        Schema<T> schema = schemaVisit.peek().getRight();
+        List<Property> propertyList = new ArrayList<>();
+        StringBuilder currentPath = new StringBuilder();
+        currentPath.append(path).append(location);
+        if (ObjectUtils.isNotEmpty(schema) && ObjectUtils.isNotEmpty(schema.getProperties())) {
+            schema.getProperties().forEach((kp, prop) -> {
+                boolean composite = false;
+                Map<String, String> requiredMap = new HashMap<>();
+                if (ObjectUtils.isNotEmpty(schema.getRequired())) {
+                    requiredMap = schema.getRequired().stream().collect(Collectors.toMap(Function.identity(), Function.identity()));
+                }
+                if (prop instanceof ArraySchema) {
+                    schemaVisit.add(Pair.of(kp, ((ArraySchema) prop).getItems()));
+                    composite = true;
+                } else if (prop instanceof ComposedSchema) {
+                    schemaVisit.add(Pair.of(kp, ((ComposedSchema) prop).getItems()));
+                    composite = true;
+                } else if (prop instanceof ObjectSchema) {
+                    schemaVisit.add(Pair.of(kp, (ObjectSchema) prop));
+                    composite = true;
+                }
+                if (!composite) {
+                    log.info("EndPoint: {} Property: {}:{}", endPoint, path, kp);
+
+                    Property property = new Property();
+                    property.setBusinessColumnName(kp); // todo: derive business column name
+                    property.setTechnicalColumnName(kp);
+                    property.setIsMandatory(requiredMap.containsKey(kp));
+                    property.setDerivedDataType(path);
+                    propertyList.add(property);
+                }
+
+            });
+            if (!propertyList.isEmpty()) {
+                propertyMap.put(path + ":" + currentPath, propertyList);
+            }
+
+        }
+        schemaVisit.remove();
+        if (!schemaVisit.isEmpty()) {
+            extractPropertiesToMap(path, endPoint, propertyMap);
+        }
+
+    }
 
     private void extractParameters(List<Parameter> parameterList, String endPoint, List<Property> queryPropertyList, List<Property> pathPropertyList) {
         parameterList.forEach(parameter -> {

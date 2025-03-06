@@ -67,12 +67,12 @@ public class TableWithNote {
 
         if ((InputType.Denorm.equals(command.getInputTypeMap().get(PropertyType.ResponseBodyColumnList))
                 && !postAndVerify.getTypeDenormPropertiesMap().get(PropertyType.ResponseBodyColumnList).isEmpty())) {
-            addTableWithNote(workbook, sheetName, "Response-" + command.getCommandName(), postAndVerify.getDenormColumnMapForVerify(), new ArrayList<>());
+            addTableWithNote(workbook, sheetName, "Verify-" + command.getCommandName(), postAndVerify.getDenormColumnMapForVerify(), new ArrayList<>());
         }
 
         if ((InputType.Normal.equals(command.getInputTypeMap().get(PropertyType.ResponseBodyColumnList))
                 && !postAndVerify.getTypeNormalPropertyMap().get(PropertyType.ResponseBodyColumnList).isEmpty())) {
-            addTablesWithNote(workbook, sheetName, "Response-" + command.getCommandName(), postAndVerify.getNormalColumnMapForVerify(), new ArrayList<>());
+            addTablesWithNote(workbook, sheetName, "Verify-" + command.getCommandName(), postAndVerify.getNormalColumnMapForVerify(), new ArrayList<>());
         }
 
     }

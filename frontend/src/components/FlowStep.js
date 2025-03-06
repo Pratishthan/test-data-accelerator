@@ -19,7 +19,7 @@ function FlowStep({handleDragStart, handleFlowDrop, handleFlowDragOver, removeSt
           <IconButton>
             <DragHandleIcon fontSize='large' className='p-1 m-1'/>
           </IconButton>
-          <TextField key={step.id} defaultValue={step.label} onBlur={(e) => handleStepDataChange(step.id,"label",e.target.value)} size='small'/>
+          <TextField key={step.id} defaultValue={step.label} helperText={step.actionCode} onBlur={(e) => handleStepDataChange(step.id,"label",e.target.value)} size='small'/>
         </div>
         <IconButton onClick={(e) => removeStep(step.id)}>
             <CloseIcon fontSize='large' className='p-1 m-1'/>

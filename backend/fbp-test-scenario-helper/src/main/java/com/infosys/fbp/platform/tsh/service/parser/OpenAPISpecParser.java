@@ -34,7 +34,7 @@ public class OpenAPISpecParser {
     private final Queue<Pair<String, Schema>> schemaVisit = new LinkedList<>();
 
     private final Map<String, String> componentMap = Map.of("Collection",
-            "https://raw.githubusercontent.com/Pratishthan/test-data-accelerator/refs/heads/main/backend/fbp-test-scenario-helper/src/main/resources/schema/petstore-minimal.json");
+            "https://raw.githubusercontent.com/Pratishthan/test-data-accelerator/refs/heads/main/backend/fbp-test-scenario-helper/src/main/resources/schema/petstore.json");
 
     @Bean
     public Map<String, Map<String, ActionCode>> componentActionCodeMap() {
